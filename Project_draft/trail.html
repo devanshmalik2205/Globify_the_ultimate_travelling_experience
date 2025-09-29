@@ -63,6 +63,7 @@
             font-size: 0.875rem;
             font-weight: 500;
             transition: color 0.2s;
+            cursor: pointer;
         }
         .top-nav-links a:hover {
             color: #3b82f6;
@@ -88,6 +89,31 @@
         }
         .btn-secondary:hover {
             background-color: #f3f4f6;
+        }
+
+        /* User Profile Display */
+        .user-profile {
+            display: none; /* Hidden by default */
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .user-profile-icon {
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 50%;
+            background-color: #e0e7ff;
+            color: #3730a3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        .user-profile-name {
+            font-weight: 500;
+            color: #1f2937;
+        }
+        .hidden {
+            display: none !important;
         }
 
         .main-nav {
@@ -180,11 +206,16 @@
             cursor: pointer;
             z-index: 10;
             border: none;
+            /* MODIFIED: Removed display:none to make buttons visible */
         }
         .scroll-btn:hover { background-color: #f3f4f6; }
         .scroll-btn.left { left: -1rem; }
         .scroll-btn.right { right: -1rem; }
         .scroll-btn svg { width: 1.5rem; height: 1.5rem; color: #374151; }
+
+        .link_rooms{
+            text-decoration: none !important;
+        }
       
         /* Location & Hotel Cards */
         .location-card, .hotel-card { background-color: white; border-radius: 0.75rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); overflow: hidden; transition: all 0.3s ease; flex-shrink: 0; scroll-snap-align: start; }
@@ -289,6 +320,93 @@
         .footer-bottom { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #374151; display: flex; flex-direction: column; align-items: center; justify-content: space-between; font-size: 0.875rem; }
         @media (min-width: 768px) { .footer-bottom { flex-direction: row; } }
         .socials { display: flex; gap: 1rem; margin-top: 1rem; }
+        
+        /* --- CSS ONLY MODAL STYLES --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none; /* Hidden by default */
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+        /* Show the modal when its ID is the target of the URL */
+        .modal-overlay:target {
+            display: flex;
+        }
+        .modal-content {
+            background-color: #f8f9fa;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            text-align: center;
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: #6b7285;
+            cursor: pointer;
+            line-height: 1;
+            text-decoration: none;
+        }
+        .modal-close-btn:hover {
+            color: #1f2937;
+        }
+        .auth-card h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+        }
+        .auth-card form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .auth-card input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            box-sizing: border-box; /* Important for padding */
+        }
+        .auth-card input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+        }
+        .auth-btn {
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+        .auth-switch {
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+        .auth-switch a {
+            color: #3b82f6;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .auth-switch a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -298,16 +416,25 @@
         <div class="container">
             <div class="top-nav">
                 <a href="#" class="logo">
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h10a2 2 0 002-2v-1a2 2 0 012-2h1.945M7.707 4.293l1.414 1.414a1 1 0 01-1.414 1.414l-1.414-1.414a1 1 0 011.414-1.414zm10 0l-1.414 1.414a1 1 0 01-1.414-1.414l1.414-1.414a1 1 0 011.414 1.414zM12 21a9 9 0 110-18 9 9 0 010 18z" />
-                    </svg>
+                    <img src="Icon.svg" alt="G">
                     <span>Globify</span>
                 </a>
                 <nav class="top-nav-links">
                     <a href="#">List Your Property</a>
-                    <a href="#">Sign In</a>
-                    <a href="#" class="btn btn-primary">Register</a>
-                    <a href="#" class="btn btn-secondary">About Us</a>
+                    
+                    <!-- Auth Links: To be hidden on login -->
+                    <div id="auth-links" style="display: flex; gap: 1rem; align-items: center;">
+                        <a href="#signInModal">Sign In</a>
+                        <a href="#registerModal" class="btn btn-primary">Register</a>
+                    </div>
+
+                    <!-- User Profile: To be shown on login -->
+                    <div id="user-profile" class="user-profile">
+                        <div id="user-icon" class="user-profile-icon"></div>
+                        <span id="user-name" class="user-profile-name"></span>
+                    </div>
+
+                    <a href="About_Us.html" class="btn btn-secondary">About Us</a>
                 </nav>
             </div>
             <nav class="main-nav">
@@ -381,7 +508,9 @@
                 <p class="section-subtitle">Discover the most in-demand locations at the lowest prices available and get the best customer experience.</p>
                 <div class="slider-wrapper">
                     <div id="locationsContainer" class="slider-container">
-                        <div class="location-card"><div class="card-img-container"><img src="https://placehold.co/240x288/a8dadc/457b9d?text=Delhi" alt="Delhi" class="card-img"></div><h3 class="card-title">Delhi</h3></div>
+                        <a href="delhi.html">
+                            <div class="location-card"><div class="card-img-container"><img src="https://placehold.co/240x288/a8dadc/457b9d?text=Delhi" alt="Delhi" class="card-img"></div><h3 class="card-title">Delhi</h3></div>
+                        </a>
                         <div class="location-card"><div class="card-img-container"><img src="https://placehold.co/240x288/f1faee/1d3557?text=Manali" alt="Manali" class="card-img"></div><h3 class="card-title">Manali</h3></div>
                         <div class="location-card"><div class="card-img-container"><img src="https://placehold.co/240x288/e63946/f1faee?text=Jaipur" alt="Jaipur" class="card-img"></div><h3 class="card-title">Jaipur</h3></div>
                         <div class="location-card"><div class="card-img-container"><img src="https://placehold.co/240x288/1d3557/f1faee?text=Mumbai" alt="Mumbai" class="card-img"></div><h3 class="card-title">Mumbai</h3></div>
@@ -402,7 +531,9 @@
                 <h2 class="section-title">Featured Homes Recommended for you</h2>
                 <div class="slider-wrapper">
                     <div id="homesContainer" class="slider-container">
-                        <div class="hotel-card"><div class="card-img-container"><img src="https://placehold.co/320x192/eef2ff/4338ca?text=Holiday+Inn" alt="Holiday Inn" class="card-img"><span class="rating-badge">9.1</span></div><div class="card-content"><h3 class="card-title-main">Holiday Inn New Delhi</h3><p class="card-subtitle">Mayur Vihar</p><p class="price">INR 12,000 <span class="price-subtext">/ night</span></p><button class="details-btn">View Details</button></div></div>
+                        <a href="holiday_inn.html" class="link_rooms">
+                            <div class="hotel-card"><div class="card-img-container"><img src="https://placehold.co/320x192/eef2ff/4338ca?text=Holiday+Inn" alt="Holiday Inn" class="card-img"><span class="rating-badge">9.1</span></div><div class="card-content"><h3 class="card-title-main">Holiday Inn New Delhi</h3><p class="card-subtitle">Mayur Vihar</p><p class="price">INR 12,000 <span class="price-subtext">/ night</span></p><button class="details-btn">View Details</button></div></div>
+                        </a>
                         <div class="hotel-card"><div class="card-img-container"><img src="https://placehold.co/320x192/dbeafe/1e3a8a?text=The+Imperial" alt="The Imperial" class="card-img"><span class="rating-badge">9.5</span></div><div class="card-content"><h3 class="card-title-main">The Imperial, New Delhi</h3><p class="card-subtitle">Connaught Place</p><p class="price">INR 21,599 <span class="price-subtext">/ night</span></p><button class="details-btn">View Details</button></div></div>
                         <div class="hotel-card"><div class="card-img-container"><img src="https://placehold.co/320x192/c7d2fe/4338ca?text=The+Leela" alt="The Leela" class="card-img"><span class="rating-badge">9.4</span></div><div class="card-content"><h3 class="card-title-main">The Leela Palace New Delhi</h3><p class="card-subtitle">Chanakyapuri</p><p class="price">INR 28,500 <span class="price-subtext">/ night</span></p><button class="details-btn">View Details</button></div></div>
                         <div class="hotel-card"><div class="card-img-container"><img src="https://placehold.co/320x192/e0e7ff/3730a3?text=Maidens+Hotel" alt="Maidens Hotel" class="card-img"><span class="rating-badge">9.3</span></div><div class="card-content"><h3 class="card-title-main">Maidens Hotel New Delhi</h3><p class="card-subtitle">Civil Lines</p><p class="price">INR 12,000 <span class="price-subtext">/ night</span></p><button class="details-btn">View Details</button></div></div>
@@ -471,7 +602,7 @@
             <div class="footer-grid">
                 <div>
                     <a href="#" class="logo" style="color:white; font-size:1.5rem;">
-                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h10a2 2 0 002-2v-1a2 2 0 012-2h1.945M7.707 4.293l1.414 1.414a1 1 0 01-1.414 1.414l-1.414-1.414a1 1 0 011.414-1.414zm10 0l-1.414 1.414a1 1 0 01-1.414-1.414l1.414-1.414a1 1 0 011.414 1.414zM12 21a9 9 0 110-18 9 9 0 010 18z" /></svg>
+                        <img src="Icon.svg" alt="G">
                         <span>Globify</span>
                     </a>
                 </div>
@@ -483,9 +614,44 @@
         </div>
     </footer>
 
+    <!-- Sign In Modal -->
+    <div id="signInModal" class="modal-overlay">
+        <div class="modal-content">
+            <a href="#" class="modal-close-btn">&times;</a>
+            <div class="auth-card">
+                <h2>Sign In</h2>
+                <form id="signInForm">
+                    <input type="email" placeholder="Your email" required>
+                    <input type="password" placeholder="Password" required>
+                    <button type="submit" class="btn btn-primary auth-btn">Enter</button>
+                </form>
+                <p class="auth-switch">New here? <a href="#registerModal">Create an account</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal-overlay">
+        <div class="modal-content">
+            <a href="#" class="modal-close-btn">&times;</a>
+            <div class="auth-card">
+                <h2>Register</h2>
+                <form id="registerForm">
+                    <input id="register-name" type="text" placeholder="Name" required>
+                    <input type="email" placeholder="Your email" required>
+                    <input type="date" placeholder="Date of Birth" required>
+                    <input type="password" placeholder="Create Password" required>
+                    <input type="password" placeholder="Confirm Password" required>
+                    <button type="submit" class="btn btn-primary auth-btn">Enter</button>
+                </form>
+                 <p class="auth-switch">Already have an account? <a href="#signInModal">Sign in</a></p>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // --- Locations Slider ---
+            // --- ADDED: Slider Logic ---
             const locationsContainer = document.getElementById('locationsContainer');
             const locationsScrollLeft = document.getElementById('locationsScrollLeft');
             const locationsScrollRight = document.getElementById('locationsScrollRight');
@@ -502,7 +668,6 @@
                 });
             }
 
-            // --- Homes Slider ---
             const homesContainer = document.getElementById('homesContainer');
             const homesScrollLeft = document.getElementById('homesScrollLeft');
             const homesScrollRight = document.getElementById('homesScrollRight');
@@ -518,11 +683,42 @@
                     homesContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
                 });
             }
+
+            // --- Authentication Logic ---
+            const signInForm = document.getElementById('signInForm');
+            const registerForm = document.getElementById('registerForm');
+            
+            const authLinks = document.getElementById('auth-links');
+            const userProfile = document.getElementById('user-profile');
+            const userNameEl = document.getElementById('user-name');
+            const userIconEl = document.getElementById('user-icon');
+            const registerNameInput = document.getElementById('register-name');
+
+            const handleLogin = (name) => {
+                // Set user name and icon initial
+                userNameEl.textContent = name;
+                userIconEl.textContent = name.charAt(0).toUpperCase();
+
+                // Swap the auth links for the user profile
+                authLinks.classList.add('hidden');
+                userProfile.style.display = 'flex';
+
+                // Close the modal by resetting the URL hash
+                window.location.hash = '#';
+            };
+            
+            signInForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                // For sign-in, we don't have a name, so we default to 'User'
+                handleLogin('User');
+            });
+
+            registerForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const userName = registerNameInput.value.trim() || 'User';
+                handleLogin(userName);
+            });
         });
     </script>
-
 </body>
 </html>
-
-
-

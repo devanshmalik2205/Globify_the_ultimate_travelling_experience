@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delhi - Globify</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Body Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+        }
+
+        /* Reusable Container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header (Consistent with main page) */
+        .header {
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 64px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1f2937;
+            text-decoration: none;
+        }
+        .logo img { height: 2.25rem; }
+        .top-nav-links { display: flex; align-items: center; gap: 1rem; }
+        .top-nav-links a { text-decoration: none; color: #4b5563; font-size: 0.875rem; font-weight: 500; }
+        .btn { padding: 0.5rem 1rem; border-radius: 0.5rem; text-decoration: none; border: 1px solid transparent; font-weight: 500; display: inline-flex; align-items: center; justify-content: center; }
+        .btn-primary { background-color: #3b82f6; color: white; }
+        .btn-secondary { border-color: #d1d5db; color: #374151; }
+        .user-profile { display: none; align-items: center; gap: 0.5rem; }
+        .user-profile-icon { width: 2.25rem; height: 2.25rem; border-radius: 50%; background-color: #e0e7ff; color: #3730a3; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+        
+        /* MODIFIED: Hero Section */
+        .location-hero {
+            height: 50vh;
+            background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('Delhi_images/Hero\ background.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Main Content wrapper */
+        .main-content {
+            background-color: #f8f9fa;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Delhi Title Card */
+        .delhi-title-card {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            display: inline-block;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-top: -3rem; /* Pulls the card up over the hero image */
+            margin-bottom: 2.5rem;
+        }
+
+        /* Attractions Grid */
+        .attractions-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1.5rem;
+            padding-bottom: 4rem;
+        }
+        @media (min-width: 768px) {
+            .attractions-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        .attraction-card {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .attraction-card:not(.view-more-card):hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .attraction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        .attraction-header .text-content { flex-grow: 1; }
+        .attraction-header h3 { margin: 0; font-size: 1.25rem; font-weight: 600; color: #111827; }
+        .attraction-header p { margin: 0.25rem 0 0; font-size: 0.875rem; color: #6b7285; }
+        .attraction-header img {
+            width: 100px;
+            height: 75px;
+            border-radius: 0.5rem;
+            object-fit: cover;
+        }
+        .google-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: #4b5563;
+            font-size: 0.875rem;
+        }
+        .google-link img { width: 20px; height: 20px; }
+        .view-more-card {
+            background-color: #3b82f6;
+            color: white;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #1f2937;
+            color: #9ca3af;
+            padding: 4rem 0 2rem;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #374151;
+        }
+        @media (min-width: 1024px) {
+            .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr 2fr; }
+        }
+        .footer-col h4 {
+            font-weight: 600;
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .footer-links a { color: #9ca3af; text-decoration: none; font-size: 0.875rem; }
+        .subscribe-form { margin-top: 1rem; display: flex; }
+        .subscribe-form input {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.5rem 0 0 0.5rem;
+            border: none;
+            background-color: #374151;
+            color: white;
+        }
+        .subscribe-form button {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0 1rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+            cursor: pointer;
+        }
+        .footer-bottom {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+        }
+        .socials { display: flex; gap: 1rem; }
+    </style>
+</head>
+<body>
+
+    <!-- MODIFIED STRUCTURE: Hero is now full-width -->
+    <header class="header">
+        <div class="container">
+            <div class="top-nav">
+                <a href="../index.html" class="logo">
+                    <img src="../Icon.svg" alt="Globify Logo">
+                    <span>Globify</span>
+                </a>
+                 <nav class="top-nav-links">
+                    <a href="#">List Your Property</a>
+                    <a href="../index.html#signInModal">Sign In</a>
+                    <a href="../index.html#registerModal" class="btn btn-primary">Register</a>
+                    <a href="../About_Us.html" class="btn btn-secondary">About Us</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="location-hero"></div>
+
+    <!-- Main content is in a separate div -->
+    <main class="main-content">
+        <div class="container">
+
+            <div class="delhi-title-card">Delhi</div>
+
+            <div class="attractions-grid">
+                <!-- Attraction Cards -->
+                <div class="attraction-card">
+                    <div class="attraction-header">
+                        <div class="text-content">
+                            <h3>Red Fort (Lal Qila)</h3>
+                            <p>UNESCO World Heritage site symbolizing Mughal grandeur.</p>
+                        </div>
+                        <img src="Delhi_images/red-fort-delhi-attr-hero.jpeg 2.png" alt="Red Fort">
+                    </div>
+                    <a href="https://tinyurl.com/25pwkmtz" class="google-link">
+                        <img src="https://www.google.com/s2/favicons?domain=google.com&sz=64" alt="Google icon">
+                        <span>Google</span>
+                    </a>
+                </div>
+                <div class="attraction-card">
+                    <div class="attraction-header">
+                        <div class="text-content">
+                            <h3>India Gate</h3>
+                            <p>A national monument honoring soldiers, perfect for evening strolls.</p>
+                        </div>
+                        <img src="Delhi_images/red-fort-delhi-attr-hero.jpeg 3-1.png" alt="India Gate">
+                    </div>
+                    <a href="https://tinyurl.com/249t4d3p" class="google-link">
+                        <img src="https://www.google.com/s2/favicons?domain=google.com&sz=64" alt="Google icon">
+                        <span>Google</span>
+                    </a>
+                </div>
+                <div class="attraction-card">
+                    <div class="attraction-header">
+                        <div class="text-content">
+                            <h3>Lotus Temple</h3>
+                            <p>Iconic Baha'i House of Worship shaped like a lotus flower.</p>
+                        </div>
+                        <img src="Delhi_images/red-fort-delhi-attr-hero.jpeg 3.png" alt="Lotus Temple">
+                    </div>
+                    <a href="https://tinyurl.com/2aohn8kh" class="google-link">
+                        <img src="https://www.google.com/s2/favicons?domain=google.com&sz=64" alt="Google icon">
+                        <span>Google</span>
+                    </a>
+                </div>
+                <div class="attraction-card">
+                    <div class="attraction-header">
+                        <div class="text-content">
+                            <h3>Qutub Minar</h3>
+                            <p>The world's tallest brick minaret with stunning carvings.</p>
+                        </div>
+                        <img src="Delhi_images/red-fort-delhi-attr-hero.jpeg 5.png" alt="Qutub Minar">
+                    </div>
+                    <a href="https://tinyurl.com/2akpuaf9" class="google-link">
+                        <img src="https://www.google.com/s2/favicons?domain=google.com&sz=64" alt="Google icon">
+                        <span>Google</span>
+                    </a>
+                </div>
+                <div class="attraction-card">
+                    <div class="attraction-header">
+                        <div class="text-content">
+                            <h3>Chandni Chowk</h3>
+                            <p>Famous for street food, spice markets, and traditional shopping.</p>
+                        </div>
+                        <img src="Delhi_images/red-fort-delhi-attr-hero.jpeg 4.png" alt="Chandni Chowk">
+                    </div>
+                    <a href="https://tinyurl.com/2ccr27tu" class="google-link">
+                        <img src="https://www.google.com/s2/favicons?domain=google.com&sz=64" alt="Google icon">
+                        <span>Google</span>
+                    </a>
+                </div>
+                <div class="attraction-card view-more-card">
+                    <span>View More</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="../index.html" class="logo" style="color:white;">
+                        <img src="../Icon.svg" alt="Globify Logo">
+                        <span>Globify</span>
+                    </a>
+                </div>
+                <div class="footer-col">
+                    <h4>Explore</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Flights</a></li>
+                        <li><a href="#">Hotels</a></li>
+                        <li><a href="#">Cabs</a></li>
+                        <li><a href="#">Car Rental</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="../About_Us.html">About Us</a></li>
+                        <li><a href="#">How it works</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                     <h4>Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Trust & Safety</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Subscribe</h4>
+                    <p style="font-size:0.875rem;">Join our newsletter to stay updated.</p>
+                    <div class="subscribe-form">
+                        <input type="email" placeholder="Your email">
+                        <button>→</button>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Copyright @ 2025 Globify. All rights reserved.</p>
+                <div class="socials"><span>f</span><span>i</span><span>t</span></div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

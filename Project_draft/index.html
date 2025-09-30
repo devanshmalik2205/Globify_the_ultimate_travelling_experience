@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,19 +10,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <!-- Header & Navigation -->
     <header class="header">
         <div class="container">
             <div class="top-nav">
-                <a href="#" class="logo">
+                <a href="index.html" class="logo">
                     <img src="Icon.svg" alt="G">
                     <span>Globify</span>
                 </a>
                 <nav class="top-nav-links">
                     <a href="#">List Your Property</a>
-                    
+
                     <!-- Auth Links: To be hidden on login -->
                     <div id="auth-links" style="display: flex; gap: 1rem; align-items: center;">
                         <a href="#signInModal">Sign In</a>
@@ -75,7 +77,11 @@
                             <p class="sub-text">DEL, Delhi Airport India</p>
                         </div>
                         <button class="swap-button">
-                             <svg style="width:1.25rem; height:1.25rem; color:#4b5563;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                            <svg style="width:1.25rem; height:1.25rem; color:#4b5563;" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                            </svg>
                         </button>
                         <div class="form-field">
                             <label>To</label>
@@ -94,7 +100,7 @@
                         <div class="form-field">
                             <label>Travellers & Class</label>
                             <p class="main-text">1 Traveller</p>
-                             <p class="sub-text">Economy</p>
+                            <p class="sub-text">Economy</p>
                         </div>
                     </div>
                 </div>
@@ -105,23 +111,50 @@
         <section class="section">
             <div class="container">
                 <h2 class="section-title">Explore 1000+ Famous Locations with us!</h2>
-                <p class="section-subtitle">Discover the most in-demand locations at the lowest prices available and get the best customer experience.</p>
+                <p class="section-subtitle">Discover the most in-demand locations at the lowest prices available and get
+                    the best customer experience.</p>
                 <div class="slider-wrapper">
                     <div id="locationsContainer" class="slider-container">
-                        <a href="delhi.html">
-                            <div class="location-card"><div class="card-img-container"><img src="city_images/Delhi.png" alt="Delhi" class="card-img"></div><h3 class="card-title">Delhi</h3></div>
+                        <a href="cities_html/delhi.html">
+                            <div class="location-card">
+                                <div class="card-img-container"><img src="city_images/Delhi.png" alt="Delhi"
+                                        class="card-img"></div>
+                                <h3 class="card-title">Delhi</h3>
+                            </div>
                         </a>
-                        <div class="location-card"><div class="card-img-container"><img src="city_images/Manali.png" alt="Manali" class="card-img"></div><h3 class="card-title">Manali</h3></div>
-                        <div class="location-card"><div class="card-img-container"><img src="city_images/Jaipur.png" alt="Jaipur" class="card-img"></div><h3 class="card-title">Jaipur</h3></div>
-                        <div class="location-card"><div class="card-img-container"><img src="city_images/Mumbai.png" alt="Mumbai" class="card-img"></div><h3 class="card-title">Mumbai</h3></div>
-                        <div class="location-card"><div class="card-img-container"><img src="city_images/Goa.png" alt="Goa" class="card-img"></div><h3 class="card-title">Goa</h3></div>
+                        <div class="location-card">
+                            <div class="card-img-container"><img src="city_images/Manali.png" alt="Manali"
+                                    class="card-img"></div>
+                            <h3 class="card-title">Manali</h3>
+                        </div>
+                        <div class="location-card">
+                            <div class="card-img-container"><img src="city_images/Jaipur.png" alt="Jaipur"
+                                    class="card-img"></div>
+                            <h3 class="card-title">Jaipur</h3>
+                        </div>
+                        <div class="location-card">
+                            <div class="card-img-container"><img src="city_images/Mumbai.png" alt="Mumbai"
+                                    class="card-img"></div>
+                            <h3 class="card-title">Mumbai</h3>
+                        </div>
+                        <div class="location-card">
+                            <div class="card-img-container"><img src="city_images/Goa.png" alt="Goa" class="card-img">
+                            </div>
+                            <h3 class="card-title">Goa</h3>
+                        </div>
                     </div>
                     <!-- Slider Arrows -->
                     <button id="locationsScrollLeft" class="scroll-btn left">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
+                            </path>
+                        </svg>
                     </button>
                     <button id="locationsScrollRight" class="scroll-btn right">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
                     </button>
                 </div>
             </div>
@@ -131,19 +164,61 @@
                 <h2 class="section-title">Featured Homes Recommended for you</h2>
                 <div class="slider-wrapper">
                     <div id="homesContainer" class="slider-container">
-                        <a href="holiday_inn.html" class="link_rooms">
-                            <div class="hotel-card"><div class="card-img-container"><img src="homes_images/Holiday Inn.png" alt="Holiday Inn" class="card-img"><span class="rating-badge">9.1</span></div><div class="card-content"><h3 class="card-title-main">Holiday Inn New Delhi</h3><p class="card-subtitle">Mayur Vihar</p><p class="price">INR 12,000 <span class="price-subtext">/ night</span></p><button class="details-btn">View Details</button></div></div>
+                        <a href="rooms_html/holiday_inn.html" class="link_rooms">
+                            <div class="hotel-card">
+                                <div class="card-img-container"><img src="homes_images/Holiday Inn.png"
+                                        alt="Holiday Inn" class="card-img"><span class="rating-badge">9.1</span></div>
+                                <div class="card-content">
+                                    <h3 class="card-title-main">Holiday Inn New Delhi</h3>
+                                    <p class="card-subtitle">Mayur Vihar</p>
+                                    <p class="price">INR 12,000 <span class="price-subtext">/ night</span></p><button
+                                        class="details-btn">View Details</button>
+                                </div>
+                            </div>
                         </a>
-                        <div class="hotel-card"><div class="card-img-container"><img src="homes_images/The Imperial.png" alt="The Imperial" class="card-img"><span class="rating-badge">9.5</span></div><div class="card-content"><h3 class="card-title-main">The Imperial, New Delhi</h3><p class="card-subtitle">Connaught Place</p><p class="price">INR 21,599 <span class="price-subtext">/ night</span></p><button class="details-btn">View Details</button></div></div>
-                        <div class="hotel-card"><div class="card-img-container"><img src="homes_images/The Leela.png" alt="The Leela" class="card-img"><span class="rating-badge">9.4</span></div><div class="card-content"><h3 class="card-title-main">The Leela Palace New Delhi</h3><p class="card-subtitle">Chanakyapuri</p><p class="price">INR 28,500 <span class="price-subtext">/ night</span></p><button class="details-btn">View Details</button></div></div>
-                        <div class="hotel-card"><div class="card-img-container"><img src="homes_images/Maidens Hotel.png" alt="Maidens Hotel" class="card-img"><span class="rating-badge">9.3</span></div><div class="card-content"><h3 class="card-title-main">Maidens Hotel New Delhi</h3><p class="card-subtitle">Civil Lines</p><p class="price">INR 12,000 <span class="price-subtext">/ night</span></p><button class="details-btn">View Details</button></div></div>
+                        <div class="hotel-card">
+                            <div class="card-img-container"><img src="homes_images/The Imperial.png" alt="The Imperial"
+                                    class="card-img"><span class="rating-badge">9.5</span></div>
+                            <div class="card-content">
+                                <h3 class="card-title-main">The Imperial, New Delhi</h3>
+                                <p class="card-subtitle">Connaught Place</p>
+                                <p class="price">INR 21,599 <span class="price-subtext">/ night</span></p><button
+                                    class="details-btn">View Details</button>
+                            </div>
+                        </div>
+                        <div class="hotel-card">
+                            <div class="card-img-container"><img src="homes_images/The Leela.png" alt="The Leela"
+                                    class="card-img"><span class="rating-badge">9.4</span></div>
+                            <div class="card-content">
+                                <h3 class="card-title-main">The Leela Palace New Delhi</h3>
+                                <p class="card-subtitle">Chanakyapuri</p>
+                                <p class="price">INR 28,500 <span class="price-subtext">/ night</span></p><button
+                                    class="details-btn">View Details</button>
+                            </div>
+                        </div>
+                        <div class="hotel-card">
+                            <div class="card-img-container"><img src="homes_images/Maidens Hotel.png"
+                                    alt="Maidens Hotel" class="card-img"><span class="rating-badge">9.3</span></div>
+                            <div class="card-content">
+                                <h3 class="card-title-main">Maidens Hotel New Delhi</h3>
+                                <p class="card-subtitle">Civil Lines</p>
+                                <p class="price">INR 12,000 <span class="price-subtext">/ night</span></p><button
+                                    class="details-btn">View Details</button>
+                            </div>
+                        </div>
                     </div>
-                     <!-- Slider Arrows -->
+                    <!-- Slider Arrows -->
                     <button id="homesScrollLeft" class="scroll-btn left">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
+                            </path>
+                        </svg>
                     </button>
                     <button id="homesScrollRight" class="scroll-btn right">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
                     </button>
                 </div>
             </div>
@@ -152,8 +227,10 @@
             <div class="container">
                 <div class="download-banner">
                     <div>
-                        <h2 class="section-title" style="color:white; font-size: 2.25rem; margin-bottom: 0.75rem;">Download our App</h2>
-                        <p class="section-subtitle" style="color:white; opacity:0.9; max-width: 36rem;">Get BEST DEALS on vocational and business accommodation at your convenient on your phone with us.</p>
+                        <h2 class="section-title" style="color:white; font-size: 2.25rem; margin-bottom: 0.75rem;">
+                            Download our App</h2>
+                        <p class="section-subtitle" style="color:white; opacity:0.9; max-width: 36rem;">Get BEST DEALS
+                            on vocational and business accommodation at your convenient on your phone with us.</p>
                     </div>
                     <div class="qr-code">
                         <img src="Hatt_qrcode 2.png" alt="QR Code">
@@ -165,7 +242,8 @@
         <section class="section">
             <div class="container" style="text-align: center;">
                 <h2 class="section-title">What does Customers Say About us</h2>
-                <p class="section-subtitle" style="margin: 0.5rem auto;">We are rated 4.8/5 in Travelling and Business Accommodation.</p>
+                <p class="section-subtitle" style="margin: 0.5rem auto;">We are rated 4.8/5 in Travelling and Business
+                    Accommodation.</p>
                 <div class="testimonials-grid">
                     <div class="testimonial-card">
                         <div class="testimonial-quote-icon">“</div>
@@ -173,21 +251,23 @@
                             <h3>Rohit Sharma</h3>
                             <div class="testimonial-stars">★★★★★</div>
                         </div>
-                        <p>"Booking was effortless, and the price analytics feature helped me save around ₹4,000 on flights. Very smooth experience!"</p>
+                        <p>"Booking was effortless, and the price analytics feature helped me save around ₹4,000 on
+                            flights. Very smooth experience!"</p>
                     </div>
                     <div class="testimonial-card">
                         <div class="testimonial-quote-icon">“</div>
                         <div class="testimonial-header">
                             <h3>Priya Mehta</h3>
-                             <div class="testimonial-stars">★★★★☆</div>
+                            <div class="testimonial-stars">★★★★☆</div>
                         </div>
-                        <p>"Planned my 7-day Europe trip in a jiffy! The itinerary planner suggested some local food tours that no other site showed. Loved it!"</p>
+                        <p>"Planned my 7-day Europe trip in a jiffy! The itinerary planner suggested some local food
+                            tours that no other site showed. Loved it!"</p>
                     </div>
                     <div class="testimonial-card">
                         <div class="testimonial-quote-icon">“</div>
                         <div class="testimonial-header">
                             <h3>Emily Parker</h3>
-                             <div class="testimonial-stars">★★★★☆</div>
+                            <div class="testimonial-stars">★★★★☆</div>
                         </div>
                         <p>"Used for group travel. Split payments made cost-sharing super easy."</p>
                     </div>
@@ -206,11 +286,34 @@
                         <span>Globify</span>
                     </a>
                 </div>
-                <div><h4>Explore</h4><ul class="footer-links"><li><a href="#">Flights</a></li><li><a href="#">Hotels</a></li><li><a href="#">Cabs</a></li><li><a href="#">Car Rental</a></li></ul></div>
-                <div><h4>Company</h4><ul class="footer-links"><li><a href="#">About Us</a></li><li><a href="#">How it works</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li></ul></div>
-                <div><h4>Subscribe</h4><p style="font-size:0.875rem;">Join our newsletter to stay updated.</p><div class="subscribe-form"><input type="email" placeholder="Your email"><button>→</button></div></div>
+                <div>
+                    <h4>Explore</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Flights</a></li>
+                        <li><a href="#">Hotels</a></li>
+                        <li><a href="#">Cabs</a></li>
+                        <li><a href="#">Car Rental</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">How it works</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Subscribe</h4>
+                    <p style="font-size:0.875rem;">Join our newsletter to stay updated.</p>
+                    <div class="subscribe-form"><input type="email" placeholder="Your email"><button>→</button></div>
+                </div>
             </div>
-            <div class="footer-bottom"><p>Copyright @ 2025 Globify. All rights reserved.</p><div class="socials"><span>f</span><span>in</span><span>t</span><span>m</span></div></div>
+            <div class="footer-bottom">
+                <p>Copyright @ 2025 Globify. All rights reserved.</p>
+                <div class="socials"><span>f</span><span>in</span><span>t</span><span>m</span></div>
+            </div>
         </div>
     </footer>
 
@@ -244,13 +347,13 @@
                     <input type="password" placeholder="Confirm Password" required>
                     <button type="submit" class="btn btn-primary auth-btn">Enter</button>
                 </form>
-                 <p class="auth-switch">Already have an account? <a href="#signInModal">Sign in</a></p>
+                <p class="auth-switch">Already have an account? <a href="#signInModal">Sign in</a></p>
             </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // --- ADDED: Slider Logic ---
             const locationsContainer = document.getElementById('locationsContainer');
             const locationsScrollLeft = document.getElementById('locationsScrollLeft');
@@ -287,7 +390,7 @@
             // --- Authentication Logic ---
             const signInForm = document.getElementById('signInForm');
             const registerForm = document.getElementById('registerForm');
-            
+
             const authLinks = document.getElementById('auth-links');
             const userProfile = document.getElementById('user-profile');
             const userNameEl = document.getElementById('user-name');
@@ -306,14 +409,14 @@
                 // Close the modal by resetting the URL hash
                 window.location.hash = '#';
             };
-            
-            signInForm.addEventListener('submit', function(event) {
+
+            signInForm.addEventListener('submit', function (event) {
                 event.preventDefault();
                 // For sign-in, we don't have a name, so we default to 'User'
                 handleLogin('User');
             });
 
-            registerForm.addEventListener('submit', function(event) {
+            registerForm.addEventListener('submit', function (event) {
                 event.preventDefault();
                 const userName = registerNameInput.value.trim() || 'User';
                 handleLogin(userName);
@@ -321,4 +424,5 @@
         });
     </script>
 </body>
+
 </html>

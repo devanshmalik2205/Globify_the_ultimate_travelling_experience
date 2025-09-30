@@ -13,7 +13,6 @@
 
 <body>
 
-    <!-- Header & Navigation -->
     <header class="header">
         <div class="container">
             <div class="top-nav">
@@ -24,13 +23,13 @@
                 <nav class="top-nav-links">
                     <a href="#">List Your Property</a>
 
-                    <!-- Auth Links: To be hidden on login -->
+                    
                     <div id="auth-links" style="display: flex; gap: 1rem; align-items: center;">
                         <a href="#signInModal">Sign In</a>
                         <a href="#registerModal" class="btn btn-primary">Register</a>
                     </div>
 
-                    <!-- User Profile: To be shown on login -->
+                    
                     <div id="user-profile" class="user-profile">
                         <div id="user-icon" class="user-profile-icon"></div>
                         <span id="user-name" class="user-profile-name"></span>
@@ -66,7 +65,6 @@
     </header>
 
     <main>
-        <!-- Hero Section -->
         <section class="hero-section">
             <div class="container">
                 <div class="booking-form-container">
@@ -107,7 +105,6 @@
             </div>
         </section>
 
-        <!-- Other sections... -->
         <section class="section">
             <div class="container">
                 <h2 class="section-title">Explore 1000+ Famous Locations with us!</h2>
@@ -143,7 +140,6 @@
                             <h3 class="card-title">Goa</h3>
                         </div>
                     </div>
-                    <!-- Slider Arrows -->
                     <button id="locationsScrollLeft" class="scroll-btn left">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
@@ -207,7 +203,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Slider Arrows -->
                     <button id="homesScrollLeft" class="scroll-btn left">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
@@ -238,7 +233,6 @@
                 </div>
             </div>
         </section>
-        <!-- Testimonials Section -->
         <section class="section">
             <div class="container" style="text-align: center;">
                 <h2 class="section-title">What does Customers Say About us</h2>
@@ -276,7 +270,6 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -317,7 +310,6 @@
         </div>
     </footer>
 
-    <!-- Sign In Modal -->
     <div id="signInModal" class="modal-overlay">
         <div class="modal-content">
             <a href="#" class="modal-close-btn">&times;</a>
@@ -333,7 +325,6 @@
         </div>
     </div>
 
-    <!-- Register Modal -->
     <div id="registerModal" class="modal-overlay">
         <div class="modal-content">
             <a href="#" class="modal-close-btn">&times;</a>
@@ -354,14 +345,13 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // --- ADDED: Slider Logic ---
             const locationsContainer = document.getElementById('locationsContainer');
             const locationsScrollLeft = document.getElementById('locationsScrollLeft');
             const locationsScrollRight = document.getElementById('locationsScrollRight');
 
             if (locationsContainer && locationsScrollLeft && locationsScrollRight) {
                 locationsScrollRight.addEventListener('click', () => {
-                    const scrollAmount = locationsContainer.querySelector('.location-card').offsetWidth + 24; // 24px is 1.5rem gap
+                    const scrollAmount = locationsContainer.querySelector('.location-card').offsetWidth + 24;
                     locationsContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
                 });
 
@@ -387,7 +377,6 @@
                 });
             }
 
-            // --- Authentication Logic ---
             const signInForm = document.getElementById('signInForm');
             const registerForm = document.getElementById('registerForm');
 
@@ -398,21 +387,17 @@
             const registerNameInput = document.getElementById('register-name');
 
             const handleLogin = (name) => {
-                // Set user name and icon initial
                 userNameEl.textContent = name;
                 userIconEl.textContent = name.charAt(0).toUpperCase();
 
-                // Swap the auth links for the user profile
                 authLinks.classList.add('hidden');
                 userProfile.style.display = 'flex';
 
-                // Close the modal by resetting the URL hash
                 window.location.hash = '#';
             };
 
             signInForm.addEventListener('submit', function (event) {
                 event.preventDefault();
-                // For sign-in, we don't have a name, so we default to 'User'
                 handleLogin('User');
             });
 

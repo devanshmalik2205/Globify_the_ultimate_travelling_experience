@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,24 +17,29 @@
             margin: 0;
         }
 
-        /* Reusable Container */
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
+            /* Standardized width for all pages */
             margin: 0 auto;
             padding: 0 1rem;
         }
 
-        /* Header (Consistent with main page) */
+        /* Header & Top Navigation */
         .header {
             background-color: white;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 50;
         }
+
         .top-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 64px;
+            padding: 0.5rem 0;
         }
+
         .logo {
             display: flex;
             align-items: center;
@@ -43,19 +49,92 @@
             color: #1f2937;
             text-decoration: none;
         }
-        .logo img { height: 2.25rem; }
-        .top-nav-links { display: flex; align-items: center; gap: 1rem; }
-        .top-nav-links a { text-decoration: none; color: #4b5563; font-size: 0.875rem; font-weight: 500; }
-        .btn { padding: 0.5rem 1rem; border-radius: 0.5rem; text-decoration: none; border: 1px solid transparent; font-weight: 500; display: inline-flex; align-items: center; justify-content: center; }
-        .btn-primary { background-color: #3b82f6; color: white; }
-        .btn-secondary { border-color: #d1d5db; color: #374151; }
-        .user-profile { display: none; align-items: center; gap: 0.5rem; }
-        .user-profile-icon { width: 2.25rem; height: 2.25rem; border-radius: 50%; background-color: #e0e7ff; color: #3730a3; display: flex; align-items: center; justify-content: center; font-weight: 600; }
-        
+
+        .logo img {
+            width: 2rem;
+            height: 2rem;
+        }
+
+        /* Navigation Links & Buttons */
+        .top-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .top-nav-links a {
+            text-decoration: none;
+            color: #4b5563;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .top-nav-links a:hover {
+            color: #3b82f6;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+
+        .btn-secondary {
+            border-color: #d1d5db;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f3f4f6;
+        }
+
+        /* User Profile Display */
+        .user-profile {
+            display: none;
+            /* Hidden by default */
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-profile-icon {
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 50%;
+            background-color: #e0e7ff;
+            color: #3730a3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .user-profile-name {
+            font-weight: 500;
+            color: #1f2937;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
         /* MODIFIED: Hero Section */
         .location-hero {
             height: 50vh;
-            background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('Delhi_images/Hero\ background.png');
+            background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('Delhi_images/Hero\ background.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -73,12 +152,13 @@
             background: white;
             padding: 1.5rem 2rem;
             border-radius: 1rem;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             display: inline-block;
             font-size: 2.5rem;
             font-weight: bold;
             color: #1f2937;
-            margin-top: -3rem; /* Pulls the card up over the hero image */
+            margin-top: -3rem;
+            /* Pulls the card up over the hero image */
             margin-bottom: 2.5rem;
         }
 
@@ -89,9 +169,13 @@
             gap: 1.5rem;
             padding-bottom: 4rem;
         }
+
         @media (min-width: 768px) {
-            .attractions-grid { grid-template-columns: repeat(2, 1fr); }
+            .attractions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
+
         .attraction-card {
             background-color: white;
             border-radius: 1rem;
@@ -99,28 +183,46 @@
             display: flex;
             flex-direction: column;
             gap: 1.25rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
+
         .attraction-card:not(.view-more-card):hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
+
         .attraction-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             gap: 1rem;
         }
-        .attraction-header .text-content { flex-grow: 1; }
-        .attraction-header h3 { margin: 0; font-size: 1.25rem; font-weight: 600; color: #111827; }
-        .attraction-header p { margin: 0.25rem 0 0; font-size: 0.875rem; color: #6b7285; }
+
+        .attraction-header .text-content {
+            flex-grow: 1;
+        }
+
+        .attraction-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .attraction-header p {
+            margin: 0.25rem 0 0;
+            font-size: 0.875rem;
+            color: #6b7285;
+        }
+
         .attraction-header img {
             width: 100px;
             height: 75px;
             border-radius: 0.5rem;
             object-fit: cover;
         }
+
         .google-link {
             display: flex;
             align-items: center;
@@ -129,7 +231,12 @@
             color: #4b5563;
             font-size: 0.875rem;
         }
-        .google-link img { width: 20px; height: 20px; }
+
+        .google-link img {
+            width: 20px;
+            height: 20px;
+        }
+
         .view-more-card {
             background-color: #3b82f6;
             color: white;
@@ -146,6 +253,7 @@
             color: #9ca3af;
             padding: 4rem 0 2rem;
         }
+
         .footer-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -153,15 +261,20 @@
             padding-bottom: 2rem;
             border-bottom: 1px solid #374151;
         }
+
         @media (min-width: 1024px) {
-            .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr 2fr; }
+            .footer-grid {
+                grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+            }
         }
+
         .footer-col h4 {
             font-weight: 600;
             color: white;
             margin-bottom: 1rem;
             font-size: 1rem;
         }
+
         .footer-links {
             list-style: none;
             padding: 0;
@@ -170,8 +283,18 @@
             flex-direction: column;
             gap: 0.75rem;
         }
-        .footer-links a { color: #9ca3af; text-decoration: none; font-size: 0.875rem; }
-        .subscribe-form { margin-top: 1rem; display: flex; }
+
+        .footer-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+
+        .subscribe-form {
+            margin-top: 1rem;
+            display: flex;
+        }
+
         .subscribe-form input {
             width: 100%;
             padding: 0.75rem;
@@ -180,6 +303,7 @@
             background-color: #374151;
             color: white;
         }
+
         .subscribe-form button {
             background-color: #3b82f6;
             color: white;
@@ -188,6 +312,7 @@
             border-radius: 0 0.5rem 0.5rem 0;
             cursor: pointer;
         }
+
         .footer-bottom {
             margin-top: 2rem;
             display: flex;
@@ -195,24 +320,35 @@
             align-items: center;
             font-size: 0.875rem;
         }
-        .socials { display: flex; gap: 1rem; }
+
+        .socials {
+            display: flex;
+            gap: 1rem;
+        }
     </style>
 </head>
+
 <body>
 
     <!-- MODIFIED STRUCTURE: Hero is now full-width -->
     <header class="header">
         <div class="container">
             <div class="top-nav">
-                <a href="../index.html" class="logo">
-                    <img src="../Icon.svg" alt="Globify Logo">
+                <a href="/index.html" class="logo">
+                    <img src="/Icon.svg" alt="Globify Logo">
                     <span>Globify</span>
                 </a>
-                 <nav class="top-nav-links">
+                <nav class="top-nav-links">
                     <a href="#">List Your Property</a>
-                    <a href="../index.html#signInModal">Sign In</a>
-                    <a href="../index.html#registerModal" class="btn btn-primary">Register</a>
-                    <a href="../About_Us.html" class="btn btn-secondary">About Us</a>
+                    <div id="auth-links" style="display: flex; gap: 1rem; align-items: center;">
+                        <a href="/index.html#signInModal">Sign In</a>
+                        <a href="/index.html#registerModal" class="btn btn-primary">Register</a>
+                    </div>
+                    <div id="user-profile" class="user-profile">
+                        <div id="user-icon" class="user-profile-icon"></div>
+                        <span id="user-name" class="user-profile-name"></span>
+                    </div>
+                    <a href="/About_Us.html" class="btn btn-secondary">About Us</a>
                 </nav>
             </div>
         </div>
@@ -328,7 +464,7 @@
                     </ul>
                 </div>
                 <div class="footer-col">
-                     <h4>Support</h4>
+                    <h4>Support</h4>
                     <ul class="footer-links">
                         <li><a href="#">Help Center</a></li>
                         <li><a href="#">Trust & Safety</a></li>
@@ -353,4 +489,5 @@
     </footer>
 
 </body>
+
 </html>

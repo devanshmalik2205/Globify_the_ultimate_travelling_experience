@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* General Body Styles */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f8f9fa;
@@ -17,14 +16,12 @@
             margin: 0;
         }
 
-        /* Reusable Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 1rem;
         }
 
-        /* Header & Navigation (Copied from trail.html for consistency) */
         .header {
             background-color: white;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -50,7 +47,6 @@
             text-decoration: none;
         }
 
-        /* MODIFIED: Changed svg selector to img */
         .logo img {
             width: 2rem;
             height: 2rem;
@@ -81,18 +77,20 @@
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
             text-decoration: none;
-            transition: all 0.2s;
+            transition: all 0.2s;   
             border: 1px solid transparent;
             font-weight: 500;
         }
 
         .btn-primary {
             background-color: #3b82f6;
-            color: white;
+            color: rgb(255, 255, 255) !important;
         }
 
         .btn-primary:hover {
-            background-color: #2563eb;
+            background-color: #ffffff;
+            color: #002fb0 !important;
+            border-color: #002fb0;
         }
 
         .btn-secondary {
@@ -104,7 +102,6 @@
             background-color: #f3f4f6;
         }
 
-        /* About Us Page Specific Styles */
         .about-hero {
             padding: 4rem 0;
             background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('Hero background.svg') no-repeat center center/cover;
@@ -123,7 +120,6 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             max-width: 900px;
             margin: -6rem auto 2rem auto;
-            /* Pulls the card up into the hero */
             position: relative;
             z-index: 10;
         }
@@ -229,7 +225,6 @@
             font-weight: 600;
         }
 
-        /* Footer */
         .footer {
             background-color: #1f2937;
             color: #d1d5db;
@@ -294,13 +289,10 @@
 
 <body>
 
-    <!-- Header -->
     <header class="header">
         <div class="container">
             <div class="top-nav">
-                <!-- MODIFIED: Replaced SVG with IMG tag -->
                 <a href="index.html" class="logo">
-                    <!-- TODO: Replace "your-logo.png" with the path to your image file -->
                     <img src="Icon.svg" alt="Globify Logo">
                     <span>Globify</span>
                 </a>
@@ -374,14 +366,11 @@
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
                 <div>
-                    <!-- MODIFIED: Replaced SVG with IMG tag -->
                     <a href="index.html" class="logo" style="color:white; font-size:1.5rem;">
-                        <!-- TODO: Replace "your-logo.png" with the path to your image file -->
                         <img src="Icon.svg" alt="Globify Logo">
                         <span>Globify</span>
                     </a>

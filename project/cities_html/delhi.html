@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* General Body Styles */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f8f9fa;
@@ -19,12 +18,10 @@
 
         .container {
             max-width: 1200px;
-            /* Standardized width for all pages */
             margin: 0 auto;
             padding: 0 1rem;
         }
 
-        /* Header & Top Navigation */
         .header {
             background-color: white;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -55,7 +52,6 @@
             height: 2rem;
         }
 
-        /* Navigation Links & Buttons */
         .top-nav-links {
             display: flex;
             align-items: center;
@@ -86,11 +82,13 @@
 
         .btn-primary {
             background-color: #3b82f6;
-            color: white;
+            color: rgb(255, 255, 255) !important;
         }
 
         .btn-primary:hover {
-            background-color: #2563eb;
+            background-color: #ffffff;
+            color: #002fb0 !important;
+            border-color: #002fb0;
         }
 
         .btn-secondary {
@@ -102,10 +100,8 @@
             background-color: #f3f4f6;
         }
 
-        /* User Profile Display */
         .user-profile {
             display: none;
-            /* Hidden by default */
             align-items: center;
             gap: 0.75rem;
         }
@@ -131,7 +127,6 @@
             display: none !important;
         }
 
-        /* MODIFIED: Hero Section */
         .location-hero {
             height: 50vh;
             background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('Delhi_images/Hero\ background.png');
@@ -140,14 +135,12 @@
             background-repeat: no-repeat;
         }
 
-        /* Main Content wrapper */
         .main-content {
             background-color: #f8f9fa;
             position: relative;
             z-index: 2;
         }
 
-        /* Delhi Title Card */
         .delhi-title-card {
             background: white;
             padding: 1.5rem 2rem;
@@ -158,11 +151,9 @@
             font-weight: bold;
             color: #1f2937;
             margin-top: -3rem;
-            /* Pulls the card up over the hero image */
             margin-bottom: 2.5rem;
         }
 
-        /* Attractions Grid */
         .attractions-grid {
             display: grid;
             grid-template-columns: repeat(1, 1fr);
@@ -247,7 +238,6 @@
             cursor: pointer;
         }
 
-        /* Footer */
         .footer {
             background-color: #1f2937;
             color: #9ca3af;
@@ -330,7 +320,6 @@
 
 <body>
 
-    <!-- MODIFIED STRUCTURE: Hero is now full-width -->
     <header class="header">
         <div class="container">
             <div class="top-nav">
@@ -356,14 +345,12 @@
 
     <div class="location-hero"></div>
 
-    <!-- Main content is in a separate div -->
     <main class="main-content">
         <div class="container">
 
             <div class="delhi-title-card">Delhi</div>
 
             <div class="attractions-grid">
-                <!-- Attraction Cards -->
                 <div class="attraction-card">
                     <div class="attraction-header">
                         <div class="text-content">

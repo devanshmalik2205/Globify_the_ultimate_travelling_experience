@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Red Fort (Lal Qila)",
+    "description": "UNESCO World Heritage site symbolizing Mughal grandeur.",
+    "image": "Delhi_images/red-fort-delhi-attr-hero.jpeg 2.png",
+    "googleMapsUrl": "https://www.google.com/maps/place/Red+Fort/@28.6562,77.2410"
+  },
+  {
+    "name": "India Gate",
+    "description": "A national monument honoring soldiers, perfect for evening strolls.",
+    "image": "Delhi_images/red-fort-delhi-attr-hero.jpeg 3-1.png",
+    "googleMapsUrl": "https://www.google.com/maps/place/India+Gate/@28.6129,77.2295"
+  },
+  {
+    "name": "Lotus Temple",
+    "description": "Iconic Baha'i House of Worship shaped like a lotus flower.",
+    "image": "Delhi_images/red-fort-delhi-attr-hero.jpeg 3.png",
+    "googleMapsUrl": "https://www.google.com/maps/place/Lotus+Temple/@28.5535,77.2588"
+  },
+  {
+    "name": "Qutub Minar",
+    "description": "The world's tallest brick minaret with stunning carvings.",
+    "image": "Delhi_images/red-fort-delhi-attr-hero.jpeg 5.png",
+    "googleMapsUrl": "https://www.google.com/maps/place/Qutb+Minar/@28.5245,77.1855"
+  },
+  {
+    "name": "Chandni Chowk",
+    "description": "Famous for street food, spice markets, and traditional shopping.",
+    "image": "Delhi_images/red-fort-delhi-attr-hero.jpeg 4.png",
+    "googleMapsUrl": "https://www.google.com/maps/place/Chandni+Chowk/@28.6568,77.2292"
+  }
+]

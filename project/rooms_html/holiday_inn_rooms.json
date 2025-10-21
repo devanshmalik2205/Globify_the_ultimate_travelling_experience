@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Standard Queen Room",
+    "features": [
+      "1 Queen Bed",
+      "City View",
+      "Free cancellation before 24hrs"
+    ],
+    "price": "INR 12,000",
+    "priceSubtext": "/ night (+ taxes)"
+  },
+  {
+    "name": "Deluxe King Suite",
+    "features": [
+      "1 King Bed",
+      "Pool View",
+      "Breakfast included"
+    ],
+    "price": "INR 18,500",
+    "priceSubtext": "/ night (+ taxes)"
+  },
+  {
+    "name": "Executive Twin Room",
+    "features": [
+        "2 Twin Beds",
+        "Lounge Access",
+        "Airport shuttle included"
+    ],
+    "price": "INR 22,000",
+    "priceSubtext": "/ night (+ taxes)"
+  }
+]

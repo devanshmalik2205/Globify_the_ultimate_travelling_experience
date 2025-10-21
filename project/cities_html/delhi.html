@@ -129,7 +129,7 @@
 
         .location-hero {
             height: 50vh;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('Delhi_images/Hero\ background.png');
+            background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('Delhi_images/Hero background.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -323,21 +323,21 @@
     <header class="header">
         <div class="container">
             <div class="top-nav">
-                <a href="/project/index.html" class="logo">
-                    <img src="/project/Icon.svg" alt="Globify Logo">
+                <a href="../index.html" class="logo">
+                    <img src="../Icon.svg" alt="Globify Logo">
                     <span>Globify</span>
                 </a>
                 <nav class="top-nav-links">
                     <a href="#">List Your Property</a>
                     <div id="auth-links" style="display: flex; gap: 1rem; align-items: center;">
-                        <a href="/project/index.html#signInModal">Sign In</a>
-                        <a href="/project/index.html#registerModal" class="btn btn-primary">Register</a>
+                        <a href="../index.html#signInModal">Sign In</a>
+                        <a href="../index.html#registerModal" class="btn btn-primary">Register</a>
                     </div>
                     <div id="user-profile" class="user-profile">
                         <div id="user-icon" class="user-profile-icon"></div>
                         <span id="user-name" class="user-profile-name"></span>
                     </div>
-                    <a href="/project/About_Us.html" class="btn btn-secondary">About Us</a>
+                    <a href="../About_Us.html" class="btn btn-secondary">About Us</a>
                 </nav>
             </div>
         </div>
@@ -350,75 +350,8 @@
 
             <div class="delhi-title-card">Delhi</div>
 
-            <div class="attractions-grid">
-                <div class="attraction-card">
-                    <div class="attraction-header">
-                        <div class="text-content">
-                            <h3>Red Fort (Lal Qila)</h3>
-                            <p>UNESCO World Heritage site symbolizing Mughal grandeur.</p>
-                        </div>
-                        <img src="Delhi_images/red-fort-delhi-attr-hero.jpeg 2.png" alt="Red Fort">
-                    </div>
-                    <a href="https://tinyurl.com/25pwkmtz" class="google-link">
-                        <img src="https://www.google.com/s2/favicons?domain=google.com&sz=64" alt="Google icon">
-                        <span>Google</span>
-                    </a>
-                </div>
-                <div class="attraction-card">
-                    <div class="attraction-header">
-                        <div class="text-content">
-                            <h3>India Gate</h3>
-                            <p>A national monument honoring soldiers, perfect for evening strolls.</p>
-                        </div>
-                        <img src="Delhi_images/red-fort-delhi-attr-hero.jpeg 3-1.png" alt="India Gate">
-                    </div>
-                    <a href="https://tinyurl.com/249t4d3p" class="google-link">
-                        <img src="https://www.google.com/s2/favicons?domain=google.com&sz=64" alt="Google icon">
-                        <span>Google</span>
-                    </a>
-                </div>
-                <div class="attraction-card">
-                    <div class="attraction-header">
-                        <div class="text-content">
-                            <h3>Lotus Temple</h3>
-                            <p>Iconic Baha'i House of Worship shaped like a lotus flower.</p>
-                        </div>
-                        <img src="Delhi_images/red-fort-delhi-attr-hero.jpeg 3.png" alt="Lotus Temple">
-                    </div>
-                    <a href="https://tinyurl.com/2aohn8kh" class="google-link">
-                        <img src="https://www.google.com/s2/favicons?domain=google.com&sz=64" alt="Google icon">
-                        <span>Google</span>
-                    </a>
-                </div>
-                <div class="attraction-card">
-                    <div class="attraction-header">
-                        <div class="text-content">
-                            <h3>Qutub Minar</h3>
-                            <p>The world's tallest brick minaret with stunning carvings.</p>
-                        </div>
-                        <img src="Delhi_images/red-fort-delhi-attr-hero.jpeg 5.png" alt="Qutub Minar">
-                    </div>
-                    <a href="https://tinyurl.com/2akpuaf9" class="google-link">
-                        <img src="https://www.google.com/s2/favicons?domain=google.com&sz=64" alt="Google icon">
-                        <span>Google</span>
-                    </a>
-                </div>
-                <div class="attraction-card">
-                    <div class="attraction-header">
-                        <div class="text-content">
-                            <h3>Chandni Chowk</h3>
-                            <p>Famous for street food, spice markets, and traditional shopping.</p>
-                        </div>
-                        <img src="Delhi_images/red-fort-delhi-attr-hero.jpeg 4.png" alt="Chandni Chowk">
-                    </div>
-                    <a href="https://tinyurl.com/2ccr27tu" class="google-link">
-                        <img src="https://www.google.com/s2/favicons?domain=google.com&sz=64" alt="Google icon">
-                        <span>Google</span>
-                    </a>
-                </div>
-                <div class="attraction-card view-more-card">
-                    <span>View More</span>
-                </div>
+            <div id="attractionsGrid" class="attractions-grid">
+                <!-- Attraction cards will be dynamically inserted here -->
             </div>
         </div>
     </main>
@@ -475,6 +408,61 @@
         </div>
     </footer>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const attractionsGrid = document.getElementById('attractionsGrid');
+
+            // Function to create an attraction card's HTML
+            const createAttractionCard = (attraction) => {
+                return `
+                    <div class="attraction-card">
+                        <div class="attraction-header">
+                            <div class="text-content">
+                                <h3>${attraction.name}</h3>
+                                <p>${attraction.description}</p>
+                            </div>
+                            <img src="${attraction.image}" alt="${attraction.name}">
+                        </div>
+                        <a href="${attraction.googleMapsUrl}" class="google-link" target="_blank" rel="noopener noreferrer">
+                            <img src="https://www.google.com/s2/favicons?domain=google.com&sz=64" alt="Google icon">
+                            <span>View on Google Maps</span>
+                        </a>
+                    </div>
+                `;
+            };
+            
+            // Function to create the "View More" card
+            const createViewMoreCard = () => {
+                 return `
+                    <div class="attraction-card view-more-card">
+                        <span>View More</span>
+                    </div>
+                `;
+            }
+
+            // Fetch attraction data from JSON file
+            fetch('delhi_attractions.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(attractions => {
+                    let attractionsHTML = '';
+                    attractions.forEach(attraction => {
+                        attractionsHTML += createAttractionCard(attraction);
+                    });
+                    // Add the "View More" card at the end
+                    attractionsHTML += createViewMoreCard();
+                    attractionsGrid.innerHTML = attractionsHTML;
+                })
+                .catch(error => {
+                    console.error('Error fetching attractions:', error);
+                    attractionsGrid.innerHTML = '<p>Could not load attractions. Please try again later.</p>';
+                });
+        });
+    </script>
 </body>
 
 </html>

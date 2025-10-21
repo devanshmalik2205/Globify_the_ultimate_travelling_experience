@@ -360,21 +360,21 @@
     <header class="header">
         <div class="container">
             <div class="top-nav">
-                <a href="/project/index.html" class="logo">
-                    <img src="/project/Icon.svg" alt="Globify Logo">
+                <a href="../index.html" class="logo">
+                    <img src="../Icon.svg" alt="Globify Logo">
                     <span>Globify</span>
                 </a>
                 <nav class="top-nav-links">
                     <a href="#">List Your Property</a>
                     <div id="auth-links" style="display: flex; gap: 1rem; align-items: center;">
-                        <a href="/project/index.html#signInModal">Sign In</a>
-                        <a href="/project/index.html#registerModal" class="btn btn-primary">Register</a>
+                        <a href="../index.html#signInModal">Sign In</a>
+                        <a href="../index.html#registerModal" class="btn btn-primary">Register</a>
                     </div>
                     <div id="user-profile" class="user-profile">
                         <div id="user-icon" class="user-profile-icon"></div>
                         <span id="user-name" class="user-profile-name"></span>
                     </div>
-                    <a href="/project/About_Us.html" class="btn btn-secondary">About Us</a>
+                    <a href="../About_Us.html" class="btn btn-secondary">About Us</a>
                 </nav>
             </div>
         </div>
@@ -415,37 +415,8 @@
 
             <section class="section">
                 <h2 class="section-title">Available Rooms</h2>
-                <div class="room-options">
-                    <div class="room-card">
-                        <div class="room-details">
-                            <h3>Standard Queen Room</h3>
-                            <ul class="room-features">
-                                <li>• 1 Queen Bed</li>
-                                <li>• City View</li>
-                                <li>• Free cancellation before 24hrs</li>
-                            </ul>
-                        </div>
-                        <div class="room-pricing">
-                            <p class="price">INR 12,000</p>
-                            <p class="price-subtext">/ night (+ taxes)</p>
-                            <button class="book-now-btn">Book Now</button>
-                        </div>
-                    </div>
-                    <div class="room-card">
-                        <div class="room-details">
-                            <h3>Deluxe King Suite</h3>
-                            <ul class="room-features">
-                                <li>• 1 King Bed</li>
-                                <li>• Pool View</li>
-                                <li>• Breakfast included</li>
-                            </ul>
-                        </div>
-                        <div class="room-pricing">
-                            <p class="price">INR 18,500</p>
-                            <p class="price-subtext">/ night (+ taxes)</p>
-                            <button class="book-now-btn">Book Now</button>
-                        </div>
-                    </div>
+                <div id="roomOptions" class="room-options">
+                    <!-- Room cards will be dynamically inserted here -->
                 </div>
             </section>
         </div>
@@ -466,7 +437,7 @@
                 <div>
                     <h4>Company</h4>
                     <ul class="footer-links">
-                        <li><a href="/project/About_Us.html">About Us</a></li>
+                        <li><a href="../About_Us.html">About Us</a></li>
                         <li><a href="#">Careers</a></li>
                     </ul>
                 </div>
@@ -485,6 +456,53 @@
         </div>
     </footer>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const roomOptionsContainer = document.getElementById('roomOptions');
+
+            // Function to create a room card's HTML
+            const createRoomCard = (room) => {
+                // Create list items for features
+                const featuresList = room.features.map(feature => `<li>• ${feature}</li>`).join('');
+
+                return `
+                    <div class="room-card">
+                        <div class="room-details">
+                            <h3>${room.name}</h3>
+                            <ul class="room-features">
+                                ${featuresList}
+                            </ul>
+                        </div>
+                        <div class="room-pricing">
+                            <p class="price">${room.price}</p>
+                            <p class="price-subtext">${room.priceSubtext}</p>
+                            <button class="book-now-btn">Book Now</button>
+                        </div>
+                    </div>
+                `;
+            };
+
+            // Fetch room data from JSON file
+            fetch('holiday_inn_rooms.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(rooms => {
+                    let roomsHTML = '';
+                    rooms.forEach(room => {
+                        roomsHTML += createRoomCard(room);
+                    });
+                    roomOptionsContainer.innerHTML = roomsHTML;
+                })
+                .catch(error => {
+                    console.error('Error fetching room data:', error);
+                    roomOptionsContainer.innerHTML = '<p>Could not load available rooms. Please try again later.</p>';
+                });
+        });
+    </script>
 </body>
 
 </html>

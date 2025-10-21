@@ -345,38 +345,41 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const locationsContainer = document.getElementById('locationsContainer');
-            const locationsScrollLeft = document.getElementById('locationsScrollLeft');
-            const locationsScrollRight = document.getElementById('locationsScrollRight');
 
-            if (locationsContainer && locationsScrollLeft && locationsScrollRight) {
-                locationsScrollRight.addEventListener('click', () => {
-                    const scrollAmount = locationsContainer.querySelector('.location-card').offsetWidth + 24;
-                    locationsContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-                });
+            // --- OOP Implementation for Sliders ---
+            class Slider {
+                constructor(containerId, scrollLeftId, scrollRightId, cardSelector) {
+                    this.container = document.getElementById(containerId);
+                    this.scrollLeftBtn = document.getElementById(scrollLeftId);
+                    this.scrollRightBtn = document.getElementById(scrollRightId);
+                    this.cardSelector = cardSelector;
 
-                locationsScrollLeft.addEventListener('click', () => {
-                    const scrollAmount = locationsContainer.querySelector('.location-card').offsetWidth + 24;
-                    locationsContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-                });
+                    if (this.container && this.scrollLeftBtn && this.scrollRightBtn) {
+                        this.init();
+                    }
+                }
+
+                init() {
+                    this.scrollRightBtn.addEventListener('click', () => this.scroll('right'));
+                    this.scrollLeftBtn.addEventListener('click', () => this.scroll('left'));
+                }
+
+                scroll(direction) {
+                    const card = this.container.querySelector(this.cardSelector);
+                    if (card) {
+                        // The scroll amount is the width of a card plus the gap between cards.
+                        const scrollAmount = card.offsetWidth + 24;
+                        const scrollValue = direction === 'right' ? scrollAmount : -scrollAmount;
+                        this.container.scrollBy({ left: scrollValue, behavior: 'smooth' });
+                    }
+                }
             }
 
-            const homesContainer = document.getElementById('homesContainer');
-            const homesScrollLeft = document.getElementById('homesScrollLeft');
-            const homesScrollRight = document.getElementById('homesScrollRight');
-
-            if (homesContainer && homesScrollLeft && homesScrollRight) {
-                homesScrollRight.addEventListener('click', () => {
-                    const scrollAmount = homesContainer.querySelector('.hotel-card').offsetWidth + 24;
-                    homesContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-                });
-
-                homesScrollLeft.addEventListener('click', () => {
-                    const scrollAmount = homesContainer.querySelector('.hotel-card').offsetWidth + 24;
-                    homesContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-                });
-            }
-
+            // Instantiate sliders using the Slider class
+            new Slider('locationsContainer', 'locationsScrollLeft', 'locationsScrollRight', '.location-card');
+            new Slider('homesContainer', 'homesScrollLeft', 'homesScrollRight', '.hotel-card');
+            
+            // --- Authentication Logic ---
             const signInForm = document.getElementById('signInForm');
             const registerForm = document.getElementById('registerForm');
 
@@ -390,22 +393,28 @@
                 userNameEl.textContent = name;
                 userIconEl.textContent = name.charAt(0).toUpperCase();
 
-                authLinks.classList.add('hidden');
+                authLinks.style.display = 'none';
                 userProfile.style.display = 'flex';
 
+                // Close the modal by navigating to the page's root hash
                 window.location.hash = '#';
             };
 
-            signInForm.addEventListener('submit', function (event) {
-                event.preventDefault();
-                handleLogin('User');
-            });
+            if (signInForm) {
+                signInForm.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    // In a real app, you would validate credentials here
+                    handleLogin('User');
+                });
+            }
 
-            registerForm.addEventListener('submit', function (event) {
-                event.preventDefault();
-                const userName = registerNameInput.value.trim() || 'User';
-                handleLogin(userName);
-            });
+            if (registerForm) {
+                registerForm.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    const userName = registerNameInput.value.trim() || 'User';
+                    handleLogin(userName);
+                });
+            }
         });
     </script>
 </body>

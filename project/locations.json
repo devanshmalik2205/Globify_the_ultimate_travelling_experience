@@ -1,0 +1,27 @@
+[
+  {
+    "link": "cities_html/delhi.html",
+    "image": "city_images/Delhi.png",
+    "title": "Delhi"
+  },
+  {
+    "link": "#",
+    "image": "city_images/Manali.png",
+    "title": "Manali"
+  },
+  {
+    "link": "#",
+    "image": "city_images/Jaipur.png",
+    "title": "Jaipur"
+  },
+  {
+    "link": "#",
+    "image": "city_images/Mumbai.png",
+    "title": "Mumbai"
+  },
+  {
+    "link": "#",
+    "image": "city_images/Goa.png",
+    "title": "Goa"
+  }
+]

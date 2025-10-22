@@ -1,0 +1,34 @@
+[
+  {
+    "link": "rooms_html/holiday_inn.html",
+    "image": "homes_images/Holiday Inn.png",
+    "rating": "9.1",
+    "title": "Holiday Inn New Delhi",
+    "subtitle": "Mayur Vihar",
+    "price": "INR 12,000"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/The Imperial.png",
+    "rating": "9.5",
+    "title": "The Imperial, New Delhi",
+    "subtitle": "Connaught Place",
+    "price": "INR 21,599"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/The Leela.png",
+    "rating": "9.4",
+    "title": "The Leela Palace New Delhi",
+    "subtitle": "Chanakyapuri",
+    "price": "INR 28,500"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/Maidens Hotel.png",
+    "rating": "9.3",
+    "title": "Maidens Hotel New Delhi",
+    "subtitle": "Civil Lines",
+    "price": "INR 12,000"
+  }
+]

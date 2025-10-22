@@ -149,7 +149,7 @@ body {
 
 .hero-section {
     padding: 5rem 0;
-    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('Hero\ background.svg') no-repeat center center/cover;
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('Hero background.svg') no-repeat center center/cover;
 }
 
 .booking-form-container {
@@ -235,7 +235,7 @@ body {
 
 .slider-container {
     display: flex;
-    gap: 1.5rem;
+    gap: 1.5rem; /* 24px */
     overflow-x: auto;
     padding-bottom: 1rem;
     scroll-behavior: smooth;
@@ -396,6 +396,61 @@ body {
 .details-btn:hover {
     background-color: #dbeafe;
 }
+
+/* --- NEW STYLES FOR VIEW MORE CARD --- */
+.view-more-card-link {
+    text-decoration: none;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    display: flex; /* Ensures the link stretches to the height of the card */
+}
+
+.view-more-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    background-color: #f0f9ff;
+    border: 1px solid #dbeafe;
+    color: #2563eb;
+    font-weight: 600;
+    font-size: 1.125rem;
+    transition: all 0.3s ease;
+    padding: 1rem;
+    box-sizing: border-box; /* Ensures padding doesn't break fixed width/height */
+}
+
+.view-more-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    background-color: #e0f2fe;
+    color: #1d4ed8;
+}
+
+.view-more-card span {
+    font-size: 2rem; /* Arrow icon */
+    margin-bottom: 0.5rem;
+    line-height: 1;
+}
+
+.view-more-card p {
+    margin: 0;
+}
+
+/* Specific sizing to match the other cards in the slider */
+.view-more-card.location-card-size {
+     width: 240px;
+     height: 288px; /* Match location-card image container height */
+}
+
+.view-more-card.hotel-card-size {
+    width: 320px;
+    min-height: 338px; /* Match calculated hotel-card height */
+}
+/* --- END OF NEW STYLES --- */
+
 
 .download-banner {
     background-color: #3b82f6;

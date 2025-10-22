@@ -65,6 +65,7 @@
     </header>
 
     <main>
+        <!-- Hero and Booking Form (Static) -->
         <section class="hero-section">
             <div class="container">
                 <div class="booking-form-container">
@@ -105,40 +106,16 @@
             </div>
         </section>
 
+        <!-- Dynamic Locations Section -->
         <section class="section">
             <div class="container">
                 <h2 class="section-title">Explore 1000+ Famous Locations with us!</h2>
                 <p class="section-subtitle">Discover the most in-demand locations at the lowest prices available and get
                     the best customer experience.</p>
                 <div class="slider-wrapper">
+                    <!-- Locations will be injected here by JS -->
                     <div id="locationsContainer" class="slider-container">
-                        <a href="cities_html/delhi.html">
-                            <div class="location-card">
-                                <div class="card-img-container"><img src="city_images/Delhi.png" alt="Delhi"
-                                        class="card-img"></div>
-                                <h3 class="card-title">Delhi</h3>
-                            </div>
-                        </a>
-                        <div class="location-card">
-                            <div class="card-img-container"><img src="city_images/Manali.png" alt="Manali"
-                                    class="card-img"></div>
-                            <h3 class="card-title">Manali</h3>
-                        </div>
-                        <div class="location-card">
-                            <div class="card-img-container"><img src="city_images/Jaipur.png" alt="Jaipur"
-                                    class="card-img"></div>
-                            <h3 class="card-title">Jaipur</h3>
-                        </div>
-                        <div class="location-card">
-                            <div class="card-img-container"><img src="city_images/Mumbai.png" alt="Mumbai"
-                                    class="card-img"></div>
-                            <h3 class="card-title">Mumbai</h3>
-                        </div>
-                        <div class="location-card">
-                            <div class="card-img-container"><img src="city_images/Goa.png" alt="Goa" class="card-img">
-                            </div>
-                            <h3 class="card-title">Goa</h3>
-                        </div>
+                        <!-- Loading... -->
                     </div>
                     <button id="locationsScrollLeft" class="scroll-btn left">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -155,53 +132,15 @@
                 </div>
             </div>
         </section>
+        
+        <!-- Dynamic Homes Section -->
         <section class="section" style="background-color:#f9fafb;">
             <div class="container">
                 <h2 class="section-title">Featured Homes Recommended for you</h2>
                 <div class="slider-wrapper">
+                    <!-- Homes will be injected here by JS -->
                     <div id="homesContainer" class="slider-container">
-                        <a href="rooms_html/holiday_inn.html" class="link_rooms">
-                            <div class="hotel-card">
-                                <div class="card-img-container"><img src="homes_images/Holiday Inn.png"
-                                        alt="Holiday Inn" class="card-img"><span class="rating-badge">9.1</span></div>
-                                <div class="card-content">
-                                    <h3 class="card-title-main">Holiday Inn New Delhi</h3>
-                                    <p class="card-subtitle">Mayur Vihar</p>
-                                    <p class="price">INR 12,000 <span class="price-subtext">/ night</span></p><button
-                                        class="details-btn">View Details</button>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="hotel-card">
-                            <div class="card-img-container"><img src="homes_images/The Imperial.png" alt="The Imperial"
-                                    class="card-img"><span class="rating-badge">9.5</span></div>
-                            <div class="card-content">
-                                <h3 class="card-title-main">The Imperial, New Delhi</h3>
-                                <p class="card-subtitle">Connaught Place</p>
-                                <p class="price">INR 21,599 <span class="price-subtext">/ night</span></p><button
-                                    class="details-btn">View Details</button>
-                            </div>
-                        </div>
-                        <div class="hotel-card">
-                            <div class="card-img-container"><img src="homes_images/The Leela.png" alt="The Leela"
-                                    class="card-img"><span class="rating-badge">9.4</span></div>
-                            <div class="card-content">
-                                <h3 class="card-title-main">The Leela Palace New Delhi</h3>
-                                <p class="card-subtitle">Chanakyapuri</p>
-                                <p class="price">INR 28,500 <span class="price-subtext">/ night</span></p><button
-                                    class="details-btn">View Details</button>
-                            </div>
-                        </div>
-                        <div class="hotel-card">
-                            <div class="card-img-container"><img src="homes_images/Maidens Hotel.png"
-                                    alt="Maidens Hotel" class="card-img"><span class="rating-badge">9.3</span></div>
-                            <div class="card-content">
-                                <h3 class="card-title-main">Maidens Hotel New Delhi</h3>
-                                <p class="card-subtitle">Civil Lines</p>
-                                <p class="price">INR 12,000 <span class="price-subtext">/ night</span></p><button
-                                    class="details-btn">View Details</button>
-                            </div>
-                        </div>
+                        <!-- Loading... -->
                     </div>
                     <button id="homesScrollLeft" class="scroll-btn left">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -218,6 +157,8 @@
                 </div>
             </div>
         </section>
+
+        <!-- Download Banner (Static) -->
         <section class="section">
             <div class="container">
                 <div class="download-banner">
@@ -233,43 +174,22 @@
                 </div>
             </div>
         </section>
+
+        <!-- Dynamic Testimonials Section -->
         <section class="section">
             <div class="container" style="text-align: center;">
                 <h2 class="section-title">What does Customers Say About us</h2>
                 <p class="section-subtitle" style="margin: 0.5rem auto;">We are rated 4.8/5 in Travelling and Business
                     Accommodation.</p>
-                <div class="testimonials-grid">
-                    <div class="testimonial-card">
-                        <div class="testimonial-quote-icon">“</div>
-                        <div class="testimonial-header">
-                            <h3>Rohit Sharma</h3>
-                            <div class="testimonial-stars">★★★★★</div>
-                        </div>
-                        <p>"Booking was effortless, and the price analytics feature helped me save around ₹4,000 on
-                            flights. Very smooth experience!"</p>
-                    </div>
-                    <div class="testimonial-card">
-                        <div class="testimonial-quote-icon">“</div>
-                        <div class="testimonial-header">
-                            <h3>Priya Mehta</h3>
-                            <div class="testimonial-stars">★★★★☆</div>
-                        </div>
-                        <p>"Planned my 7-day Europe trip in a jiffy! The itinerary planner suggested some local food
-                            tours that no other site showed. Loved it!"</p>
-                    </div>
-                    <div class="testimonial-card">
-                        <div class="testimonial-quote-icon">“</div>
-                        <div class="testimonial-header">
-                            <h3>Emily Parker</h3>
-                            <div class="testimonial-stars">★★★★☆</div>
-                        </div>
-                        <p>"Used for group travel. Split payments made cost-sharing super easy."</p>
-                    </div>
+                <!-- Testimonials will be injected here by JS -->
+                <div id="testimonialsGrid" class="testimonials-grid">
+                    <!-- Loading... -->
                 </div>
             </div>
         </section>
     </main>
 
+    <!-- Footer (Static) -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -291,7 +211,7 @@
                 <div>
                     <h4>Company</h4>
                     <ul class="footer-links">
-                        <li><a href="#">About Us</a></li>
+                        <li><a href="About_Us.html">About Us</a></li>
                         <li><a href="#">How it works</a></li>
                         <li><a href="#">Careers</a></li>
                         <li><a href="#">Contact</a></li>
@@ -310,6 +230,7 @@
         </div>
     </footer>
 
+    <!-- Modals (Static) -->
     <div id="signInModal" class="modal-overlay">
         <div class="modal-content">
             <a href="#" class="modal-close-btn">&times;</a>
@@ -365,20 +286,132 @@
                 }
 
                 scroll(direction) {
-                    const card = this.container.querySelector(this.cardSelector);
+                    // Selects the first card *or* the view more card
+                    const card = this.container.querySelector(this.cardSelector); 
                     if (card) {
-                        // The scroll amount is the width of a card plus the gap between cards.
-                        const scrollAmount = card.offsetWidth + 24;
+                        const scrollAmount = card.offsetWidth + 24; // 24px gap
                         const scrollValue = direction === 'right' ? scrollAmount : -scrollAmount;
                         this.container.scrollBy({ left: scrollValue, behavior: 'smooth' });
                     }
                 }
             }
 
-            // Instantiate sliders using the Slider class
-            new Slider('locationsContainer', 'locationsScrollLeft', 'locationsScrollRight', '.location-card');
-            new Slider('homesContainer', 'homesScrollLeft', 'homesScrollRight', '.hotel-card');
-            
+            // --- Dynamic Content Rendering Functions ---
+
+            // 1. Render Locations
+            const renderLocations = (locations) => {
+                const container = document.getElementById('locationsContainer');
+                if (!container) return;
+
+                // Map JSON data to location cards
+                let locationsHTML = locations.map(location => `
+                    <a href="${location.link}">
+                        <div class="location-card">
+                            <div class="card-img-container"><img src="${location.image}" alt="${location.title}" class="card-img"></div>
+                            <h3 class="card-title">${location.title}</h3>
+                        </div>
+                    </a>
+                `).join('');
+
+                // Add the "View More" card at the end
+                locationsHTML += `
+                    <a href="all_locations.html" class="view-more-card-link"> 
+                        <div class="view-more-card location-card-size">
+                            <span aria-hidden="true">→</span>
+                            <p>View More</p>
+                        </div>
+                    </a>
+                `;
+                
+                container.innerHTML = locationsHTML;
+                // Initialize the slider *after* content is loaded
+                new Slider('locationsContainer', 'locationsScrollLeft', 'locationsScrollRight', '.location-card, .view-more-card-link');
+            };
+
+            // 2. Render Homes
+            const renderHomes = (homes) => {
+                const container = document.getElementById('homesContainer');
+                if (!container) return;
+
+                // Map JSON data to hotel cards
+                let homesHTML = homes.map(home => `
+                    <a href="${home.link}" class="link_rooms">
+                        <div class="hotel-card">
+                            <div class="card-img-container">
+                                <img src="${home.image}" alt="${home.title}" class="card-img">
+                                <span class="rating-badge">${home.rating}</span>
+                            </div>
+                            <div class="card-content">
+                                <h3 class="card-title-main">${home.title}</h3>
+                                <p class="card-subtitle">${home.subtitle}</p>
+                                <p class="price">${home.price} <span class="price-subtext">/ night</span></p>
+                                <button class="details-btn">View Details</button>
+                            </div>
+                        </div>
+                    </a>
+                `).join('');
+
+                // Add the "View More" card at the end
+                homesHTML += `
+                    <a href="all_homes.html" class="view-more-card-link">
+                        <div class="view-more-card hotel-card-size">
+                            <span aria-hidden="true">→</span>
+                            <p>View More</p>
+                        </div>
+                    </a>
+                `;
+
+                container.innerHTML = homesHTML;
+                // Initialize the slider *after* content is loaded
+                new Slider('homesContainer', 'homesScrollLeft', 'homesScrollRight', '.link_rooms, .view-more-card-link');
+            };
+
+            // 3. Render Testimonials
+            const renderTestimonials = (testimonials) => {
+                const grid = document.getElementById('testimonialsGrid');
+                if (!grid) return;
+                grid.innerHTML = testimonials.map(testimonial => `
+                    <div class="testimonial-card">
+                        <div class="testimonial-quote-icon">“</div>
+                        <div class="testimonial-header">
+                            <h3>${testimonial.name}</h3>
+                            <div class="testimonial-stars">${testimonial.ratingStars}</div>
+                        </div>
+                        <p>"${testimonial.quote}"</p>
+                    </div>
+                `).join('');
+            };
+
+            // --- Fetch Data and Render ---
+
+            // Fetch locations
+            fetch('locations.json')
+                .then(response => response.json())
+                .then(renderLocations)
+                .catch(error => {
+                    console.error('Error fetching locations:', error);
+                    document.getElementById('locationsContainer').innerHTML = "<p>Could not load locations.</p>";
+                });
+
+            // Fetch homes
+            fetch('homes.json')
+                .then(response => response.json())
+                .then(renderHomes)
+                .catch(error => {
+                    console.error('Error fetching homes:', error);
+                    document.getElementById('homesContainer').innerHTML = "<p>Could not load homes.</p>";
+                });
+
+            // Fetch testimonials
+            fetch('testimonials.json')
+                .then(response => response.json())
+                .then(renderTestimonials)
+                .catch(error => {
+                    console.error('Error fetching testimonials:', error);
+                    document.getElementById('testimonialsGrid').innerHTML = "<p>Could not load testimonials.</p>";
+                });
+
+
             // --- Authentication Logic ---
             const signInForm = document.getElementById('signInForm');
             const registerForm = document.getElementById('registerForm');
@@ -393,17 +426,15 @@
                 userNameEl.textContent = name;
                 userIconEl.textContent = name.charAt(0).toUpperCase();
 
-                authLinks.style.display = 'none';
+                authLinks.style.display = 'none'; // Use style.display
                 userProfile.style.display = 'flex';
 
-                // Close the modal by navigating to the page's root hash
                 window.location.hash = '#';
             };
 
             if (signInForm) {
                 signInForm.addEventListener('submit', function (event) {
                     event.preventDefault();
-                    // In a real app, you would validate credentials here
                     handleLogin('User');
                 });
             }

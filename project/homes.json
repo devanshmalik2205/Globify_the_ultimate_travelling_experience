@@ -1,7 +1,7 @@
 [
   {
     "link": "rooms_html/holiday_inn.html",
-    "image": "homes_images/Holiday Inn.png",
+    "image": "https://digital.ihg.com/is/image/ihg/holiday-inn-new-delhi-3492356108-4x3",
     "rating": "9.1",
     "title": "Holiday Inn New Delhi",
     "subtitle": "Mayur Vihar",
@@ -9,7 +9,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/The Imperial.png",
+    "image": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/23/0c/28/d6/exterior.jpg?w=900&h=500&s=1",
     "rating": "9.5",
     "title": "The Imperial, New Delhi",
     "subtitle": "Connaught Place",
@@ -17,7 +17,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/The Leela.png",
+    "image": "https://www.theleela.com/prod/content/assets/aio-banner/dekstop/The-Leela-Palace-New-Delhi-FAQ.jpg?VersionId=fRNi5Ik7t0UGo6cA8otxHBZFCFDAnsHH",
     "rating": "9.4",
     "title": "The Leela Palace New Delhi",
     "subtitle": "Chanakyapuri",
@@ -25,7 +25,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/Maidens Hotel.png",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/242842460.jpg?k=4a8500223181f850b9387bfe7628eb44aa3c5039dcab5657de92294138a7a1c5&o=&hp=1",
     "rating": "9.3",
     "title": "Maidens Hotel New Delhi",
     "subtitle": "Civil Lines",
@@ -33,7 +33,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/Taj Mahal Palace.png",
+    "image": "https://lh3.googleusercontent.com/p/AF1QipMK1ySAtAw-z_kv8wBwEXvLg9wMPbv9dV4SdB4O=s1360-w1360-h1020-rw",
     "rating": "9.8",
     "title": "The Taj Mahal Palace",
     "subtitle": "Colaba, Mumbai",
@@ -41,7 +41,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/Oberoi Grand.png",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/32092064.jpg?k=dd24bc3c456f4e487e5841a7beb32c25bb11b7ae676b0ddb566423682675bf0e&o=&hp=1",
     "rating": "9.5",
     "title": "The Oberoi Grand",
     "subtitle": "Esplanade, Kolkata",
@@ -49,7 +49,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/ITC Windsor.png",
+    "image": "https://www.itchotels.com/content/dam/itchotels/in/umbrella/itc/hotels-listing/hotels-listing-card/itc-windsor.jpg",
     "rating": "9.4",
     "title": "ITC Windsor, a Luxury Collection Hotel",
     "subtitle": "Vasanth Nagar, Bengaluru",
@@ -57,7 +57,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/Rambagh Palace.png",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Rambagh_Palace_hotel_Jaipur_lobby_courtyard.jpg/1200px-Rambagh_Palace_hotel_Jaipur_lobby_courtyard.jpg",
     "rating": "9.9",
     "title": "Rambagh Palace",
     "subtitle": "Bhawani Singh Road, Jaipur",
@@ -65,7 +65,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/Taj Falaknuma.png",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/17181467.jpg?k=73b25a9cb3b5e18877cf578c8d146a1ba4ff213a6bf3801f4480a0337bac1b1f&o=&hp=1",
     "rating": "9.7",
     "title": "Taj Falaknuma Palace",
     "subtitle": "Engine Bowli, Hyderabad",
@@ -73,7 +73,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/Armani Hotel.png",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/52480552.jpg?k=8f26fc562584e8f55dd7d23d684a8ba1491473760b5e83d75a22b98c4c6591a1&o=&hp=1",
     "rating": "9.6",
     "title": "Armani Hotel Dubai",
     "subtitle": "Burj Khalifa, Dubai",
@@ -81,7 +81,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/Savoy London.png",
+    "image": "https://dq5r178u4t83b.cloudfront.net/wp-content/uploads/sites/86/2020/09/08103037/reopening-post-min.jpg",
     "rating": "9.8",
     "title": "The Savoy",
     "subtitle": "Strand, London",
@@ -89,7 +89,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/Plaza New York.png",
+    "image": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/08/02/03/76/the-plaza-hotel.jpg?w=900&h=500&s=1",
     "rating": "9.5",
     "title": "The Plaza",
     "subtitle": "Fifth Avenue, New York",
@@ -97,7 +97,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/Ritz Paris.png",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/H%C3%B4tel_Ritz.jpg/330px-H%C3%B4tel_Ritz.jpg",
     "rating": "9.7",
     "title": "Ritz Paris",
     "subtitle": "Place Vendôme, Paris",
@@ -105,7 +105,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/Marina Bay Sands.png",
+    "image": "https://www.marinabaysands.com/content/dam/marinabaysands/more/more-masthead-desktop-1920x1080.jpg",
     "rating": "9.4",
     "title": "Marina Bay Sands",
     "subtitle": "Bayfront Avenue, Singapore",
@@ -113,7 +113,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/Burj Al Arab.png",
+    "image": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2c/18/e7/95/aerial-shot.jpg?w=900&h=-1&s=1",
     "rating": "9.9",
     "title": "Burj Al Arab Jumeirah",
     "subtitle": "Umm Suqeim 3, Dubai",
@@ -121,7 +121,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/Four Seasons Kyoto.png",
+    "image": "https://media-cdn.tripadvisor.com/media/photo-s/30/02/9e/0a/pond-garden.jpg",
     "rating": "9.6",
     "title": "Four Seasons Hotel Kyoto",
     "subtitle": "Higashiyama-ku, Kyoto",
@@ -129,7 +129,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/Leela Palace Udaipur.png",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/696515346.jpg?k=57729efbeddc684215e9bd22107bacc77d477bba59cffaebf3fe128cc8cd5f35&o=&hp=1",
     "rating": "9.7",
     "title": "The Leela Palace Udaipur",
     "subtitle": "Lake Pichola, Udaipur",
@@ -137,7 +137,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/Taj Lake Palace.png",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/713031969.jpg?k=35bce585ebe5cff87dca1db2ec83ad536e258322179ecb3311551734bde042f3&o=&hp=1",
     "rating": "9.8",
     "title": "Taj Lake Palace",
     "subtitle": "Lake Pichola, Udaipur",
@@ -145,7 +145,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/Oberoi Amarvilas.png",
+    "image": "https://www.fivestaralliance.com/files/fivestaralliance.com/field/image/nodes/2019/28241/0%20The%20Oberoi%20Amarvilas%20-%20day.jpg",
     "rating": "9.9",
     "title": "The Oberoi Amarvilas",
     "subtitle": "Taj East Gate Road, Agra",
@@ -153,7 +153,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/St Regis Mumbai.png",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/655796367.jpg?k=da6057f8bcb731958ff8eac7219925de3fecfb44a41a56a851c95067749e13e9&o=&hp=1",
     "rating": "9.3",
     "title": "The St. Regis Mumbai",
     "subtitle": "Lower Parel, Mumbai",
@@ -161,7 +161,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/Hyatt Regency Delhi.png",
+    "image": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/17/c9/d8/8c/hotel-exterior.jpg?w=900&h=500&s=1",
     "rating": "9.0",
     "title": "Hyatt Regency Delhi",
     "subtitle": "Bhikaji Cama Place, New Delhi",
@@ -169,7 +169,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/ITC Grand Chola.png",
+    "image": "https://www.itchotels.com/content/dam/itchotels/in/umbrella/itc/hotels/itcgrandchola-chennai/images/overview/headmast-desktop/pool-long-dusk.png",
     "rating": "9.2",
     "title": "ITC Grand Chola",
     "subtitle": "Guindy, Chennai",
@@ -177,7 +177,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/W Goa.png",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/467538050.jpg?k=fcfd722ea646444635f8a8f4f0d50a26cd9276cd2bf0b580ddac1bcaa9fe187c&o=&hp=1",
     "rating": "9.1",
     "title": "W Goa",
     "subtitle": "Vagator Beach, Goa",
@@ -185,7 +185,7 @@
   },
   {
     "link": "#",
-    "image": "homes_images/Peninsula Tokyo.png",
+    "image": "https://globalrecognitionawards.org/wp-content/uploads/2025/06/The-Peninsula-image-1.jpg",
     "rating": "9.6",
     "title": "The Peninsula Tokyo",
     "subtitle": "Yurakucho, Tokyo",

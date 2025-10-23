@@ -149,20 +149,33 @@ body {
 
 .hero-section {
     padding: 5rem 0;
-    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('Hero background.svg') no-repeat center center/cover;
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://www.shutterstock.com/image-photo/tranquil-closeup-calm-sea-water-600nw-2548535803.jpg') no-repeat center center/cover;
 }
 
-.booking-form-container {
+/* --- UPDATED STYLES FOR TABBED BOOKING FORM --- */
+.booking-form-panel {
+    display: none;
     background-color: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(4px);
     padding: 1.5rem;
-    border-radius: 1rem;
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    max-width: 1024px;
-    margin: auto;
+    border-radius: 1rem 1rem 0 0; /* Rounded top, flat bottom */
 }
 
-.booking-form {
+.booking-form-panel.active {
+    display: block;
+}
+
+/* Container for the widget */
+#booking-widget {
+    max-width: 1024px;
+    margin: auto;
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    /* The widget itself handles the shadow */
+}
+
+/* Renamed .booking-form to .booking-form-grid */
+.booking-form-grid {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: 1rem;
@@ -170,14 +183,102 @@ body {
 }
 
 @media (min-width: 1024px) {
-    .booking-form {
+    .booking-form-grid {
         grid-template-columns: 2fr auto 2fr 1.5fr 1.5fr 2fr;
     }
 }
 
-.form-field {
-    cursor: pointer;
+/* Placeholder for other forms */
+.booking-form-placeholder {
+    padding: 3rem 1rem;
+    text-align: center;
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: #4b5563;
 }
+
+/* Search Button */
+.search-btn-container {
+    background-color: #3b82f6;
+    padding: 1.25rem;
+    border-radius: 0 0 1rem 1rem; /* Rounded bottom */
+    display: flex;
+    justify-content: center;
+}
+
+.search-btn {
+    background-color: white;
+    color: #3b82f6;
+    border: none;
+    border-radius: 9999px; /* Pill shape */
+    padding: 0.75rem 3rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.search-btn:hover {
+    background-color: #f0f9ff;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+/* --- END OF TAB STYLES --- */
+
+
+.form-field {
+    /* cursor: pointer; */ /* Removed: now editable */
+    cursor: default;
+}
+
+/* NEW: Wrapper for positioning suggestions */
+.form-field-wrapper {
+    position: relative;
+}
+
+/* NEW: Styles for suggestions list */
+.suggestions-list {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 0.25rem;
+}
+
+.suggestion-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background-color: #f3f4f6;
+}
+
+.suggestion-item strong {
+    font-size: 1rem;
+    color: #1f2937;
+}
+
+.suggestion-item-details {
+    font-size: 0.75rem;
+    color: #6b7285;
+}
+/* --- END: Suggestion Styles --- */
+
 
 .form-field label {
     font-size: 0.75rem;
@@ -744,4 +845,167 @@ body {
 
 .auth-switch a:hover {
     text-decoration: underline;
+}
+
+/* Styles moved from index.html */
+.view-all-link-container {
+    margin-top: 1.5rem; /* 24px */
+    text-align: right;
+}
+
+.view-all-link {
+    /* --- New Button Styles --- */
+    background-color: #3b82f6;
+    color: white;
+    padding: 0.75rem 1.5rem; /* 12px 24px */
+    border-radius: 9999px; /* This creates the pill shape */
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    display: inline-block; /* Allows padding and shadow to apply correctly */
+    /* --- End New Button Styles --- */
+
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.view-all-link:hover {
+    background-color: #2563eb;
+    color: white; /* Ensure text stays white */
+    text-decoration: none; /* Remove underline on hover */
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+    transform: translateY(-2px); /* Adds a nice lift effect */
+}
+
+.view-all-link span { /* For the arrow */
+    margin-left: 0.25rem;
+    transition: transform 0.2s;
+    display: inline-block;
+}
+
+.view-all-link:hover span {
+    transform: translateX(4px); /* Keeps the arrow moving on hover */
+}
+
+/* --- NEW STYLES FOR BOOKING FORM --- */
+
+.form-field .main-text-input,
+.form-field .sub-text-input {
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    width: 100%;
+    box-sizing: border-box;
+    /* Ensure font is inherited */
+    font-family: 'Inter', sans-serif;
+}
+
+.form-field .main-text-input {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #1f2937;
+    /* Match original p.main-text */
+    margin-bottom: 2px;
+    /* Small gap */
+}
+
+.form-field .main-text-input:focus,
+.form-field .sub-text-input:focus,
+.form-field .select-input:focus {
+    outline: none;
+    /* Add a focus indicator */
+    border-bottom: 2px solid #3b82f6;
+    /* Move padding to inputs to avoid layout shift on focus */
+    padding-bottom: 2px; 
+}
+.form-field .main-text-input {
+    padding-bottom: 4px; /* Default padding to match focus */
+}
+.form-field .sub-text-input {
+    padding-bottom: 4px; /* Default padding to match focus */
+}
+
+.form-field .sub-text-input {
+    font-size: 0.75rem;
+    color: #6b7285;
+}
+
+/* Specifics for date input */
+.form-field .date-input {
+    position: relative;
+    color: #1f2937;
+    /* Default text color */
+}
+
+/* Style for return date input when empty */
+.form-field input[type="date"]#return-date {
+    color: #6b7285;
+    /* Default color */
+    font-size: 1rem;
+    font-weight: 500;
+    padding-top: 1.5rem;
+    min-height: calc(1.75rem + 2px);
+    /* Match height of main-text-input */
+    box-sizing: content-box;
+    /* To make padding-top work as expected */
+    line-height: 1.25;
+    /* Adjust vertical alignment */
+}
+
+.form-field input[type="date"]#return-date:focus,
+.form-field input[type="date"]#return-date:valid {
+    color: #1f2937;
+    /* Color when a date is selected */
+    font-size: 1.75rem;
+    /* Match other main-text */
+    font-weight: bold;
+    padding-top: 0;
+}
+
+
+/* Remove default date input appearance */
+.form-field input[type="date"]::-webkit-calendar-picker-indicator {
+    background: none;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+/* Style for travellers/class select */
+.form-field .select-input {
+    font-size: 0.75rem;
+    color: #6b7285;
+    appearance: none;
+    /* Remove default arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" fill-rule="evenodd"></path></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.25rem center;
+    background-size: 1.25em 1.25em;
+    padding-right: 1.5rem;
+    /* Space for arrow */
+}
+
+/* Style for travellers number input */
+.form-field input[type="number"].main-text-input {
+    font-size: 1.75rem;
+    /* Keep main text size */
+    margin-bottom: 0.25rem;
+}
+
+/* Hide number input arrows */
+.form-field input[type="number"]::-webkit-inner-spin-button,
+.form-field input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.form-field input[type="number"] {
+    -moz-appearance: textfield;
+    /* Firefox */
 }

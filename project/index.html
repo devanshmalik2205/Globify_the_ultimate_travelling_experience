@@ -38,26 +38,27 @@
                     <a href="About_Us.html" class="btn btn-secondary">About Us</a>
                 </nav>
             </div>
-            <nav class="main-nav">
-                <a href="#" class="nav-item active">
+            <!-- UPDATED MAIN NAV with data-tab attributes -->
+            <nav class="main-nav" id="main-nav-bar">
+                <a href="#" class="nav-item active" data-tab="flights-form">
                     <span>✈️</span><span>Flights</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" data-tab="hotels-form">
                     <span>🏨</span><span>Hotels & Stays</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" data-tab="holiday-packages-form">
                     <span>🏝️</span><span>Holiday Packages</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" data-tab="cabs-form">
                     <span>🚕</span><span>Cabs</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" data-tab="buses-form">
                     <span>🚌</span><span>Buses</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" data-tab="trains-form">
                     <span>🚂</span><span>Trains</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="#" class="nav-item" data-tab="attractions-form">
                     <span>🏛️</span><span>Attractions</span>
                 </a>
             </nav>
@@ -65,44 +66,122 @@
     </header>
 
     <main>
-        <!-- Hero and Booking Form (Static) -->
+        <!-- Hero and Booking Form (Now Tabbed) -->
         <section class="hero-section">
             <div class="container">
-                <div class="booking-form-container">
-                    <div class="booking-form">
-                        <div class="form-field">
-                            <label>From</label>
-                            <p class="main-text">Delhi</p>
-                            <p class="sub-text">DEL, Delhi Airport India</p>
-                        </div>
-                        <button class="swap-button">
-                            <svg style="width:1.25rem; height:1.25rem; color:#4b5563;" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
-                            </svg>
-                        </button>
-                        <div class="form-field">
-                            <label>To</label>
-                            <p class="main-text">Bengaluru</p>
-                            <p class="sub-text">BLR, Bengaluru Intl</p>
-                        </div>
-                        <div class="form-field">
-                            <label>Departure</label>
-                            <p class="main-text">15 Sep'25</p>
-                            <p class="sub-text">Monday</p>
-                        </div>
-                        <div class="form-field">
-                            <label>Return</label>
-                            <p class="sub-text" style="padding-top: 1.5rem; font-size: 1rem;">Tap to add</p>
-                        </div>
-                        <div class="form-field">
-                            <label>Travellers & Class</label>
-                            <p class="main-text">1 Traveller</p>
-                            <p class="sub-text">Economy</p>
+                <!-- NEW BOOKING WIDGET WRAPPER -->
+                <div id="booking-widget">
+                    <!-- Panel 1: Flights (Active by default) -->
+                    <div class="booking-form-panel active" id="flights-form">
+                        <div class="booking-form-grid">
+                            <!-- From -->
+                            <div class="form-field form-field-wrapper"> <!-- Added wrapper class -->
+                                <label for="from-input">From</label>
+                                <input type="text" id="from-input" class="main-text-input" value="Delhi"
+                                    placeholder="Enter city or airport" autocomplete="off"> <!-- Added autocomplete="off" -->
+                                <input type="text" id="from-subtext" class="sub-text-input"
+                                    value="DEL, Delhi Airport India" placeholder="Airport code" readonly> <!-- Added readonly -->
+                                <div id="from-suggestions" class="suggestions-list"></div> <!-- Suggestions box -->
+                            </div>
+
+                            <!-- Swap Button -->
+                            <button class="swap-button" id="swap-btn" type="button">
+                                <svg style="width:1.25rem; height:1.25rem; color:#4b5563;" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                                </svg>
+                            </button>
+
+                            <!-- To -->
+                            <div class="form-field form-field-wrapper"> <!-- Added wrapper class -->
+                                <label for="to-input">To</label>
+                                <input type="text" id="to-input" class="main-text-input" value="Bengaluru"
+                                    placeholder="Enter city or airport" autocomplete="off"> <!-- Added autocomplete="off" -->
+                                <input type="text" id="to-subtext" class="sub-text-input" value="BLR, Bengaluru Intl"
+                                    placeholder="Airport code" readonly> <!-- Added readonly -->
+                                <div id="to-suggestions" class="suggestions-list"></div> <!-- Suggestions box -->
+                            </div>
+
+                            <!-- Departure -->
+                            <div class="form-field">
+                                <label for="departure-date">Departure</label>
+                                <input type="date" id="departure-date" class="main-text-input date-input"
+                                    value="2025-09-15">
+                                <p id="departure-day" class="sub-text">Monday</p>
+                            </div>
+
+                            <!-- Return -->
+                            <div class="form-field">
+                                <label for="return-date">Return</label>
+                                <input type="date" id="return-date" class="main-text-input date-input">
+                                <p id="return-day" class="sub-text">&nbsp;</p>
+                            </div>
+
+                            <!-- Travellers & Class -->
+                            <div class="form-field">
+                                <label for="travellers-input">Travellers & Class</label>
+                                <input type="number" id="travellers-input" class="main-text-input" value="1" min="1"
+                                    step="1">
+                                <select id="class-select" class="sub-text-input select-input">
+                                    <option value="Economy" selected>Economy</option>
+                                    <option value="Premium Economy">Premium Economy</option>
+                                    <option value="Business">Business</option>
+                                    <option value="First">First</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
+                    <!-- END OF FLIGHTS PANEL -->
+
+                    <!-- Panel 2: Hotels -->
+                    <div class="booking-form-panel" id="hotels-form">
+                        <div class="booking-form-placeholder">
+                            🏨 Hotel & Stays booking form coming soon!
+                        </div>
+                    </div>
+
+                    <!-- Panel 3: Holiday Packages -->
+                    <div class="booking-form-panel" id="holiday-packages-form">
+                        <div class="booking-form-placeholder">
+                            🏝️ Holiday Packages booking form coming soon!
+                        </div>
+                    </div>
+
+                    <!-- Panel 4: Cabs -->
+                    <div class="booking-form-panel" id="cabs-form">
+                        <div class="booking-form-placeholder">
+                            🚕 Cabs booking form coming soon!
+                        </div>
+                    </div>
+
+                    <!-- Panel 5: Buses -->
+                    <div class="booking-form-panel" id="buses-form">
+                        <div class="booking-form-placeholder">
+                            🚌 Buses booking form coming soon!
+                        </div>
+                    </div>
+
+                    <!-- Panel 6: Trains -->
+                    <div class="booking-form-panel" id="trains-form">
+                        <div class="booking-form-placeholder">
+                            🚂 Trains booking form coming soon!
+                        </div>
+                    </div>
+
+                    <!-- Panel 7: Attractions -->
+                    <div class="booking-form-panel" id="attractions-form">
+                        <div class="booking-form-placeholder">
+                            🏛️ Attractions booking form coming soon!
+                        </div>
+                    </div>
+
+                    <!-- NEW SEARCH BUTTON -->
+                    <div class="search-btn-container">
+                        <button class="search-btn" type="button">SEARCH</button>
+                    </div>
                 </div>
+                <!-- END OF BOOKING WIDGET -->
             </div>
         </section>
 
@@ -130,6 +209,12 @@
                         </svg>
                     </button>
                 </div>
+                <!-- New View All Link -->
+                <div class="view-all-link-container">
+                    <a href="all_locations.html" class="view-all-link">
+                        Show Full Catalog <span>→</span>
+                    </a>
+                </div>
             </div>
         </section>
         
@@ -154,6 +239,12 @@
                             </path>
                         </svg>
                     </button>
+                </div>
+                <!-- New View All Link -->
+                <div class="view-all-link-container">
+                    <a href="all_homes.html" class="view-all-link">
+                        Show Full Catalog <span>→</span>
+                    </a>
                 </div>
             </div>
         </section>
@@ -267,6 +358,82 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
+            // --- NEW: Airport Autocomplete ---
+            let allAirports = [];
+            const fromInput = document.getElementById('from-input');
+            const fromSubtext = document.getElementById('from-subtext');
+            const fromSuggestions = document.getElementById('from-suggestions');
+            const toInput = document.getElementById('to-input');
+            const toSubtext = document.getElementById('to-subtext');
+            const toSuggestions = document.getElementById('to-suggestions');
+
+            // Fetch airport data
+            fetch('./airports.json')
+                .then(response => response.json())
+                .then(data => {
+                    allAirports = data;
+                })
+                .catch(error => console.error('Error fetching airports:', error));
+
+            // Renders suggestion list
+            const renderSuggestions = (inputEl, listEl, subtextEl) => {
+                const filterText = inputEl.value.toLowerCase();
+                listEl.innerHTML = '';
+
+                if (filterText.length < 1) {
+                    listEl.style.display = 'none';
+                    return;
+                }
+
+                const filteredAirports = allAirports.filter(airport => 
+                    airport.city.toLowerCase().includes(filterText) ||
+                    airport.code.toLowerCase().includes(filterText) ||
+                    airport.name.toLowerCase().includes(filterText)
+                ).slice(0, 5); // Limit to 5 suggestions
+
+                if (filteredAirports.length === 0) {
+                    listEl.style.display = 'none';
+                    return;
+                }
+
+                filteredAirports.forEach(airport => {
+                    const item = document.createElement('div');
+                    item.classList.add('suggestion-item');
+                    item.innerHTML = `
+                        <strong>${airport.city} (${airport.code})</strong>
+                        <div class="suggestion-item-details">${airport.name}</div>
+                    `;
+                    item.addEventListener('click', () => {
+                        inputEl.value = airport.city;
+                        subtextEl.value = `${airport.code}, ${airport.name}`;
+                        listEl.style.display = 'none';
+                    });
+                    listEl.appendChild(item);
+                });
+
+                listEl.style.display = 'block';
+            };
+
+            // Event listeners for inputs
+            if(fromInput && fromSuggestions && fromSubtext) {
+                fromInput.addEventListener('input', () => renderSuggestions(fromInput, fromSuggestions, fromSubtext));
+            }
+            if(toInput && toSuggestions && toSubtext) {
+                toInput.addEventListener('input', () => renderSuggestions(toInput, toSuggestions, toSubtext));
+            }
+
+            // Hide suggestions when clicking outside
+            document.addEventListener('click', (e) => {
+                if (fromSuggestions && !fromInput.contains(e.target) && !fromSuggestions.contains(e.target)) {
+                    fromSuggestions.style.display = 'none';
+                }
+                if (toSuggestions && !toInput.contains(e.target) && !toSuggestions.contains(e.target)) {
+                    toSuggestions.style.display = 'none';
+                }
+            });
+            // --- END: Airport Autocomplete ---
+
+
             // --- OOP Implementation for Sliders ---
             class Slider {
                 constructor(containerId, scrollLeftId, scrollRightId, cardSelector) {
@@ -303,8 +470,8 @@
                 const container = document.getElementById('locationsContainer');
                 if (!container) return;
 
-                // Map JSON data to location cards
-                let locationsHTML = locations.map(location => `
+                // --- MODIFICATION: Slice the array to get only the first 6 items ---
+                let locationsHTML = locations.slice(0, 6).map(location => `
                     <a href="${location.link}">
                         <div class="location-card">
                             <div class="card-img-container"><img src="${location.image}" alt="${location.title}" class="card-img"></div>
@@ -333,8 +500,8 @@
                 const container = document.getElementById('homesContainer');
                 if (!container) return;
 
-                // Map JSON data to hotel cards
-                let homesHTML = homes.map(home => `
+                // --- MODIFICATION: Slice the array to get only the first 6 items ---
+                let homesHTML = homes.slice(0, 6).map(home => `
                     <a href="${home.link}" class="link_rooms">
                         <div class="hotel-card">
                             <div class="card-img-container">
@@ -385,7 +552,7 @@
             // --- Fetch Data and Render ---
 
             // Fetch locations
-            fetch('locations.json')
+            fetch('./locations.json')
                 .then(response => response.json())
                 .then(renderLocations)
                 .catch(error => {
@@ -394,7 +561,7 @@
                 });
 
             // Fetch homes
-            fetch('homes.json')
+            fetch('./homes.json')
                 .then(response => response.json())
                 .then(renderHomes)
                 .catch(error => {
@@ -403,7 +570,7 @@
                 });
 
             // Fetch testimonials
-            fetch('testimonials.json')
+            fetch('./testimonials.json')
                 .then(response => response.json())
                 .then(renderTestimonials)
                 .catch(error => {
@@ -446,6 +613,94 @@
                     handleLogin(userName);
                 });
             }
+
+            // --- NEW: Booking Form Logic ---
+            const swapBtn = document.getElementById('swap-btn');
+            // const fromInput = document.getElementById('from-input'); // Already declared for autocomplete
+            // const fromSubtext = document.getElementById('from-subtext'); // Already declared for autocomplete
+            // const toInput = document.getElementById('to-input'); // Already declared for autocomplete
+            // const toSubtext = document.getElementById('to-subtext'); // Already declared for autocomplete
+
+            if (swapBtn) {
+                swapBtn.addEventListener('click', () => {
+                    // Swap main text
+                    const tempMain = fromInput.value;
+                    fromInput.value = toInput.value;
+                    toInput.value = tempMain;
+
+                    // Swap sub-text
+                    const tempSub = fromSubtext.value;
+                    fromSubtext.value = toSubtext.value;
+                    toSubtext.value = tempSub;
+                });
+            }
+
+            // Day of week updater
+            const departureDate = document.getElementById('departure-date');
+            const departureDay = document.getElementById('departure-day');
+            const returnDate = document.getElementById('return-date');
+            const returnDay = document.getElementById('return-day');
+
+            const getDayOfWeek = (dateString) => {
+                if (!dateString) return "&nbsp;"; // Return empty space if no date
+                const date = new Date(dateString + 'T00:00:00'); // Add time to avoid timezone issues
+                const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                return days[date.getUTCDay()];
+            };
+
+            const updateDay = (dateInput, dayElement) => {
+                const day = getDayOfWeek(dateInput.value);
+                dayElement.innerHTML = day;
+            };
+
+            if (departureDate && departureDay) {
+                // Initial update on load
+                updateDay(departureDate, departureDay);
+                // Update on change
+                departureDate.addEventListener('change', () => updateDay(departureDate, departureDay));
+            }
+
+            if (returnDate && returnDay) {
+                // Initial update (will be empty)
+                updateDay(returnDate, returnDay);
+                // Update on change
+                returnDate.addEventListener('change', () => updateDay(returnDate, returnDay));
+            }
+            // --- END OF NEW BOOKING FORM LOGIC ---
+
+            // --- NEW: Booking Tabbed Interface Logic ---
+            const mainNavBar = document.getElementById('main-nav-bar');
+            const navItems = mainNavBar.querySelectorAll('.nav-item');
+            const bookingPanels = document.querySelectorAll('#booking-widget .booking-form-panel');
+
+            if (mainNavBar && navItems.length > 0 && bookingPanels.length > 0) {
+                mainNavBar.addEventListener('click', (e) => {
+                    // Find the clicked nav item
+                    const clickedNavItem = e.target.closest('.nav-item');
+                    if (!clickedNavItem) return;
+
+                    e.preventDefault(); // Stop link from navigating
+
+                    const tabId = clickedNavItem.dataset.tab;
+                    if (!tabId) return;
+
+                    // Update Nav Items
+                    navItems.forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    clickedNavItem.classList.add('active');
+
+                    // Update Booking Panels
+                    bookingPanels.forEach(panel => {
+                        if (panel.id === tabId) {
+                            panel.classList.add('active');
+                        } else {
+                            panel.classList.remove('active');
+                        }
+                    });
+                });
+            }
+            // --- END OF NEW BOOKING TABBED INTERFACE LOGIC ---
         });
     </script>
 </body>

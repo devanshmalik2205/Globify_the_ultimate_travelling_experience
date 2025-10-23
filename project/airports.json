@@ -1,0 +1,72 @@
+[
+  {
+    "city": "Delhi",
+    "code": "DEL",
+    "name": "Indira Gandhi International Airport"
+  },
+  {
+    "city": "Bengaluru",
+    "code": "BLR",
+    "name": "Kempegowda International Airport"
+  },
+  {
+    "city": "Mumbai",
+    "code": "BOM",
+    "name": "Chhatrapati Shivaji Maharaj Int'l"
+  },
+  {
+    "city": "Kolkata",
+    "code": "CCU",
+    "name": "Netaji Subhas Chandra Bose Int'l"
+  },
+  {
+    "city": "Chennai",
+    "code": "MAA",
+    "name": "Chennai International Airport"
+  },
+  {
+    "city": "Hyderabad",
+    "code": "HYD",
+    "name": "Rajiv Gandhi International Airport"
+  },
+  {
+    "city": "Pune",
+    "code": "PNQ",
+    "name": "Pune Airport"
+  },
+  {
+    "city": "Goa",
+    "code": "GOI",
+    "name": "Dabolim Airport"
+  },
+  {
+    "city": "Ahmedabad",
+    "code": "AMD",
+    "name": "Sardar Vallabhbhai Patel Int'l"
+  },
+  {
+    "city": "Jaipur",
+    "code": "JAI",
+    "name": "Jaipur International Airport"
+  },
+  {
+    "city": "Dubai",
+    "code": "DXB",
+    "name": "Dubai International Airport"
+  },
+  {
+    "city": "London",
+    "code": "LHR",
+    "name": "Heathrow Airport"
+  },
+  {
+    "city": "New York",
+    "code": "JFK",
+    "name": "John F. Kennedy International"
+  },
+  {
+    "city": "Singapore",
+    "code": "SIN",
+    "name": "Changi Airport"
+  }
+]

@@ -1,27 +1,27 @@
 [
   {
     "link": "cities_html/delhi.html",
-    "image": "city_images/Delhi.png",
+    "image": "https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcRBhSecD0XqBByregCdyD-FwddLmaV9cvSSxMNgkoyIypxUGy2dZk3GGDsA0u976JzSmupkILK8P9bB66kM5ASuX-TlAKFSYa1v2E8yKg",
     "title": "Delhi"
   },
   {
     "link": "#",
-    "image": "city_images/Manali.png",
+    "image": "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcTmxS7PJ-xoB67Ad6Orf4Kvjc-6WYfpSec2ewxbqftJakcnrbRVpflJuRIVRLEHPMOfQxjy95MzzxaT-zGO0m0Ff5MuYqALSBeL-hKqnA",
     "title": "Manali"
   },
   {
     "link": "#",
-    "image": "city_images/Jaipur.png",
+    "image": "https://t0.gstatic.com/licensed-image?q=tbn:ANd9GcTKsqvJf0KCroqL9NNRIue1bb7hGp9o7ZVAWs4yf-qvo3CzffgRGMYCgjqhwsRn-BrJ",
     "title": "Jaipur"
   },
   {
     "link": "#",
-    "image": "city_images/Mumbai.png",
+    "image": "https://t3.gstatic.com/licensed-image?q=tbn:ANd9GcT--HyPRbe1Nwff280rNndkv6JhfcPe_kHdGgKzpDszJHQYO3NyOP6oW-OlF-awOPc4",
     "title": "Mumbai"
   },
   {
     "link": "#",
-    "image": "city_images/Goa.png",
+    "image": "https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcTsSRgOB7qI6E405JpQLtC86qyPHgJwxv0Qk5NV0t6KUFmolZ9vVU0DtNN5Q8D-KSiYDpsYg_jxMfomm4ytTAZB18CR1DcuzEw76xUF4A",
     "title": "Goa"
   },
   {

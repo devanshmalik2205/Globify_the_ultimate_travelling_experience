@@ -30,5 +30,165 @@
     "title": "Maidens Hotel New Delhi",
     "subtitle": "Civil Lines",
     "price": "INR 12,000"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/Taj Mahal Palace.png",
+    "rating": "9.8",
+    "title": "The Taj Mahal Palace",
+    "subtitle": "Colaba, Mumbai",
+    "price": "INR 25,000"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/Oberoi Grand.png",
+    "rating": "9.5",
+    "title": "The Oberoi Grand",
+    "subtitle": "Esplanade, Kolkata",
+    "price": "INR 14,000"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/ITC Windsor.png",
+    "rating": "9.4",
+    "title": "ITC Windsor, a Luxury Collection Hotel",
+    "subtitle": "Vasanth Nagar, Bengaluru",
+    "price": "INR 13,500"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/Rambagh Palace.png",
+    "rating": "9.9",
+    "title": "Rambagh Palace",
+    "subtitle": "Bhawani Singh Road, Jaipur",
+    "price": "INR 45,000"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/Taj Falaknuma.png",
+    "rating": "9.7",
+    "title": "Taj Falaknuma Palace",
+    "subtitle": "Engine Bowli, Hyderabad",
+    "price": "INR 38,000"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/Armani Hotel.png",
+    "rating": "9.6",
+    "title": "Armani Hotel Dubai",
+    "subtitle": "Burj Khalifa, Dubai",
+    "price": "AED 2,500"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/Savoy London.png",
+    "rating": "9.8",
+    "title": "The Savoy",
+    "subtitle": "Strand, London",
+    "price": "GBP 750"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/Plaza New York.png",
+    "rating": "9.5",
+    "title": "The Plaza",
+    "subtitle": "Fifth Avenue, New York",
+    "price": "USD 950"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/Ritz Paris.png",
+    "rating": "9.7",
+    "title": "Ritz Paris",
+    "subtitle": "Place Vendôme, Paris",
+    "price": "EUR 1,200"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/Marina Bay Sands.png",
+    "rating": "9.4",
+    "title": "Marina Bay Sands",
+    "subtitle": "Bayfront Avenue, Singapore",
+    "price": "SGD 600"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/Burj Al Arab.png",
+    "rating": "9.9",
+    "title": "Burj Al Arab Jumeirah",
+    "subtitle": "Umm Suqeim 3, Dubai",
+    "price": "AED 5,000"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/Four Seasons Kyoto.png",
+    "rating": "9.6",
+    "title": "Four Seasons Hotel Kyoto",
+    "subtitle": "Higashiyama-ku, Kyoto",
+    "price": "JPY 110,000"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/Leela Palace Udaipur.png",
+    "rating": "9.7",
+    "title": "The Leela Palace Udaipur",
+    "subtitle": "Lake Pichola, Udaipur",
+    "price": "INR 35,000"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/Taj Lake Palace.png",
+    "rating": "9.8",
+    "title": "Taj Lake Palace",
+    "subtitle": "Lake Pichola, Udaipur",
+    "price": "INR 42,000"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/Oberoi Amarvilas.png",
+    "rating": "9.9",
+    "title": "The Oberoi Amarvilas",
+    "subtitle": "Taj East Gate Road, Agra",
+    "price": "INR 55,000"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/St Regis Mumbai.png",
+    "rating": "9.3",
+    "title": "The St. Regis Mumbai",
+    "subtitle": "Lower Parel, Mumbai",
+    "price": "INR 18,000"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/Hyatt Regency Delhi.png",
+    "rating": "9.0",
+    "title": "Hyatt Regency Delhi",
+    "subtitle": "Bhikaji Cama Place, New Delhi",
+    "price": "INR 11,000"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/ITC Grand Chola.png",
+    "rating": "9.2",
+    "title": "ITC Grand Chola",
+    "subtitle": "Guindy, Chennai",
+    "price": "INR 14,500"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/W Goa.png",
+    "rating": "9.1",
+    "title": "W Goa",
+    "subtitle": "Vagator Beach, Goa",
+    "price": "INR 22,000"
+  },
+  {
+    "link": "#",
+    "image": "homes_images/Peninsula Tokyo.png",
+    "rating": "9.6",
+    "title": "The Peninsula Tokyo",
+    "subtitle": "Yurakucho, Tokyo",
+    "price": "JPY 95,000"
   }
 ]

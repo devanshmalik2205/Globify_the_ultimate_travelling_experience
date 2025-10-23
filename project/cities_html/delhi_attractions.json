@@ -2,31 +2,31 @@
   {
     "name": "Red Fort (Lal Qila)",
     "description": "UNESCO World Heritage site symbolizing Mughal grandeur.",
-    "image": "Delhi_images/red-fort-delhi-attr-hero.jpeg 2.png",
+    "image": "https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcRBhSecD0XqBByregCdyD-FwddLmaV9cvSSxMNgkoyIypxUGy2dZk3GGDsA0u976JzSmupkILK8P9bB66kM5ASuX-TlAKFSYa1v2E8yKg",
     "googleMapsUrl": "https://www.google.com/maps/place/Red+Fort/@28.6562,77.2410"
   },
   {
     "name": "India Gate",
     "description": "A national monument honoring soldiers, perfect for evening strolls.",
-    "image": "Delhi_images/red-fort-delhi-attr-hero.jpeg 3-1.png",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSxfKaEYDAduMYUXNQjo4C1Co00SSxQSK4luVBcr10yRNWTgvI1mGd_G-Q8whIlifU6EkNR6ipFS2CdfnHal6pGfpu-8FWjM9oSkYNNa_d2pqnDeM8JzKen0LGCuquRqK7efMlFifw=w675-h390-n-k-no",
     "googleMapsUrl": "https://www.google.com/maps/place/India+Gate/@28.6129,77.2295"
   },
   {
     "name": "Lotus Temple",
     "description": "Iconic Baha'i House of Worship shaped like a lotus flower.",
-    "image": "Delhi_images/red-fort-delhi-attr-hero.jpeg 3.png",
+    "image": "https://etimg.etb2bimg.com/photo/87278130.cms",
     "googleMapsUrl": "https://www.google.com/maps/place/Lotus+Temple/@28.5535,77.2588"
   },
   {
     "name": "Qutub Minar",
     "description": "The world's tallest brick minaret with stunning carvings.",
-    "image": "Delhi_images/red-fort-delhi-attr-hero.jpeg 5.png",
+    "image": "https://www.thedelhitours.com/blog/wp-content/uploads/2024/09/Qutub-Minar.jpg",
     "googleMapsUrl": "https://www.google.com/maps/place/Qutb+Minar/@28.5245,77.1855"
   },
   {
     "name": "Chandni Chowk",
     "description": "Famous for street food, spice markets, and traditional shopping.",
-    "image": "Delhi_images/red-fort-delhi-attr-hero.jpeg 4.png",
+    "image": "https://s7ap1.scene7.com/is/image/incredibleindia/chandni-chowk-delhi-2-attr-hero?qlt=82&ts=1742170496098",
     "googleMapsUrl": "https://www.google.com/maps/place/Chandni+Chowk/@28.6568,77.2292"
   }
 ]

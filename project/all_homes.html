@@ -187,21 +187,21 @@
                     return;
                 }
 
+                // === MODIFICATION: Removed outer <a> tag, added link to button ===
                 container.innerHTML = homes.map(home => `
-                    <a href="${home.link}" class="link_rooms" data-title="${home.title.toLowerCase()}" data-subtitle="${home.subtitle.toLowerCase()}">
-                        <div class="hotel-card">
-                            <div class="card-img-container">
-                                <img src="${home.image}" alt="${home.title}" class="card-img">
-                                <span class="rating-badge">${home.rating}</span>
-                            </div>
-                            <div class="card-content">
-                                <h3 class="card-title-main">${home.title}</h3>
-                                <p class="card-subtitle">${home.subtitle}</p>
-                                <p class="price">${home.price} <span class="price-subtext">/ night</span></p>
-                                <button class="details-btn">View Details</button>
-                            </div>
+                    <div class="hotel-card" data-title="${home.title.toLowerCase()}" data-subtitle="${home.subtitle.toLowerCase()}">
+                        <div class="card-img-container">
+                            <img src="${home.image}" alt="${home.title}" class="card-img">
+                            <span class="rating-badge">${home.rating}</span>
                         </div>
-                    </a>
+                        <div class="card-content">
+                            <h3 class="card-title-main">${home.title}</h3>
+                            <p class="card-subtitle">${home.subtitle}</p>
+                            <p class="price">${home.price} <span class="price-subtext">/ night</span></p>
+                            <!-- MODIFIED BUTTON to be an <a> tag -->
+                            <a href="checkout.html?type=hotel&title=${encodeURIComponent(home.title)}" class="details-btn" style="display: block; text-align: center; text-decoration: none;">Book Now</a>
+                        </div>
+                    </div>
                 `).join('');
             };
 
@@ -221,7 +221,8 @@
 
             const filterHomes = () => {
                 const searchTerm = searchInput.value.toLowerCase().trim();
-                const cards = document.querySelectorAll('#homesGridContainer .link_rooms');
+                // === MODIFICATION: Changed selector to find .hotel-card ===
+                const cards = document.querySelectorAll('#homesGridContainer .hotel-card');
                 let resultsFound = false;
 
                 cards.forEach(card => {

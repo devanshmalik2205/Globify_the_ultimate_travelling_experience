@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Booking - Globify</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Using style.css for base styles -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Page-specific styles for checkout -->
+    <style>
+        /* Base styles from style.css */
+        body {
+            background-color: #f8f9fa; /* Ensure light background */
+        }
+        
+        .header {
+            /* styles from style.css are applied */
+        }
+
+        .footer {
+            /* styles from style.css are applied */
+        }
+
+        /* NEW: Checkout Layout */
+        .checkout-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            padding: 2rem 0;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 1024px) {
+            .checkout-layout {
+                grid-template-columns: 2fr 1fr; /* Main content and sidebar */
+            }
+        }
+        
+        .checkout-main, .checkout-sidebar {
+            width: 100%;
+        }
+        
+        /* NEW: Form Card Styles */
+        .form-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 1rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+        }
+        
+        @media (min-width: 768px) {
+            .form-grid.two-col {
+                grid-template-columns: 1fr 1fr;
+            }
+            .form-grid .span-2 {
+                grid-column: 1 / -1;
+            }
+        }
+
+        .form-field-checkout {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-field-checkout label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-field-checkout input,
+        .form-field-checkout select {
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        
+        .form-field-checkout input:focus,
+        .form-field-checkout select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+        }
+
+        .confirm-btn {
+            background-color: #3b82f6;
+            color: white;
+            width: 100%;
+            padding: 0.875rem 1.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .confirm-btn:hover {
+            background-color: #2563eb;
+        }
+
+        /* NEW: Sidebar Summary Card */
+        .summary-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            position: sticky;
+            top: 100px; /* Stick below header */
+        }
+        
+        .summary-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .summary-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .summary-body {
+            padding: 1.5rem;
+        }
+
+        /* Flight Summary */
+        #flight-summary {
+            line-height: 1.5;
+        }
+        .flight-airline {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .flight-airline img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid #e5e7eb;
+        }
+        .flight-airline-name {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .flight-airline-num {
+            font-size: 0.875rem;
+            color: #6b7285;
+        }
+
+        .flight-route {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        .flight-route-code {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        .flight-route-arrow {
+            color: #3b82f6;
+        }
+        .flight-route-time {
+            font-size: 0.875rem;
+            color: #6b7285;
+        }
+
+        /* Hotel Summary */
+        #hotel-summary {
+            line-height: 1.5;
+        }
+        .hotel-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .hotel-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        .hotel-subtitle {
+            font-size: 0.875rem;
+            color: #6b7285;
+            margin-bottom: 1rem;
+        }
+        .hotel-details {
+            font-size: 0.875rem;
+        }
+        
+        /* Price Details */
+        .price-details {
+            border-top: 1px solid #e5e7eb;
+            padding: 1.5rem;
+            background-color: #f9fafb;
+            border-radius: 0 0 0.75rem 0.75rem;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            color: #4b5563;
+            margin-bottom: 0.75rem;
+        }
+        .price-row.total {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-top: 1rem;
+            margin-bottom: 0;
+        }
+        
+        .hidden {
+            display: none;
+        }
+
+        /* Confirmation Modal */
+        #confirmationModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none; /* Hidden by default */
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+        #confirmationModal.show {
+            display: flex;
+        }
+        .confirmation-content {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        .confirmation-icon {
+            font-size: 4rem;
+            color: #22c55e;
+            line-height: 1;
+        }
+        .confirmation-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-top: 1rem;
+        }
+        .confirmation-message {
+            font-size: 1rem;
+            color: #4b5563;
+            margin-top: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        .confirmation-btn {
+            background-color: #3b82f6;
+            color: white !important; /* Override link color */
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .confirmation-btn:hover {
+            background-color: #2563eb;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Header (Copied from index.html, removed main-nav) -->
+    <header class="header">
+        <div class="container">
+            <div class="top-nav">
+                <a href="index.html" class="logo">
+                    <img src="Icon.svg" alt="G">
+                    <span>Globify</span>
+                </a>
+                <nav class="top-nav-links">
+                    <a href="#">List Your Property</a>
+                    <div id="auth-links" style="display: flex; gap: 1rem; align-items: center;">
+                        <a href="#signInModal">Sign In</a>
+                        <a href="#registerModal" class="btn btn-primary">Register</a>
+                    </div>
+                    <div id="user-profile" class="user-profile">
+                        <div id="user-icon" class="user-profile-icon"></div>
+                        <span id="user-name" class="user-profile-name"></span>
+                    </div>
+                    <a href="About_Us.html" class="btn btn-secondary">About Us</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="checkout-layout">
+                
+                <!-- Main Content (Forms) -->
+                <section class="checkout-main">
+                    <!-- Traveller Details -->
+                    <div class="form-card">
+                        <h2 class="form-card-title">Traveller Details</h2>
+                        <form id="traveller-form" class="form-grid">
+                            <div class="form-field-checkout">
+                                <label for="full-name">Full Name</label>
+                                <input type="text" id="full-name" placeholder="As per government ID" required>
+                            </div>
+                            <div class="form-field-checkout">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" placeholder="e.g., name@example.com" required>
+                            </div>
+                            <div class="form-field-checkout">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" placeholder="+91 12345 67890" required>
+                            </div>
+                            <div class="form-field-checkout">
+                                <label for="dob">Date of Birth</label>
+                                <input type="date" id="dob" required>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Payment Details -->
+                    <div class="form-card">
+                        <h2 class="form-card-title">Payment Details</h2>
+                        <form id="payment-form" class="form-grid two-col">
+                            <div class="form-field-checkout span-2">
+                                <label for="card-number">Card Number</label>
+                                <input type="text" id="card-number" placeholder="0000 0000 0000 0000" required>
+                            </div>
+                            <div class="form-field-checkout">
+                                <label for="expiry-date">Expiry Date</label>
+                                <input type="text" id="expiry-date" placeholder="MM / YY" required>
+                            </div>
+                            <div class="form-field-checkout">
+                                <label for="cvc">CVC</label>
+                                <input type="text" id="cvc" placeholder="123" required>
+                            </div>
+                            <div class="form-field-checkout span-2">
+                                <label for="name-on-card">Name on Card</label>
+                                <input type="text" id="name-on-card" placeholder="Full name" required>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Confirm Button -->
+                    <button id="confirm-payment-btn" class="confirm-btn">
+                        Confirm and Pay
+                    </button>
+                </section>
+
+                <!-- Sidebar (Booking Summary) -->
+                <aside class="checkout-sidebar">
+                    <div class="summary-card">
+                        <div class="summary-header">
+                            <h2 class="summary-title">Booking Summary</h2>
+                        </div>
+                        
+                        <!-- Dynamic Content Area -->
+                        <div class="summary-body">
+                            <!-- Flight Summary (Hidden by default) -->
+                            <div id="flight-summary" class="hidden">
+                                <div class="flight-airline">
+                                    <img id="flight-logo" src="https://placehold.co/64x64/E0E0E0/757575?text=Logo" alt="Airline Logo">
+                                    <div>
+                                        <div id="flight-name" class="flight-airline-name">Loading...</div>
+                                        <div id="flight-num" class="flight-airline-num">...</div>
+                                    </div>
+                                </div>
+                                <div class="flight-route">
+                                    <div>
+                                        <div id="flight-dep-code" class="flight-route-code">...</div>
+                                        <div id="flight-dep-time" class="flight-route-time">...</div>
+                                    </div>
+                                    <div class="flight-route-arrow">→</div>
+                                    <div>
+                                        <div id="flight-arr-code" class="flight-route-code">...</div>
+                                        <div id="flight-arr-time" class="flight-route-time">...</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Hotel Summary (Hidden by default) -->
+                            <div id="hotel-summary" class="hidden">
+                                <img id="hotel-image" src="https://placehold.co/320x150/E0E0E0/757575?text=Hotel" alt="Hotel Image" class="hotel-image">
+                                <h3 id="hotel-title" class="hotel-title">Loading...</h3>
+                                <p id="hotel-subtitle" class="hotel-subtitle">...</p>
+                                <div class="hotel-details">
+                                    <p><strong>Check-in:</strong> 16 Sep 2025</p>
+                                    <p><strong>Check-out:</strong> 17 Sep 2025</p>
+                                    <p><strong>Guests:</strong> 1 Room, 2 Adults</p>
+                                </div>
+                            </div>
+
+                            <p id="loading-summary" class="section-subtitle">Loading booking details...</p>
+
+                        </div>
+
+                        <!-- Price Details -->
+                        <div class="price-details">
+                            <div class="price-row">
+                                <span>Base Fare</span>
+                                <span id="price-base">₹0</span>
+                            </div>
+                            <div class="price-row">
+                                <span>Taxes & Fees</span>
+                                <span id="price-taxes">₹0</span>
+                            </div>
+                            <div class="price-row total">
+                                <span>Total Amount</span>
+                                <span id="price-total">₹0</span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer (Copied from index.html) -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div><a href="#" class="logo" style="color:white; font-size:1.5rem;"><img src="Icon.svg" alt="G"><span>Globify</span></a></div>
+                <div><h4>Explore</h4><ul class="footer-links"><li><a href="#">Flights</a></li><li><a href="#">Hotels</a></li><li><a href="#">Cabs</a></li><li><a href="#">Car Rental</a></li></ul></div>
+                <div><h4>Company</h4><ul class="footer-links"><li><a href="About_Us.html">About Us</a></li><li><a href="#">How it works</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li></ul></div>
+                <div><h4>Subscribe</h4><p style="font-size:0.875rem;">Join our newsletter to stay updated.</p><div class="subscribe-form"><input type="email" placeholder="Your email"><button>→</button></div></div>
+            </div>
+            <div class="footer-bottom"><p>Copyright @ 2025 Globify. All rights reserved.</p><div class="socials"><span>f</span><span>in</span><span>t</span><span>m</span></div></div>
+        </div>
+    </footer>
+
+    <!-- Modals (Copied from index.html) -->
+    <div id="signInModal" class="modal-overlay"><div class="modal-content"><a href="#" class="modal-close-btn">&times;</a><div class="auth-card"><h2>Sign In</h2><form id="signInForm"><input type="email" placeholder="Your email" required><input type="password" placeholder="Password" required><button type="submit" class="btn btn-primary auth-btn">Enter</button></form><p class="auth-switch">New here? <a href="#registerModal">Create an account</a></p></div></div></div>
+    <div id="registerModal" class="modal-overlay"><div class="modal-content"><a href="#" class="modal-close-btn">&times;</a><div class="auth-card"><h2>Register</h2><form id="registerForm"><input id="register-name" type="text" placeholder="Name" required><input type="email" placeholder="Your email" required><input type="date" placeholder="Date of Birth" required><input type="password" placeholder="Create Password" required><input type="password" placeholder="Confirm Password" required><button type="submit" class="btn btn-primary auth-btn">Enter</button></form><p class="auth-switch">Already have an account? <a href="#signInModal">Sign in</a></p></div></div></div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal">
+        <div class="confirmation-content">
+            <div class="confirmation-icon">✓</div>
+            <h2 class="confirmation-title">Booking Confirmed!</h2>
+            <p class="confirmation-message">Your e-tickets and confirmation have been sent to your email.</p>
+            <a href="index.html" class="confirmation-btn">Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // --- Authentication Logic (Copied from index.html) ---
+            const signInForm = document.getElementById('signInForm');
+            const registerForm = document.getElementById('registerForm');
+            const authLinks = document.getElementById('auth-links');
+            const userProfile = document.getElementById('user-profile');
+            const userNameEl = document.getElementById('user-name');
+            const userIconEl = document.getElementById('user-icon');
+            const registerNameInput = document.getElementById('register-name');
+
+            const handleLogin = (name) => {
+                userNameEl.textContent = name;
+                userIconEl.textContent = name.charAt(0).toUpperCase();
+                authLinks.style.display = 'none';
+                userProfile.style.display = 'flex';
+                window.location.hash = '#';
+            };
+
+            if (signInForm) {
+                signInForm.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    handleLogin('User');
+                });
+            }
+
+            if (registerForm) {
+                registerForm.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    const userName = registerNameInput.value.trim() || 'User';
+                    handleLogin(userName);
+                });
+            }
+
+            // --- Checkout Page Logic ---
+            const urlParams = new URLSearchParams(window.location.search);
+            const bookingType = urlParams.get('type');
+            const bookingId = urlParams.get('id'); // For flights
+            const bookingTitle = urlParams.get('title'); // For hotels
+
+            const loadingEl = document.getElementById('loading-summary');
+            const flightSummaryEl = document.getElementById('flight-summary');
+            const hotelSummaryEl = document.getElementById('hotel-summary');
+            
+            const priceBaseEl = document.getElementById('price-base');
+            const priceTaxesEl = document.getElementById('price-taxes');
+            const priceTotalEl = document.getElementById('price-total');
+
+            const formatCurrency = (amount) => {
+                // Check if amount is a string with "INR"
+                if (typeof amount === 'string' && amount.includes('INR')) {
+                    amount = parseFloat(amount.replace('INR', '').replace(/,/g, ''));
+                }
+                
+                if (isNaN(amount)) {
+                    amount = 0;
+                }
+                
+                // Simple tax calculation (e.g., 18%)
+                const taxes = amount * 0.18;
+                const total = amount + taxes;
+                
+                priceBaseEl.textContent = `₹${amount.toLocaleString('en-IN')}`;
+                priceTaxesEl.textContent = `₹${taxes.toLocaleString('en-IN')}`;
+                priceTotalEl.textContent = `₹${total.toLocaleString('en-IN')}`;
+            };
+
+            if (bookingType === 'flight' && bookingId) {
+                // Fetch flights data
+                fetch('flights.json')
+                    .then(response => response.json())
+                    .then(flights => {
+                        // Find the specific flight
+                        const flight = flights.find(f => f.id == bookingId);
+                        if (flight) {
+                            // Populate flight summary
+                            document.getElementById('flight-logo').src = flight.airlineLogo;
+                            document.getElementById('flight-name').textContent = flight.airlineName;
+                            document.getElementById('flight-num').textContent = flight.flightNumber;
+                            document.getElementById('flight-dep-code').textContent = flight.departureAirportCode;
+                            document.getElementById('flight-dep-time').textContent = flight.departureTime;
+                            document.getElementById('flight-arr-code').textContent = flight.arrivalAirportCode;
+                            document.getElementById('flight-arr-time').textContent = flight.arrivalTime;
+
+                            // Calculate price
+                            formatCurrency(flight.price);
+
+                            // Show flight summary
+                            loadingEl.classList.add('hidden');
+                            flightSummaryEl.classList.remove('hidden');
+                        } else {
+                            loadingEl.textContent = 'Could not find flight details.';
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error fetching flight data:', err);
+                        loadingEl.textContent = 'Error loading booking details.';
+                    });
+
+            } else if (bookingType === 'hotel' && bookingTitle) {
+                // Fetch hotels data
+                fetch('homes.json')
+                    .then(response => response.json())
+                    .then(homes => {
+                        // Find the specific hotel by title
+                        const hotel = homes.find(h => h.title === decodeURIComponent(bookingTitle));
+                        if (hotel) {
+                            // Populate hotel summary
+                            document.getElementById('hotel-image').src = hotel.image;
+                            document.getElementById('hotel-title').textContent = hotel.title;
+                            document.getElementById('hotel-subtitle').textContent = hotel.subtitle;
+
+                            // Calculate price
+                            formatCurrency(hotel.price);
+
+                            // Show hotel summary
+                            loadingEl.classList.add('hidden');
+                            hotelSummaryEl.classList.remove('hidden');
+                        } else {
+                            loadingEl.textContent = 'Could not find hotel details.';
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error fetching hotel data:', err);
+                        loadingEl.textContent = 'Error loading booking details.';
+                    });
+            } else {
+                // No valid parameters
+                loadingEl.textContent = 'No booking information provided.';
+            }
+
+            // --- Confirmation Modal Logic ---
+            const confirmBtn = document.getElementById('confirm-payment-btn');
+            const confirmationModal = document.getElementById('confirmationModal');
+
+            confirmBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Simple validation check (could be more robust)
+                if (document.getElementById('full-name').value && document.getElementById('card-number').value) {
+                    confirmationModal.classList.add('show');
+                } else {
+                    // In a real app, you'd show error messages on the fields
+                    // For this demo, we'll just log to console
+                    console.log('Please fill out all required fields.');
+                    document.getElementById('full-name').focus();
+                }
+            });
+
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Results - Globify</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Page-specific CSS is included directly in the <head> -->
+    <style>
+        /* Base styles from style.css for consistency */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .header {
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1f2937;
+            text-decoration: none;
+        }
+
+        .top-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .top-nav-links a {
+            text-decoration: none;
+            color: #4b5563;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .top-nav-links a:hover {
+            color: #3b82f6;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: rgb(255, 255, 255) !important;
+        }
+
+        .btn-primary:hover {
+            background-color: #ffffff;
+            color: #002fb0 !important;
+            border-color: #002fb0;
+        }
+
+        .user-profile {
+            display: none; /* Simplified for this page, auth logic not copied */
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* Footer styles */
+        .footer {
+            background-color: #1f2937;
+            color: #d1d5db;
+            padding: 4rem 0 2rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .footer-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .footer h4 {
+            font-weight: 600;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #d1d5db;
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .subscribe-form {
+            margin-top: 1rem;
+            display: flex;
+        }
+
+        .subscribe-form input {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 0.5rem 0 0 0.5rem;
+            border: none;
+            color: #1f2937;
+        }
+
+        .subscribe-form button {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0 1rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+            cursor: pointer;
+        }
+
+        .footer-bottom {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #374151;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.875rem;
+        }
+        
+        @media (min-width: 768px) {
+            .footer-bottom {
+                flex-direction: row;
+            }
+        }
+
+        .socials {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* --- NEW STYLES for Flight Results Page --- */
+
+        .search-summary-bar {
+            background-color: #1f2937;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .search-summary-bar {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
+
+        .search-summary-bar h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .search-summary-bar span {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        .search-summary-bar .edit-search-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: background-color 0.2s;
+            text-align: center;
+        }
+
+        .search-summary-bar .edit-search-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .results-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .results-layout {
+                grid-template-columns: 280px 1fr; /* Sidebar and main content */
+            }
+        }
+
+        /* --- Filter Sidebar --- */
+        .filters-sidebar {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            align-self: flex-start; /* Sticks to top */
+            height: fit-content;
+        }
+
+        .filter-group {
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-group:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .filter-group h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .filter-option:last-child {
+            margin-bottom: 0;
+        }
+
+        .filter-option input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 0.25rem;
+            border-color: #d1d5db;
+            margin-right: 0.75rem;
+            cursor: pointer;
+            accent-color: #3b82f6;
+        }
+
+        .filter-option label {
+            font-size: 0.875rem;
+            color: #374151;
+            cursor: pointer;
+        }
+
+        /* --- Results List --- */
+        .results-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        #no-results-message {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 3rem;
+            text-align: center;
+            font-size: 1.125rem;
+            color: #4b5563;
+        }
+
+        /* --- Flight Card --- */
+        .flight-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .flight-card:hover {
+             box-shadow: 0 8px 12px rgba(0, 0, 0, 0.08);
+             border-color: #3b82f6;
+        }
+
+        .flight-card-main {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            align-items: center;
+        }
+        
+        @media (min-width: 1024px) {
+            .flight-card-main {
+                grid-template-columns: 1.5fr 1fr 1fr 1fr 1.5fr;
+            }
+        }
+
+        .airline-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .airline-info img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: contain;
+            border: 1px solid #e5e7eb;
+        }
+
+        .airline-info div {
+            line-height: 1.3;
+        }
+
+        .airline-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: #1f2937;
+        }
+
+        .flight-number {
+            font-size: 0.75rem;
+            color: #6b7285;
+        }
+        
+        .flight-time-info {
+            line-height: 1.4;
+        }
+        
+        .flight-time {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .flight-airport {
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+
+        .flight-duration-info {
+            text-align: center;
+            line-height: 1.4;
+        }
+        
+        .flight-duration {
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: #374151;
+        }
+        
+        .flight-stops {
+            font-size: 0.75rem;
+            color: #6b7285;
+        }
+        
+        .flight-price-info {
+            text-align: right;
+        }
+
+        .flight-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        
+        .flight-price-subtext {
+            font-size: 0.75rem;
+            color: #6b7285;
+        }
+
+        .book-now-btn {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-decoration: none;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .book-now-btn:hover {
+            background-color: #2563eb;
+        }
+        
+        @media (max-width: 1023px) {
+            /* Stack columns on mobile */
+            .flight-card-main {
+                grid-template-columns: 1fr 1fr;
+            }
+            .flight-duration-info {
+                text-align: left;
+            }
+            .flight-price-info {
+                text-align: left;
+                grid-column: 1 / 2; /* Span half width */
+            }
+            .book-now-btn {
+                grid-column: 2 / 3; /* Span other half */
+                align-self: center;
+            }
+        }
+         @media (max-width: 480px) {
+             /* Stack price and button on smallest screens */
+            .flight-price-info {
+                grid-column: 1 / -1; /* Span full width */
+            }
+            .book-now-btn {
+                grid-column: 1 / -1; /* Span full width */
+            }
+         }
+
+        .flight-card-footer {
+            background-color: #f9fafb;
+            padding: 0.75rem 1.5rem;
+            border-top: 1px solid #e5e7eb;
+            font-size: 0.75rem;
+            color: #4b5563;
+            border-radius: 0 0 0.75rem 0.75rem;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="top-nav">
+                <!-- SVG Logo Removed -->
+                <a href="index.html" class="logo">
+                    <span>Globify</span>
+                </a>
+                <nav class="top-nav-links">
+                    <a href="#">List Your Property</a>
+                    <div id="auth-links" style="display: flex; gap: 1rem; align-items: center;">
+                        <a href="#signInModal">Sign In</a>
+                        <a href="#registerModal" class="btn btn-primary">Register</a>
+                    </div>
+                    <!-- User profile section hidden by default -->
+                    <a href="About_Us.html" class="btn btn-secondary">About Us</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+
+            <!-- Search Summary Bar -->
+            <div class="search-summary-bar">
+                <div>
+                    <h1 id="search-title">Flights from Delhi to Bengaluru</h1>
+                    <span id="search-details">15 Sep 2025  |  1 Traveller  |  Economy</span>
+                </div>
+                <a href="index.html" class="edit-search-btn">Edit Search</a>
+            </div>
+
+            <!-- Main Results Layout -->
+            <div class="results-layout">
+                
+                <!-- Filters Sidebar -->
+                <aside class="filters-sidebar">
+                    <!-- Stops filter will be populated here -->
+                    <div class="filter-group" id="stops-filter-group">
+                        <h3>Stops</h3>
+                        <!-- Checkboxes will be dynamically inserted -->
+                    </div>
+
+                    <!-- Airlines filter will be populated here -->
+                    <div class="filter-group" id="airline-filter-group">
+                        <h3>Airlines</h3>
+                        <!-- Checkboxes will be dynamically inserted -->
+                    </div>
+
+                    <!-- NEW: Departure Time filter -->
+                    <div class="filter-group" id="time-filter-group">
+                        <h3>Departure Time</h3>
+                        <div class="filter-option">
+                            <input type="checkbox" id="time-early" name="time" value="early" checked>
+                            <label for="time-early">Before 6 AM (00:00 - 05:59)</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="time-morning" name="time" value="morning" checked>
+                            <label for="time-morning">Morning (06:00 - 11:59)</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="time-afternoon" name="time" value="afternoon" checked>
+                            <label for="time-afternoon">Afternoon (12:00 - 17:59)</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="time-evening" name="time" value="evening" checked>
+                            <label for="time-evening">Evening (18:00 - 23:59)</label>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h3>Refundable</h3>
+                        <div class="filter-option">
+                            <input type="checkbox" id="refundable" name="refundable">
+                            <label for="refundable">Refundable Only</label>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Flight Results List -->
+                <section class="results-list" id="results-list-container">
+                    <!-- Flight cards will be injected here by JavaScript -->
+                    <div id="no-results-message" style="display: none;">
+                        <p>Loading flights...</p>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <!-- SVG Logo Removed -->
+                    <a href="#" class="logo" style="color:white; font-size:1.5rem;">
+                        <span>Globify</span>
+                    </a>
+                </div>
+                <div>
+                    <h4>Explore</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Flights</a></li>
+                        <li><a href="#">Hotels</a></li>
+                        <li><a href="#">Cabs</a></li>
+                        <li><a href="#">Car Rental</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="About_Us.html">About Us</a></li>
+                        <li><a href="#">How it works</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Subscribe</h4>
+                    <p style="font-size:0.875rem;">Join our newsletter to stay updated.</p>
+                    <div class="subscribe-form"><input type="email" placeholder="Your email"><button>→</button></div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Copyright @ 2025 Globify. All rights reserved.</p>
+                <div class="socials"><span>f</span><span>in</span><span>t</span><span>m</span></div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            // --- Global state for flights and filters ---
+            let allFlights = []; // All flights from flights.json
+            let currentFilteredFlights = []; // Flights matching URL params (e.g., DEL to BLR)
+
+            // --- Element References ---
+            const resultsContainer = document.getElementById('results-list-container');
+            const searchTitle = document.getElementById('search-title');
+            const searchDetails = document.getElementById('search-details');
+            const noResultsMessage = document.getElementById('no-results-message');
+            const stopsFilterContainer = document.getElementById('stops-filter-group');
+            const airlineFilterContainer = document.getElementById('airline-filter-group');
+            const timeFilterContainer = document.getElementById('time-filter-group'); // NEW
+            const refundableCheckbox = document.getElementById('refundable');
+
+            // 1. Get search parameters from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const from = urlParams.get('from') || 'Delhi';
+            const to = urlParams.get('to') || 'Bengaluru';
+            const departureDate = urlParams.get('departure');
+            const travellers = urlParams.get('travellers') || '1';
+            const travelClass = urlParams.get('class') || 'Economy';
+
+            // 2. Update the search summary
+            const formatDate = (dateString) => {
+                if (!dateString) return '';
+                const options = { day: 'numeric', month: 'short', year: 'numeric' };
+                // Add time to avoid timezone issues
+                return new Date(dateString + 'T00:00:00').toLocaleDateString('en-US', options); 
+            };
+
+            searchTitle.textContent = `Flights from ${from} to ${to}`;
+            searchDetails.textContent = `${formatDate(departureDate)}  |  ${travellers} Traveller(s)  |  ${travelClass}`;
+            noResultsMessage.innerHTML = '<p>Loading flights...</p>';
+            noResultsMessage.style.display = 'block';
+
+            // 3. Fetch and process flights
+            try {
+                const response = await fetch('./flights.json');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                allFlights = await response.json();
+
+                // 4. Filter flights based on search (simple filter by city name)
+                currentFilteredFlights = allFlights.filter(flight =>
+                    flight.departureCity.toLowerCase() === from.toLowerCase() &&
+                    flight.arrivalCity.toLowerCase() === to.toLowerCase()
+                );
+                
+                // 5. Populate filters AND render initial results
+                populateFilters(currentFilteredFlights);
+                setupFilterListeners();
+                renderFlights(currentFilteredFlights);
+
+            } catch (error) {
+                console.error('Error fetching flights:', error);
+                noResultsMessage.innerHTML = '<p>Sorry, something went wrong. Could not load flights.</p>';
+            }
+
+            // --- Function to populate filters dynamically ---
+            function populateFilters(flights) {
+                // Get unique airlines and stops from the *filtered* results
+                const airlines = [...new Set(flights.map(f => f.airlineName))].sort();
+                const stops = [...new Set(flights.map(f => f.stops))].sort((a, b) => a.localeCompare(b, undefined, {numeric: true}));
+
+                // Clear existing filters and add title
+                stopsFilterContainer.innerHTML = '<h3>Stops</h3>';
+                airlineFilterContainer.innerHTML = '<h3>Airlines</h3>';
+
+                if (stops.length > 0) {
+                    stops.forEach((stop, index) => {
+                        const id = `stop-${index}`;
+                        stopsFilterContainer.innerHTML += `
+                            <div class="filter-option">
+                                <input type="checkbox" id="${id}" name="stop" value="${stop}" checked>
+                                <label for="${id}">${stop}</label>
+                            </div>
+                        `;
+                    });
+                } else {
+                     stopsFilterContainer.innerHTML += '<p style="font-size: 0.875rem; color: #6b7285;">No options</p>';
+                }
+
+                if (airlines.length > 0) {
+                    airlines.forEach((airline, index) => {
+                        const id = `airline-${index}`;
+                        airlineFilterContainer.innerHTML += `
+                            <div class="filter-option">
+                                <input type="checkbox" id="${id}" name="airline" value="${airline}" checked>
+                                <label for="${id}">${airline}</label>
+                            </div>
+                        `;
+                    });
+                } else {
+                     airlineFilterContainer.innerHTML += '<p style="font-size: 0.875rem; color: #6b7285;">No options</p>';
+                }
+                // Note: Time filter is static HTML, so it doesn't need population.
+            }
+
+            // --- Function to set up filter event listeners ---
+            function setupFilterListeners() {
+                // We add listener to the container to catch events from dynamic checkboxes
+                stopsFilterContainer.addEventListener('change', applyFilters);
+                airlineFilterContainer.addEventListener('change', applyFilters);
+                timeFilterContainer.addEventListener('change', applyFilters); // NEW
+                refundableCheckbox.addEventListener('change', applyFilters);
+            }
+
+            // --- Function to apply all active filters ---
+            function applyFilters() {
+                // Get all checked values
+                const selectedStops = [...stopsFilterContainer.querySelectorAll('input[type="checkbox"]:checked')].map(cb => cb.value);
+                const selectedAirlines = [...airlineFilterContainer.querySelectorAll('input[type="checkbox"]:checked')].map(cb => cb.value);
+                const selectedRefundable = refundableCheckbox.checked;
+                const selectedTimes = [...timeFilterContainer.querySelectorAll('input[type="checkbox"]:checked')].map(cb => cb.value); // NEW
+                
+                // Start with the base list (e.g., all DEL to BLR flights)
+                const newFilteredList = currentFilteredFlights.filter(flight => {
+                    const stopsMatch = selectedStops.length === 0 || selectedStops.includes(flight.stops);
+                    const airlineMatch = selectedAirlines.length === 0 || selectedAirlines.includes(flight.airlineName);
+                    const refundableMatch = !selectedRefundable || (selectedRefundable && flight.refundable);
+
+                    // NEW Time Logic
+                    let timeMatch = false;
+                    if (selectedTimes.length === 0) {
+                        timeMatch = true; // If no time is checked, show all
+                    } else {
+                        const departureHour = parseInt(flight.departureTime.split(':')[0]);
+                        if (selectedTimes.includes('early') && departureHour < 6) timeMatch = true;
+                        if (selectedTimes.includes('morning') && departureHour >= 6 && departureHour < 12) timeMatch = true;
+                        if (selectedTimes.includes('afternoon') && departureHour >= 12 && departureHour < 18) timeMatch = true;
+                        if (selectedTimes.includes('evening') && departureHour >= 18) timeMatch = true;
+                    }
+                    // END NEW Time Logic
+
+                    return stopsMatch && airlineMatch && refundableMatch && timeMatch; // UPDATED
+                });
+
+                // Re-render the list with the newly filtered flights
+                renderFlights(newFilteredList);
+            }
+
+
+            // --- Render function ---
+            function renderFlights(flights) {
+                // Clear previous results
+                resultsContainer.innerHTML = ''; 
+                
+                if (flights.length === 0) {
+                    // Show no results message
+                    noResultsMessage.innerHTML = `<p>No flights match your filters. Try adjusting your search.</p>`;
+                    noResultsMessage.style.display = 'block';
+                    return;
+                }
+
+                // Hide no results message
+                noResultsMessage.style.display = 'none'; 
+
+                flights.forEach(flight => {
+                    const flightCard = document.createElement('div');
+                    flightCard.classList.add('flight-card');
+                    
+                    const refundableText = flight.refundable ? 'Fully Refundable' : 'Non-Refundable';
+
+                    // === MODIFICATION: Updated Book Now button link ===
+                    flightCard.innerHTML = `
+                        <div class="flight-card-main">
+                            <!-- Airline -->
+                            <div class="airline-info">
+                                <img src="${flight.airlineLogo}" alt="${flight.airlineName} logo" onerror="this.src='https://placehold.co/64x64/E0E0E0/757575?text=Logo';">
+                                <div>
+                                    <div class="airline-name">${flight.airlineName}</div>
+                                    <div class="flight-number">${flight.flightNumber}</div>
+                                </div>
+                            </div>
+
+                            <!-- Departure -->
+                            <div class="flight-time-info">
+                                <div class="flight-time">${flight.departureTime}</div>
+                                <div class="flight-airport">${flight.departureAirportCode}</div>
+                            </div>
+
+                            <!-- Duration -->
+                            <div class="flight-duration-info">
+                                <div class="flight-duration">${flight.duration}</div>
+                                <div class="flight-stops">${flight.stops}</div>
+                            </div>
+
+                            <!-- Arrival -->
+                            <div class="flight-time-info">
+                                <div class="flight-time">${flight.arrivalTime}</div>
+                                <div class="flight-airport">${flight.arrivalAirportCode}</div>
+                            </div>
+
+                            <!-- Price & Book Button -->
+                            <div class="flight-price-info">
+                                <div class="flight-price">₹${flight.price.toLocaleString('en-IN')}</div>
+                                <div class="flight-price-subtext">per traveller</div>
+                            </div>
+                            <!-- MODIFIED LINK -->
+                            <a href="checkout.html?type=flight&id=${flight.id}" class="book-now-btn">Book Now</a>
+                        </div>
+                        <div class="flight-card-footer">
+                            <span>${refundableText}</span>
+                        </div>
+                    `;
+                    resultsContainer.appendChild(flightCard);
+                });
+            }
+
+        });
+    </script>
+
+</body>
+
+</html>

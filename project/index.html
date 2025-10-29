@@ -176,9 +176,11 @@
                         </div>
                     </div>
 
-                    <!-- NEW SEARCH BUTTON -->
+                    <!-- UPDATED SEARCH BUTTON with id="search-btn" -->
                     <div class="search-btn-container">
-                        <button class="search-btn" type="button">SEARCH</button>
+                        <!-- NEW ERROR MESSAGE CONTAINER -->
+                        <div id="search-error" class="search-error-message"></div>
+                        <button class="search-btn" type="button" id="search-btn">SEARCH</button>
                     </div>
                 </div>
                 <!-- END OF BOOKING WIDGET -->
@@ -358,7 +360,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
-            // --- NEW: Airport Autocomplete ---
+            // --- Airport Autocomplete ---
             let allAirports = [];
             const fromInput = document.getElementById('from-input');
             const fromSubtext = document.getElementById('from-subtext');
@@ -369,7 +371,12 @@
 
             // Fetch airport data
             fetch('./airports.json')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     allAirports = data;
                 })
@@ -474,7 +481,7 @@
                 let locationsHTML = locations.slice(0, 6).map(location => `
                     <a href="${location.link}">
                         <div class="location-card">
-                            <div class="card-img-container"><img src="${location.image}" alt="${location.title}" class="card-img"></div>
+                            <div class="card-img-container"><img src="${location.image}" alt="${location.title}" class="card-img" onerror="this.src='https://placehold.co/240x288/E0E0E0/757575?text=Location';"></div>
                             <h3 class="card-title">${location.title}</h3>
                         </div>
                     </a>
@@ -505,7 +512,7 @@
                     <a href="${home.link}" class="link_rooms">
                         <div class="hotel-card">
                             <div class="card-img-container">
-                                <img src="${home.image}" alt="${home.title}" class="card-img">
+                                <img src="${home.image}" alt="${home.title}" class="card-img" onerror="this.src='https://placehold.co/320x192/E0E0E0/757575?text=Home';">
                                 <span class="rating-badge">${home.rating}</span>
                             </div>
                             <div class="card-content">
@@ -542,7 +549,7 @@
                         <div class="testimonial-quote-icon">“</div>
                         <div class="testimonial-header">
                             <h3>${testimonial.name}</h3>
-                            <div class="testimonial-stars">${testimonial.ratingStars}</div>
+                            <div class="testimonial-stars">${"⭐".repeat(testimonial.rating)}</div>
                         </div>
                         <p>"${testimonial.quote}"</p>
                     </div>
@@ -614,12 +621,9 @@
                 });
             }
 
-            // --- NEW: Booking Form Logic ---
+            // --- Booking Form Logic ---
             const swapBtn = document.getElementById('swap-btn');
-            // const fromInput = document.getElementById('from-input'); // Already declared for autocomplete
-            // const fromSubtext = document.getElementById('from-subtext'); // Already declared for autocomplete
-            // const toInput = document.getElementById('to-input'); // Already declared for autocomplete
-            // const toSubtext = document.getElementById('to-subtext'); // Already declared for autocomplete
+            // fromInput, fromSubtext, toInput, toSubtext already declared
 
             if (swapBtn) {
                 swapBtn.addEventListener('click', () => {
@@ -668,7 +672,7 @@
             }
             // --- END OF NEW BOOKING FORM LOGIC ---
 
-            // --- NEW: Booking Tabbed Interface Logic ---
+            // --- Booking Tabbed Interface Logic ---
             const mainNavBar = document.getElementById('main-nav-bar');
             const navItems = mainNavBar.querySelectorAll('.nav-item');
             const bookingPanels = document.querySelectorAll('#booking-widget .booking-form-panel');
@@ -701,6 +705,92 @@
                 });
             }
             // --- END OF NEW BOOKING TABBED INTERFACE LOGIC ---
+
+
+            // --- SEARCH BUTTON CLICK HANDLER ---
+            const searchButton = document.getElementById('search-btn');
+            if (searchButton) {
+                searchButton.addEventListener('click', function() {
+                    // --- NEW: Get error element ---
+                    const errorEl = document.getElementById('search-error');
+                    errorEl.textContent = '';
+                    errorEl.style.display = 'none';
+
+                    // Find the active tab
+                    const activeNav = document.querySelector('.nav-item.active');
+                    if (!activeNav) return;
+
+                    const activeTabId = activeNav.dataset.tab;
+
+                    // Only proceed if the active tab is the flights form
+                    if (activeTabId === 'flights-form') {
+                        // Get all the values
+                        const from = document.getElementById('from-input').value.trim();
+                        const to = document.getElementById('to-input').value.trim();
+                        const departureInput = document.getElementById('departure-date');
+                        const departure = departureInput.value;
+                        const travellers = document.getElementById('travellers-input').value;
+                        const travelClass = document.getElementById('class-select').value;
+                        
+                        // --- NEW: Validation ---
+                        if (!from || !to) {
+                            errorEl.textContent = 'Please enter both "From" and "To" locations.';
+                            errorEl.style.display = 'block';
+                            return; // Stop execution
+                        }
+                        
+                        if (from.toLowerCase() === to.toLowerCase()) {
+                            errorEl.textContent = '"From" and "To" locations cannot be the same.';
+                            errorEl.style.display = 'block';
+                            return; // Stop execution
+                        }
+
+                        if (!departure) {
+                            errorEl.textContent = 'Please select a departure date.';
+                            errorEl.style.display = 'block';
+                            return; // Stop execution
+                        }
+                        
+                        // Date validation
+                        const today = new Date();
+                        const selectedDate = new Date(departure + 'T00:00:00'); // Use T00:00:00 to avoid timezone issues
+                        today.setHours(0, 0, 0, 0); // Reset today's time to midnight for fair comparison
+
+                        if (selectedDate < today) {
+                            errorEl.textContent = 'Departure date cannot be in the past.';
+                            errorEl.style.display = 'block';
+                            return; // Stop execution
+                        }
+                        
+                        if (travellers < 1) {
+                            errorEl.textContent = 'You must have at least 1 traveller.';
+                            errorEl.style.display = 'block';
+                            return; // Stop execution
+                        }
+                        
+                        // --- END: Validation ---
+                        
+                        // Construct the query string
+                        const queryParams = new URLSearchParams({
+                            from: from,
+                            to: to,
+                            departure: departure,
+                            travellers: travellers,
+                            class: travelClass
+                        });
+                        
+                        // Redirect to the flight results page
+                        window.location.href = `flight_results.html?${queryParams.toString()}`;
+                    } else {
+                        // Handle other searches (e.g., hotels) if needed
+                        console.log(`Search clicked for ${activeTabId}. Not implemented yet.`);
+                        // You could show a simple message
+                        alert(activeTabId + " search is not implemented yet.");
+                    }
+                });
+            }
+            // --- END OF NEW SEARCH BUTTON HANDLER ---
+
         });
     </script>
 </body>

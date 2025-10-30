@@ -9,9 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Page-specific CSS is included directly in the <head> -->
     <style>
-        /* Base styles from style.css for consistency */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f8f9fa;
@@ -91,12 +89,11 @@
         }
 
         .user-profile {
-            display: none; /* Simplified for this page, auth logic not copied */
+            display: none;
             align-items: center;
             gap: 0.75rem;
         }
 
-        /* Footer styles */
         .footer {
             background-color: #1f2937;
             color: #d1d5db;
@@ -186,7 +183,6 @@
             margin-top: 1rem;
         }
 
-        /* --- NEW STYLES for Flight Results Page --- */
 
         .search-summary-bar {
             background-color: #1f2937;
@@ -245,17 +241,16 @@
 
         @media (min-width: 768px) {
             .results-layout {
-                grid-template-columns: 280px 1fr; /* Sidebar and main content */
+                grid-template-columns: 280px 1fr;
             }
         }
 
-        /* --- Filter Sidebar --- */
         .filters-sidebar {
             background-color: white;
             border-radius: 0.75rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             padding: 1.5rem;
-            align-self: flex-start; /* Sticks to top */
+            align-self: flex-start;
             height: fit-content;
         }
 
@@ -305,7 +300,6 @@
             cursor: pointer;
         }
 
-        /* --- Results List --- */
         .results-list {
             display: flex;
             flex-direction: column;
@@ -322,7 +316,6 @@
             color: #4b5563;
         }
 
-        /* --- Flight Card --- */
         .flight-card {
             background-color: white;
             border-radius: 0.75rem;
@@ -445,7 +438,6 @@
         }
         
         @media (max-width: 1023px) {
-            /* Stack columns on mobile */
             .flight-card-main {
                 grid-template-columns: 1fr 1fr;
             }
@@ -454,20 +446,19 @@
             }
             .flight-price-info {
                 text-align: left;
-                grid-column: 1 / 2; /* Span half width */
+                grid-column: 1 / 2;
             }
             .book-now-btn {
-                grid-column: 2 / 3; /* Span other half */
+                grid-column: 2 / 3;
                 align-self: center;
             }
         }
          @media (max-width: 480px) {
-             /* Stack price and button on smallest screens */
             .flight-price-info {
-                grid-column: 1 / -1; /* Span full width */
+                grid-column: 1 / -1;
             }
             .book-now-btn {
-                grid-column: 1 / -1; /* Span full width */
+                grid-column: 1 / -1;
             }
          }
 
@@ -485,11 +476,9 @@
 
 <body>
 
-    <!-- Header -->
     <header class="header">
         <div class="container">
             <div class="top-nav">
-                <!-- SVG Logo Removed -->
                 <a href="index.html" class="logo">
                     <span>Globify</span>
                 </a>
@@ -499,7 +488,6 @@
                         <a href="#signInModal">Sign In</a>
                         <a href="#registerModal" class="btn btn-primary">Register</a>
                     </div>
-                    <!-- User profile section hidden by default -->
                     <a href="About_Us.html" class="btn btn-secondary">About Us</a>
                 </nav>
             </div>
@@ -509,7 +497,6 @@
     <main>
         <div class="container">
 
-            <!-- Search Summary Bar -->
             <div class="search-summary-bar">
                 <div>
                     <h1 id="search-title">Flights from Delhi to Bengaluru</h1>
@@ -518,24 +505,17 @@
                 <a href="index.html" class="edit-search-btn">Edit Search</a>
             </div>
 
-            <!-- Main Results Layout -->
             <div class="results-layout">
                 
-                <!-- Filters Sidebar -->
                 <aside class="filters-sidebar">
-                    <!-- Stops filter will be populated here -->
                     <div class="filter-group" id="stops-filter-group">
                         <h3>Stops</h3>
-                        <!-- Checkboxes will be dynamically inserted -->
                     </div>
 
-                    <!-- Airlines filter will be populated here -->
                     <div class="filter-group" id="airline-filter-group">
                         <h3>Airlines</h3>
-                        <!-- Checkboxes will be dynamically inserted -->
                     </div>
 
-                    <!-- NEW: Departure Time filter -->
                     <div class="filter-group" id="time-filter-group">
                         <h3>Departure Time</h3>
                         <div class="filter-option">
@@ -565,9 +545,7 @@
                     </div>
                 </aside>
 
-                <!-- Flight Results List -->
                 <section class="results-list" id="results-list-container">
-                    <!-- Flight cards will be injected here by JavaScript -->
                     <div id="no-results-message" style="display: none;">
                         <p>Loading flights...</p>
                     </div>
@@ -577,12 +555,10 @@
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
                 <div>
-                    <!-- SVG Logo Removed -->
                     <a href="#" class="logo" style="color:white; font-size:1.5rem;">
                         <span>Globify</span>
                     </a>
@@ -620,21 +596,18 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', async function () {
-            // --- Global state for flights and filters ---
-            let allFlights = []; // All flights from flights.json
-            let currentFilteredFlights = []; // Flights matching URL params (e.g., DEL to BLR)
+            let allFlights = [];
+            let currentFilteredFlights = [];
 
-            // --- Element References ---
             const resultsContainer = document.getElementById('results-list-container');
             const searchTitle = document.getElementById('search-title');
             const searchDetails = document.getElementById('search-details');
             const noResultsMessage = document.getElementById('no-results-message');
             const stopsFilterContainer = document.getElementById('stops-filter-group');
             const airlineFilterContainer = document.getElementById('airline-filter-group');
-            const timeFilterContainer = document.getElementById('time-filter-group'); // NEW
+            const timeFilterContainer = document.getElementById('time-filter-group');
             const refundableCheckbox = document.getElementById('refundable');
 
-            // 1. Get search parameters from URL
             const urlParams = new URLSearchParams(window.location.search);
             const from = urlParams.get('from') || 'Delhi';
             const to = urlParams.get('to') || 'Bengaluru';
@@ -642,11 +615,9 @@
             const travellers = urlParams.get('travellers') || '1';
             const travelClass = urlParams.get('class') || 'Economy';
 
-            // 2. Update the search summary
             const formatDate = (dateString) => {
                 if (!dateString) return '';
                 const options = { day: 'numeric', month: 'short', year: 'numeric' };
-                // Add time to avoid timezone issues
                 return new Date(dateString + 'T00:00:00').toLocaleDateString('en-US', options); 
             };
 
@@ -655,7 +626,6 @@
             noResultsMessage.innerHTML = '<p>Loading flights...</p>';
             noResultsMessage.style.display = 'block';
 
-            // 3. Fetch and process flights
             try {
                 const response = await fetch('./flights.json');
                 if (!response.ok) {
@@ -663,13 +633,11 @@
                 }
                 allFlights = await response.json();
 
-                // 4. Filter flights based on search (simple filter by city name)
                 currentFilteredFlights = allFlights.filter(flight =>
                     flight.departureCity.toLowerCase() === from.toLowerCase() &&
                     flight.arrivalCity.toLowerCase() === to.toLowerCase()
                 );
                 
-                // 5. Populate filters AND render initial results
                 populateFilters(currentFilteredFlights);
                 setupFilterListeners();
                 renderFlights(currentFilteredFlights);
@@ -679,13 +647,10 @@
                 noResultsMessage.innerHTML = '<p>Sorry, something went wrong. Could not load flights.</p>';
             }
 
-            // --- Function to populate filters dynamically ---
             function populateFilters(flights) {
-                // Get unique airlines and stops from the *filtered* results
                 const airlines = [...new Set(flights.map(f => f.airlineName))].sort();
                 const stops = [...new Set(flights.map(f => f.stops))].sort((a, b) => a.localeCompare(b, undefined, {numeric: true}));
 
-                // Clear existing filters and add title
                 stopsFilterContainer.innerHTML = '<h3>Stops</h3>';
                 airlineFilterContainer.innerHTML = '<h3>Airlines</h3>';
 
@@ -716,36 +681,29 @@
                 } else {
                      airlineFilterContainer.innerHTML += '<p style="font-size: 0.875rem; color: #6b7285;">No options</p>';
                 }
-                // Note: Time filter is static HTML, so it doesn't need population.
             }
 
-            // --- Function to set up filter event listeners ---
             function setupFilterListeners() {
-                // We add listener to the container to catch events from dynamic checkboxes
                 stopsFilterContainer.addEventListener('change', applyFilters);
                 airlineFilterContainer.addEventListener('change', applyFilters);
-                timeFilterContainer.addEventListener('change', applyFilters); // NEW
+                timeFilterContainer.addEventListener('change', applyFilters);
                 refundableCheckbox.addEventListener('change', applyFilters);
             }
 
-            // --- Function to apply all active filters ---
             function applyFilters() {
-                // Get all checked values
                 const selectedStops = [...stopsFilterContainer.querySelectorAll('input[type="checkbox"]:checked')].map(cb => cb.value);
                 const selectedAirlines = [...airlineFilterContainer.querySelectorAll('input[type="checkbox"]:checked')].map(cb => cb.value);
                 const selectedRefundable = refundableCheckbox.checked;
-                const selectedTimes = [...timeFilterContainer.querySelectorAll('input[type="checkbox"]:checked')].map(cb => cb.value); // NEW
+                const selectedTimes = [...timeFilterContainer.querySelectorAll('input[type="checkbox"]:checked')].map(cb => cb.value);
                 
-                // Start with the base list (e.g., all DEL to BLR flights)
                 const newFilteredList = currentFilteredFlights.filter(flight => {
                     const stopsMatch = selectedStops.length === 0 || selectedStops.includes(flight.stops);
                     const airlineMatch = selectedAirlines.length === 0 || selectedAirlines.includes(flight.airlineName);
                     const refundableMatch = !selectedRefundable || (selectedRefundable && flight.refundable);
 
-                    // NEW Time Logic
                     let timeMatch = false;
                     if (selectedTimes.length === 0) {
-                        timeMatch = true; // If no time is checked, show all
+                        timeMatch = true;
                     } else {
                         const departureHour = parseInt(flight.departureTime.split(':')[0]);
                         if (selectedTimes.includes('early') && departureHour < 6) timeMatch = true;
@@ -753,29 +711,23 @@
                         if (selectedTimes.includes('afternoon') && departureHour >= 12 && departureHour < 18) timeMatch = true;
                         if (selectedTimes.includes('evening') && departureHour >= 18) timeMatch = true;
                     }
-                    // END NEW Time Logic
 
-                    return stopsMatch && airlineMatch && refundableMatch && timeMatch; // UPDATED
+                    return stopsMatch && airlineMatch && refundableMatch && timeMatch;
                 });
 
-                // Re-render the list with the newly filtered flights
                 renderFlights(newFilteredList);
             }
 
 
-            // --- Render function ---
             function renderFlights(flights) {
-                // Clear previous results
                 resultsContainer.innerHTML = ''; 
                 
                 if (flights.length === 0) {
-                    // Show no results message
                     noResultsMessage.innerHTML = `<p>No flights match your filters. Try adjusting your search.</p>`;
                     noResultsMessage.style.display = 'block';
                     return;
                 }
 
-                // Hide no results message
                 noResultsMessage.style.display = 'none'; 
 
                 flights.forEach(flight => {
@@ -784,7 +736,6 @@
                     
                     const refundableText = flight.refundable ? 'Fully Refundable' : 'Non-Refundable';
 
-                    // === MODIFICATION: Updated Book Now button link ===
                     flightCard.innerHTML = `
                         <div class="flight-card-main">
                             <!-- Airline -->

@@ -10,13 +10,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* New styles for the sticky search bar and grid */
         .search-bar-sticky {
             position: sticky;
-            /* Stick below the main header */
-            top: 61px; /* Updated: Adjusted for removed main-nav */
+            top: 61px;
             background-color: transparent;
-            padding: 1rem 0; /* Keeps space for the sticky bar */
+            padding: 1rem 0;
             z-index: 40;
             box-shadow: none;
             border-bottom: none;
@@ -26,52 +24,48 @@
             display: flex;
             max-width: 800px;
             margin: 0 auto;
-            /* New styles for the floating pill bar */
             background-color: white;
-            border-radius: 9999px; /* Pill shape */
+            border-radius: 9999px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             border: 1px solid #e5e7eb;
-            /* overflow: hidden; */ /* Removed overflow to allow button margin */
-            padding: 0.375rem 0.5rem; /* Added padding inside the bar */
+            padding: 0.375rem 0.5rem;
             align-items: center;
         }
 
         .search-input {
             flex-grow: 1;
-            padding: 0.75rem 1.25rem; /* Adjusted padding */
+            padding: 0.75rem 1.25rem;
             font-size: 1rem;
-            border: none; /* Removed border */
-            border-radius: 9999px; /* Make input field rounded */
+            border: none;
+            border-radius: 9999px;
             outline: none;
             transition: border-color 0.2s, box-shadow 0.2s;
             background-color: transparent;
         }
 
         .search-input:focus {
-            border-color: transparent; /* Remove default focus border */
-            box-shadow: none; /* Remove default focus shadow */
-            /* Focus is implicit on the container */
+            border-color: transparent;
+            box-shadow: none;
         }
 
         .search-button {
-            padding: 0.625rem 1.5rem; /* Adjusted padding */
+            padding: 0.625rem 1.5rem;
             font-size: 1rem;
             font-weight: 500;
             background-color: #3b82f6;
             color: white;
             border: none;
-            border-radius: 9999px; /* Fully rounded button */
+            border-radius: 9999px;
             cursor: pointer;
             transition: background-color 0.2s;
-            margin-left: 0.25rem; /* Space between input and button */
-            flex-shrink: 0; /* Prevent button from shrinking */
+            margin-left: 0.25rem;
+            flex-shrink: 0;
         }
 
         .search-button:hover {
             background-color: #2563eb;
         }
 
-        /* Grid for displaying all items */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -80,9 +74,8 @@
             padding-bottom: 4rem;
         }
 
-        /* Ensure location cards work in the new grid */
         .location-card {
-            width: 100%; /* Override fixed width from slider */
+            width: 100%;
         }
         
         .location-card-link {
@@ -93,10 +86,9 @@
             display: none;
         }
 
-        /* Adjust sticky top for smaller screens if header height changes */
         @media (max-width: 768px) {
             .search-bar-sticky {
-                top: 61px; /* Example: height of top-nav only */
+                top: 61px;
             }
         }
     </style>
@@ -124,11 +116,9 @@
                     <a href="About_Us.html" class="btn btn-secondary">About Us</a>
                 </nav>
             </div>
-            <!-- Main Nav Removed -->
         </div>
     </header>
 
-    <!-- Sticky Search Bar -->
     <div class="search-bar-sticky">
         <div class="container search-bar-container">
             <input type="text" id="searchInput" class="search-input" placeholder="Search for locations (e.g., Delhi, Manali)...">
@@ -137,24 +127,19 @@
     </div>
 
     <main>
-        <!-- Dynamic Locations Grid Section -->
         <section class="section">
             <div class="container">
                 <h2 class="section-title">Explore All Famous Locations</h2>
                 <p class="section-subtitle">Find your next destination from our complete collection.</p>
                 <p id="noResults" class="section-subtitle" style="color: #ef4444; display: none;">No locations found matching your search.</p>
                 
-                <!-- Locations will be injected here by JS -->
                 <div id="locationsGridContainer" class="grid-container">
-                    <!-- Loading... -->
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Footer (Static) -->
     <footer class="footer">
-        <!-- Footer content copied from index.html -->
         <div class="container">
             <div class="footer-grid">
                 <div><a href="#" class="logo" style="color:white; font-size:1.5rem;"><img src="Icon.svg" alt="G"><span>Globify</span></a></div>
@@ -166,15 +151,12 @@
         </div>
     </footer>
 
-    <!-- Modals (Static) -->
-    <!-- Modals copied from index.html -->
     <div id="signInModal" class="modal-overlay"><div class="modal-content"><a href="#" class="modal-close-btn">&times;</a><div class="auth-card"><h2>Sign In</h2><form id="signInForm"><input type="email" placeholder="Your email" required><input type="password" placeholder="Password" required><button type="submit" class="btn btn-primary auth-btn">Enter</button></form><p class="auth-switch">New here? <a href="#registerModal">Create an account</a></p></div></div></div>
     <div id="registerModal" class="modal-overlay"><div class="modal-content"><a href="#" class="modal-close-btn">&times;</a><div class="auth-card"><h2>Register</h2><form id="registerForm"><input id="register-name" type="text" placeholder="Name" required><input type="email" placeholder="Your email" required><input type="date" placeholder="Date of Birth" required><input type="password" placeholder="Create Password" required><input type="password" placeholder="Confirm Password" required><button type="submit" class="btn btn-primary auth-btn">Enter</button></form><p class="auth-switch">Already have an account? <a href="#signInModal">Sign in</a></p></div></div></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
-            // --- Render All Locations ---
             const renderAllLocations = (locations) => {
                 const container = document.getElementById('locationsGridContainer');
                 if (!container) return;
@@ -194,7 +176,6 @@
                 `).join('');
             };
 
-            // --- Fetch Data and Render ---
             fetch('locations.json')
                 .then(response => response.json())
                 .then(renderAllLocations)
@@ -203,7 +184,6 @@
                     document.getElementById('locationsGridContainer').innerHTML = "<p>Could not load locations.</p>";
                 });
 
-            // --- Search Functionality ---
             const searchInput = document.getElementById('searchInput');
             const searchButton = document.getElementById('searchButton');
             const noResultsMsg = document.getElementById('noResults');
@@ -226,20 +206,15 @@
                 noResultsMsg.style.display = resultsFound ? 'none' : 'block';
             };
 
-            // Search on button click
             searchButton.addEventListener('click', filterLocations);
 
-            // Search on pressing Enter
             searchInput.addEventListener('keyup', (event) => {
                 if (event.key === 'Enter') {
                     filterLocations();
                 }
             });
             
-            // Optional: Live search as user types
-            // searchInput.addEventListener('input', filterLocations);
 
-            // --- Authentication Logic (Copied from index.html) ---
             const signInForm = document.getElementById('signInForm');
             const registerForm = document.getElementById('registerForm');
             const authLinks = document.getElementById('auth-links');

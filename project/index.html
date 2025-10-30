@@ -38,7 +38,6 @@
                     <a href="About_Us.html" class="btn btn-secondary">About Us</a>
                 </nav>
             </div>
-            <!-- UPDATED MAIN NAV with data-tab attributes -->
             <nav class="main-nav" id="main-nav-bar">
                 <a href="#" class="nav-item active" data-tab="flights-form">
                     <span>✈️</span><span>Flights</span>
@@ -66,25 +65,20 @@
     </header>
 
     <main>
-        <!-- Hero and Booking Form (Now Tabbed) -->
         <section class="hero-section">
             <div class="container">
-                <!-- NEW BOOKING WIDGET WRAPPER -->
                 <div id="booking-widget">
-                    <!-- Panel 1: Flights (Active by default) -->
                     <div class="booking-form-panel active" id="flights-form">
                         <div class="booking-form-grid">
-                            <!-- From -->
-                            <div class="form-field form-field-wrapper"> <!-- Added wrapper class -->
+                            <div class="form-field form-field-wrapper">
                                 <label for="from-input">From</label>
                                 <input type="text" id="from-input" class="main-text-input" value="Delhi"
-                                    placeholder="Enter city or airport" autocomplete="off"> <!-- Added autocomplete="off" -->
+                                    placeholder="Enter city or airport" autocomplete="off">
                                 <input type="text" id="from-subtext" class="sub-text-input"
-                                    value="DEL, Delhi Airport India" placeholder="Airport code" readonly> <!-- Added readonly -->
-                                <div id="from-suggestions" class="suggestions-list"></div> <!-- Suggestions box -->
+                                    value="DEL, Delhi Airport India" placeholder="Airport code" readonly>
+                                <div id="from-suggestions" class="suggestions-list"></div>
                             </div>
 
-                            <!-- Swap Button -->
                             <button class="swap-button" id="swap-btn" type="button">
                                 <svg style="width:1.25rem; height:1.25rem; color:#4b5563;" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24">
@@ -93,17 +87,15 @@
                                 </svg>
                             </button>
 
-                            <!-- To -->
-                            <div class="form-field form-field-wrapper"> <!-- Added wrapper class -->
+                            <div class="form-field form-field-wrapper">
                                 <label for="to-input">To</label>
                                 <input type="text" id="to-input" class="main-text-input" value="Bengaluru"
-                                    placeholder="Enter city or airport" autocomplete="off"> <!-- Added autocomplete="off" -->
+                                    placeholder="Enter city or airport" autocomplete="off">
                                 <input type="text" id="to-subtext" class="sub-text-input" value="BLR, Bengaluru Intl"
-                                    placeholder="Airport code" readonly> <!-- Added readonly -->
-                                <div id="to-suggestions" class="suggestions-list"></div> <!-- Suggestions box -->
+                                    placeholder="Airport code" readonly>
+                                <div id="to-suggestions" class="suggestions-list"></div>
                             </div>
 
-                            <!-- Departure -->
                             <div class="form-field">
                                 <label for="departure-date">Departure</label>
                                 <input type="date" id="departure-date" class="main-text-input date-input"
@@ -111,14 +103,12 @@
                                 <p id="departure-day" class="sub-text">Monday</p>
                             </div>
 
-                            <!-- Return -->
                             <div class="form-field">
                                 <label for="return-date">Return</label>
                                 <input type="date" id="return-date" class="main-text-input date-input">
                                 <p id="return-day" class="sub-text">&nbsp;</p>
                             </div>
 
-                            <!-- Travellers & Class -->
                             <div class="form-field">
                                 <label for="travellers-input">Travellers & Class</label>
                                 <input type="number" id="travellers-input" class="main-text-input" value="1" min="1"
@@ -132,71 +122,58 @@
                             </div>
                         </div>
                     </div>
-                    <!-- END OF FLIGHTS PANEL -->
 
-                    <!-- Panel 2: Hotels -->
                     <div class="booking-form-panel" id="hotels-form">
                         <div class="booking-form-placeholder">
                             🏨 Hotel & Stays booking form coming soon!
                         </div>
                     </div>
 
-                    <!-- Panel 3: Holiday Packages -->
                     <div class="booking-form-panel" id="holiday-packages-form">
                         <div class="booking-form-placeholder">
                             🏝️ Holiday Packages booking form coming soon!
                         </div>
                     </div>
 
-                    <!-- Panel 4: Cabs -->
                     <div class="booking-form-panel" id="cabs-form">
                         <div class="booking-form-placeholder">
                             🚕 Cabs booking form coming soon!
                         </div>
                     </div>
 
-                    <!-- Panel 5: Buses -->
                     <div class="booking-form-panel" id="buses-form">
                         <div class="booking-form-placeholder">
                             🚌 Buses booking form coming soon!
                         </div>
                     </div>
 
-                    <!-- Panel 6: Trains -->
                     <div class="booking-form-panel" id="trains-form">
                         <div class="booking-form-placeholder">
                             🚂 Trains booking form coming soon!
                         </div>
                     </div>
 
-                    <!-- Panel 7: Attractions -->
                     <div class="booking-form-panel" id="attractions-form">
                         <div class="booking-form-placeholder">
                             🏛️ Attractions booking form coming soon!
                         </div>
                     </div>
 
-                    <!-- UPDATED SEARCH BUTTON with id="search-btn" -->
                     <div class="search-btn-container">
-                        <!-- NEW ERROR MESSAGE CONTAINER -->
                         <div id="search-error" class="search-error-message"></div>
                         <button class="search-btn" type="button" id="search-btn">SEARCH</button>
                     </div>
                 </div>
-                <!-- END OF BOOKING WIDGET -->
             </div>
         </section>
 
-        <!-- Dynamic Locations Section -->
         <section class="section">
             <div class="container">
                 <h2 class="section-title">Explore 1000+ Famous Locations with us!</h2>
                 <p class="section-subtitle">Discover the most in-demand locations at the lowest prices available and get
                     the best customer experience.</p>
                 <div class="slider-wrapper">
-                    <!-- Locations will be injected here by JS -->
                     <div id="locationsContainer" class="slider-container">
-                        <!-- Loading... -->
                     </div>
                     <button id="locationsScrollLeft" class="scroll-btn left">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -211,7 +188,6 @@
                         </svg>
                     </button>
                 </div>
-                <!-- New View All Link -->
                 <div class="view-all-link-container">
                     <a href="all_locations.html" class="view-all-link">
                         Show Full Catalog <span>→</span>
@@ -220,14 +196,11 @@
             </div>
         </section>
         
-        <!-- Dynamic Homes Section -->
         <section class="section" style="background-color:#f9fafb;">
             <div class="container">
                 <h2 class="section-title">Featured Homes Recommended for you</h2>
                 <div class="slider-wrapper">
-                    <!-- Homes will be injected here by JS -->
                     <div id="homesContainer" class="slider-container">
-                        <!-- Loading... -->
                     </div>
                     <button id="homesScrollLeft" class="scroll-btn left">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -242,7 +215,6 @@
                         </svg>
                     </button>
                 </div>
-                <!-- New View All Link -->
                 <div class="view-all-link-container">
                     <a href="all_homes.html" class="view-all-link">
                         Show Full Catalog <span>→</span>
@@ -251,7 +223,6 @@
             </div>
         </section>
 
-        <!-- Download Banner (Static) -->
         <section class="section">
             <div class="container">
                 <div class="download-banner">
@@ -268,21 +239,17 @@
             </div>
         </section>
 
-        <!-- Dynamic Testimonials Section -->
         <section class="section">
             <div class="container" style="text-align: center;">
                 <h2 class="section-title">What does Customers Say About us</h2>
                 <p class="section-subtitle" style="margin: 0.5rem auto;">We are rated 4.8/5 in Travelling and Business
                     Accommodation.</p>
-                <!-- Testimonials will be injected here by JS -->
                 <div id="testimonialsGrid" class="testimonials-grid">
-                    <!-- Loading... -->
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Footer (Static) -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -323,7 +290,6 @@
         </div>
     </footer>
 
-    <!-- Modals (Static) -->
     <div id="signInModal" class="modal-overlay">
         <div class="modal-content">
             <a href="#" class="modal-close-btn">&times;</a>
@@ -360,7 +326,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
-            // --- Airport Autocomplete ---
             let allAirports = [];
             const fromInput = document.getElementById('from-input');
             const fromSubtext = document.getElementById('from-subtext');
@@ -369,7 +334,6 @@
             const toSubtext = document.getElementById('to-subtext');
             const toSuggestions = document.getElementById('to-suggestions');
 
-            // Fetch airport data
             fetch('./airports.json')
                 .then(response => {
                     if (!response.ok) {
@@ -382,7 +346,6 @@
                 })
                 .catch(error => console.error('Error fetching airports:', error));
 
-            // Renders suggestion list
             const renderSuggestions = (inputEl, listEl, subtextEl) => {
                 const filterText = inputEl.value.toLowerCase();
                 listEl.innerHTML = '';
@@ -396,7 +359,7 @@
                     airport.city.toLowerCase().includes(filterText) ||
                     airport.code.toLowerCase().includes(filterText) ||
                     airport.name.toLowerCase().includes(filterText)
-                ).slice(0, 5); // Limit to 5 suggestions
+                ).slice(0, 5);
 
                 if (filteredAirports.length === 0) {
                     listEl.style.display = 'none';
@@ -421,7 +384,6 @@
                 listEl.style.display = 'block';
             };
 
-            // Event listeners for inputs
             if(fromInput && fromSuggestions && fromSubtext) {
                 fromInput.addEventListener('input', () => renderSuggestions(fromInput, fromSuggestions, fromSubtext));
             }
@@ -429,7 +391,6 @@
                 toInput.addEventListener('input', () => renderSuggestions(toInput, toSuggestions, toSubtext));
             }
 
-            // Hide suggestions when clicking outside
             document.addEventListener('click', (e) => {
                 if (fromSuggestions && !fromInput.contains(e.target) && !fromSuggestions.contains(e.target)) {
                     fromSuggestions.style.display = 'none';
@@ -438,10 +399,8 @@
                     toSuggestions.style.display = 'none';
                 }
             });
-            // --- END: Airport Autocomplete ---
 
 
-            // --- OOP Implementation for Sliders ---
             class Slider {
                 constructor(containerId, scrollLeftId, scrollRightId, cardSelector) {
                     this.container = document.getElementById(containerId);
@@ -460,24 +419,20 @@
                 }
 
                 scroll(direction) {
-                    // Selects the first card *or* the view more card
                     const card = this.container.querySelector(this.cardSelector); 
                     if (card) {
-                        const scrollAmount = card.offsetWidth + 24; // 24px gap
+                        const scrollAmount = card.offsetWidth + 24;
                         const scrollValue = direction === 'right' ? scrollAmount : -scrollAmount;
                         this.container.scrollBy({ left: scrollValue, behavior: 'smooth' });
                     }
                 }
             }
 
-            // --- Dynamic Content Rendering Functions ---
 
-            // 1. Render Locations
             const renderLocations = (locations) => {
                 const container = document.getElementById('locationsContainer');
                 if (!container) return;
 
-                // --- MODIFICATION: Slice the array to get only the first 6 items ---
                 let locationsHTML = locations.slice(0, 6).map(location => `
                     <a href="${location.link}">
                         <div class="location-card">
@@ -487,7 +442,6 @@
                     </a>
                 `).join('');
 
-                // Add the "View More" card at the end
                 locationsHTML += `
                     <a href="all_locations.html" class="view-more-card-link"> 
                         <div class="view-more-card location-card-size">
@@ -498,16 +452,13 @@
                 `;
                 
                 container.innerHTML = locationsHTML;
-                // Initialize the slider *after* content is loaded
                 new Slider('locationsContainer', 'locationsScrollLeft', 'locationsScrollRight', '.location-card, .view-more-card-link');
             };
 
-            // 2. Render Homes
             const renderHomes = (homes) => {
                 const container = document.getElementById('homesContainer');
                 if (!container) return;
 
-                // --- MODIFICATION: Slice the array to get only the first 6 items ---
                 let homesHTML = homes.slice(0, 6).map(home => `
                     <a href="${home.link}" class="link_rooms">
                         <div class="hotel-card">
@@ -525,7 +476,6 @@
                     </a>
                 `).join('');
 
-                // Add the "View More" card at the end
                 homesHTML += `
                     <a href="all_homes.html" class="view-more-card-link">
                         <div class="view-more-card hotel-card-size">
@@ -536,11 +486,9 @@
                 `;
 
                 container.innerHTML = homesHTML;
-                // Initialize the slider *after* content is loaded
                 new Slider('homesContainer', 'homesScrollLeft', 'homesScrollRight', '.link_rooms, .view-more-card-link');
             };
 
-            // 3. Render Testimonials
             const renderTestimonials = (testimonials) => {
                 const grid = document.getElementById('testimonialsGrid');
                 if (!grid) return;
@@ -556,9 +504,7 @@
                 `).join('');
             };
 
-            // --- Fetch Data and Render ---
 
-            // Fetch locations
             fetch('./locations.json')
                 .then(response => response.json())
                 .then(renderLocations)
@@ -567,7 +513,6 @@
                     document.getElementById('locationsContainer').innerHTML = "<p>Could not load locations.</p>";
                 });
 
-            // Fetch homes
             fetch('./homes.json')
                 .then(response => response.json())
                 .then(renderHomes)
@@ -576,7 +521,6 @@
                     document.getElementById('homesContainer').innerHTML = "<p>Could not load homes.</p>";
                 });
 
-            // Fetch testimonials
             fetch('./testimonials.json')
                 .then(response => response.json())
                 .then(renderTestimonials)
@@ -586,7 +530,6 @@
                 });
 
 
-            // --- Authentication Logic ---
             const signInForm = document.getElementById('signInForm');
             const registerForm = document.getElementById('registerForm');
 
@@ -600,7 +543,7 @@
                 userNameEl.textContent = name;
                 userIconEl.textContent = name.charAt(0).toUpperCase();
 
-                authLinks.style.display = 'none'; // Use style.display
+                authLinks.style.display = 'none';
                 userProfile.style.display = 'flex';
 
                 window.location.hash = '#';
@@ -621,33 +564,28 @@
                 });
             }
 
-            // --- Booking Form Logic ---
             const swapBtn = document.getElementById('swap-btn');
-            // fromInput, fromSubtext, toInput, toSubtext already declared
 
             if (swapBtn) {
                 swapBtn.addEventListener('click', () => {
-                    // Swap main text
                     const tempMain = fromInput.value;
                     fromInput.value = toInput.value;
                     toInput.value = tempMain;
 
-                    // Swap sub-text
                     const tempSub = fromSubtext.value;
                     fromSubtext.value = toSubtext.value;
                     toSubtext.value = tempSub;
                 });
             }
 
-            // Day of week updater
             const departureDate = document.getElementById('departure-date');
             const departureDay = document.getElementById('departure-day');
             const returnDate = document.getElementById('return-date');
             const returnDay = document.getElementById('return-day');
 
             const getDayOfWeek = (dateString) => {
-                if (!dateString) return "&nbsp;"; // Return empty space if no date
-                const date = new Date(dateString + 'T00:00:00'); // Add time to avoid timezone issues
+                if (!dateString) return "&nbsp;";
+                const date = new Date(dateString + 'T00:00:00');
                 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                 return days[date.getUTCDay()];
             };
@@ -658,43 +596,34 @@
             };
 
             if (departureDate && departureDay) {
-                // Initial update on load
                 updateDay(departureDate, departureDay);
-                // Update on change
                 departureDate.addEventListener('change', () => updateDay(departureDate, departureDay));
             }
 
             if (returnDate && returnDay) {
-                // Initial update (will be empty)
                 updateDay(returnDate, returnDay);
-                // Update on change
                 returnDate.addEventListener('change', () => updateDay(returnDate, returnDay));
             }
-            // --- END OF NEW BOOKING FORM LOGIC ---
 
-            // --- Booking Tabbed Interface Logic ---
             const mainNavBar = document.getElementById('main-nav-bar');
             const navItems = mainNavBar.querySelectorAll('.nav-item');
             const bookingPanels = document.querySelectorAll('#booking-widget .booking-form-panel');
 
             if (mainNavBar && navItems.length > 0 && bookingPanels.length > 0) {
                 mainNavBar.addEventListener('click', (e) => {
-                    // Find the clicked nav item
                     const clickedNavItem = e.target.closest('.nav-item');
                     if (!clickedNavItem) return;
 
-                    e.preventDefault(); // Stop link from navigating
+                    e.preventDefault();
 
                     const tabId = clickedNavItem.dataset.tab;
                     if (!tabId) return;
 
-                    // Update Nav Items
                     navItems.forEach(item => {
                         item.classList.remove('active');
                     });
                     clickedNavItem.classList.add('active');
 
-                    // Update Booking Panels
                     bookingPanels.forEach(panel => {
                         if (panel.id === tabId) {
                             panel.classList.add('active');
@@ -704,27 +633,21 @@
                     });
                 });
             }
-            // --- END OF NEW BOOKING TABBED INTERFACE LOGIC ---
 
 
-            // --- SEARCH BUTTON CLICK HANDLER ---
             const searchButton = document.getElementById('search-btn');
             if (searchButton) {
                 searchButton.addEventListener('click', function() {
-                    // --- NEW: Get error element ---
                     const errorEl = document.getElementById('search-error');
                     errorEl.textContent = '';
                     errorEl.style.display = 'none';
 
-                    // Find the active tab
                     const activeNav = document.querySelector('.nav-item.active');
                     if (!activeNav) return;
 
                     const activeTabId = activeNav.dataset.tab;
 
-                    // Only proceed if the active tab is the flights form
                     if (activeTabId === 'flights-form') {
-                        // Get all the values
                         const from = document.getElementById('from-input').value.trim();
                         const to = document.getElementById('to-input').value.trim();
                         const departureInput = document.getElementById('departure-date');
@@ -732,45 +655,41 @@
                         const travellers = document.getElementById('travellers-input').value;
                         const travelClass = document.getElementById('class-select').value;
                         
-                        // --- NEW: Validation ---
                         if (!from || !to) {
                             errorEl.textContent = 'Please enter both "From" and "To" locations.';
                             errorEl.style.display = 'block';
-                            return; // Stop execution
+                            return;
                         }
                         
                         if (from.toLowerCase() === to.toLowerCase()) {
                             errorEl.textContent = '"From" and "To" locations cannot be the same.';
                             errorEl.style.display = 'block';
-                            return; // Stop execution
+                            return;
                         }
 
                         if (!departure) {
                             errorEl.textContent = 'Please select a departure date.';
                             errorEl.style.display = 'block';
-                            return; // Stop execution
+                            return;
                         }
                         
-                        // Date validation
                         const today = new Date();
-                        const selectedDate = new Date(departure + 'T00:00:00'); // Use T00:00:00 to avoid timezone issues
-                        today.setHours(0, 0, 0, 0); // Reset today's time to midnight for fair comparison
+                        const selectedDate = new Date(departure + 'T00:00:00');
+                        today.setHours(0, 0, 0, 0);
 
                         if (selectedDate < today) {
                             errorEl.textContent = 'Departure date cannot be in the past.';
                             errorEl.style.display = 'block';
-                            return; // Stop execution
+                            return;
                         }
                         
                         if (travellers < 1) {
                             errorEl.textContent = 'You must have at least 1 traveller.';
                             errorEl.style.display = 'block';
-                            return; // Stop execution
+                            return;
                         }
                         
-                        // --- END: Validation ---
                         
-                        // Construct the query string
                         const queryParams = new URLSearchParams({
                             from: from,
                             to: to,
@@ -779,17 +698,13 @@
                             class: travelClass
                         });
                         
-                        // Redirect to the flight results page
                         window.location.href = `flight_results.html?${queryParams.toString()}`;
                     } else {
-                        // Handle other searches (e.g., hotels) if needed
                         console.log(`Search clicked for ${activeTabId}. Not implemented yet.`);
-                        // You could show a simple message
                         alert(activeTabId + " search is not implemented yet.");
                     }
                 });
             }
-            // --- END OF NEW SEARCH BUTTON HANDLER ---
 
         });
     </script>

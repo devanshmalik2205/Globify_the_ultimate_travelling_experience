@@ -458,9 +458,14 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const roomOptionsContainer = document.getElementById('roomOptions');
+            const hotelTitle = document.querySelector('.hotel-title h1').textContent;
+            const hotelSubtitle = document.querySelector('.hotel-title p').textContent;
+            const hotelImage = document.querySelector('.gallery-item:first-child img').src;
 
             const createRoomCard = (room) => {
                 const featuresList = room.features.map(feature => `<li>• ${feature}</li>`).join('');
+
+                const cleanPrice = String(room.price).replace(/[^0-9.]/g, '');
 
                 return `
                     <div class="room-card">
@@ -473,7 +478,11 @@
                         <div class="room-pricing">
                             <p class="price">${room.price}</p>
                             <p class="price-subtext">${room.priceSubtext}</p>
-                            <button class="book-now-btn">Book Now</button>
+                            <button class="book-now-btn" 
+                                data-room-name="${encodeURIComponent(room.name)}" 
+                                data-room-price="${cleanPrice}">
+                                Book Now
+                            </button>
                         </div>
                     </div>
                 `;
@@ -497,6 +506,28 @@
                     console.error('Error fetching room data:', error);
                     roomOptionsContainer.innerHTML = '<p>Could not load available rooms. Please try again later.</p>';
                 });
+
+            roomOptionsContainer.addEventListener('click', (event) => {
+                if (event.target.classList.contains('book-now-btn')) {
+                    const button = event.target;
+                    const roomName = button.dataset.roomName;
+                    const roomPrice = button.dataset.roomPrice;
+
+                    const params = new URLSearchParams({
+                        type: 'hotel',
+                        title: encodeURIComponent(hotelTitle),
+                        subtitle: encodeURIComponent(hotelSubtitle),
+                        image: encodeURIComponent(hotelImage),
+                        room: roomName,
+                        price: roomPrice,
+                        checkIn: encodeURIComponent('16 Sep 2025'), 
+                        checkOut: encodeURIComponent('17 Sep 2025'),
+                        guests: encodeURIComponent('1 Room, 2 Adults')
+                    });
+
+                    window.location.href = `../checkout.html?${params.toString()}`;
+                }
+            });
         });
     </script>
 </body>

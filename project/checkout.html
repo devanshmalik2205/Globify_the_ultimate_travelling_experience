@@ -1192,6 +1192,9 @@
         .hotel-details {
             font-size: 0.875rem;
         }
+        .hotel-details p {
+            margin: 0.25rem 0;
+        }
         
         .price-details {
             border-top: 1px solid #e5e7eb;
@@ -1474,8 +1477,6 @@
 
             const urlParams = new URLSearchParams(window.location.search);
             const bookingType = urlParams.get('type');
-            const bookingId = urlParams.get('id');
-            const bookingTitle = urlParams.get('title');
 
             const loadingEl = document.getElementById('loading-summary');
             const flightSummaryEl = document.getElementById('flight-summary');
@@ -1486,8 +1487,8 @@
             const priceTotalEl = document.getElementById('price-total');
 
             const formatCurrency = (amount) => {
-                if (typeof amount === 'string' && amount.includes('INR')) {
-                    amount = parseFloat(amount.replace('INR', '').replace(/,/g, ''));
+                if (typeof amount === 'string') {
+                    amount = parseFloat(amount.replace(/[^0-9.]/g, ''));
                 }
                 
                 if (isNaN(amount)) {
@@ -1502,55 +1503,66 @@
                 priceTotalEl.textContent = `₹${total.toLocaleString('en-IN')}`;
             };
 
-            if (bookingType === 'flight' && bookingId) {
-                fetch('flights.json')
-                    .then(response => response.json())
-                    .then(flights => {
-                        const flight = flights.find(f => f.id == bookingId);
-                        if (flight) {
-                            document.getElementById('flight-logo').src = flight.airlineLogo;
-                            document.getElementById('flight-name').textContent = flight.airlineName;
-                            document.getElementById('flight-num').textContent = flight.flightNumber;
-                            document.getElementById('flight-dep-code').textContent = flight.departureAirportCode;
-                            document.getElementById('flight-dep-time').textContent = flight.departureTime;
-                            document.getElementById('flight-arr-code').textContent = flight.arrivalAirportCode;
-                            document.getElementById('flight-arr-time').textContent = flight.arrivalTime;
+            if (bookingType === 'flight') {
+                const bookingId = urlParams.get('id');
+                if (bookingId) {
+                    fetch('flights.json')
+                        .then(response => response.json())
+                        .then(flights => {
+                            const flight = flights.find(f => f.id == bookingId);
+                            if (flight) {
+                                document.getElementById('flight-logo').src = flight.airlineLogo;
+                                document.getElementById('flight-name').textContent = flight.airlineName;
+                                document.getElementById('flight-num').textContent = flight.flightNumber;
+                                document.getElementById('flight-dep-code').textContent = flight.departureAirportCode;
+                                document.getElementById('flight-dep-time').textContent = flight.departureTime;
+                                document.getElementById('flight-arr-code').textContent = flight.arrivalAirportCode;
+                                document.getElementById('flight-arr-time').textContent = flight.arrivalTime;
 
-                            formatCurrency(flight.price);
+                                formatCurrency(flight.price);
 
-                            loadingEl.classList.add('hidden');
-                            flightSummaryEl.classList.remove('hidden');
-                        } else {
-                            loadingEl.textContent = 'Could not find flight details.';
-                        }
-                    })
-                    .catch(err => {
-                        console.error('Error fetching flight data:', err);
-                        loadingEl.textContent = 'Error loading booking details.';
-                    });
+                                loadingEl.classList.add('hidden');
+                                flightSummaryEl.classList.remove('hidden');
+                            } else {
+                                loadingEl.textContent = 'Could not find flight details.';
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Error fetching flight data:', err);
+                            loadingEl.textContent = 'Error loading booking details.';
+                        });
+                } else {
+                    loadingEl.textContent = 'No flight information provided.';
+                }
 
-            } else if (bookingType === 'hotel' && bookingTitle) {
-                fetch('homes.json')
-                    .then(response => response.json())
-                    .then(homes => {
-                        const hotel = homes.find(h => h.title === decodeURIComponent(bookingTitle));
-                        if (hotel) {
-                            document.getElementById('hotel-image').src = hotel.image;
-                            document.getElementById('hotel-title').textContent = hotel.title;
-                            document.getElementById('hotel-subtitle').textContent = hotel.subtitle;
+            } else if (bookingType === 'hotel') {
+                const hotelTitle = urlParams.get('title');
+                const hotelImage = urlParams.get('image');
+                const roomName = urlParams.get('room');
+                const roomPrice = urlParams.get('price');
+                const checkIn = urlParams.get('checkIn');
+                const checkOut = urlParams.get('checkOut');
+                const guests = urlParams.get('guests');
 
-                            formatCurrency(hotel.price);
+                if (hotelTitle && roomName && roomPrice) {
+                    document.getElementById('hotel-image').src = decodeURIComponent(hotelImage);
+                    document.getElementById('hotel-title').textContent = decodeURIComponent(hotelTitle);
+                    document.getElementById('hotel-subtitle').textContent = decodeURIComponent(roomName);
 
-                            loadingEl.classList.add('hidden');
-                            hotelSummaryEl.classList.remove('hidden');
-                        } else {
-                            loadingEl.textContent = 'Could not find hotel details.';
-                        }
-                    })
-                    .catch(err => {
-                        console.error('Error fetching hotel data:', err);
-                        loadingEl.textContent = 'Error loading booking details.';
-                    });
+                    const detailsEl = document.querySelector('#hotel-summary .hotel-details');
+                    detailsEl.innerHTML = `
+                        <p><strong>Check-in:</strong> ${decodeURIComponent(checkIn || 'N/A')}</p>
+                        <p><strong>Check-out:</strong> ${decodeURIComponent(checkOut || 'N/A')}</p>
+                        <p><strong>Guests:</strong> ${decodeURIComponent(guests || 'N/A')}</p>
+                    `;
+
+                    formatCurrency(roomPrice);
+
+                    loadingEl.classList.add('hidden');
+                    hotelSummaryEl.classList.remove('hidden');
+                } else {
+                    loadingEl.textContent = 'Could not find hotel details.';
+                }
             } else {
                 loadingEl.textContent = 'No booking information provided.';
             }
@@ -1560,11 +1572,15 @@
 
             confirmBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                if (document.getElementById('full-name').value && document.getElementById('card-number').value) {
+                if (document.getElementById('full-name').value && document.getElementById('card-number').value && document.getElementById('expiry-date').value && document.getElementById('cvc').value) {
                     confirmationModal.classList.add('show');
                 } else {
                     console.log('Please fill out all required fields.');
-                    document.getElementById('full-name').focus();
+                    if (!document.getElementById('full-name').value) {
+                        document.getElementById('full-name').focus();
+                    } else {
+                        document.getElementById('card-number').focus();
+                    }
                 }
             });
 

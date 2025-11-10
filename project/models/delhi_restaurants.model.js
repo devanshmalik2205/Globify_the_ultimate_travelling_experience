@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 
-// Based on delhi_restaurants.json
 const delhiRestaurantSchema = new mongoose.Schema({
   name: String,
   description: String,
@@ -10,7 +9,7 @@ const delhiRestaurantSchema = new mongoose.Schema({
   price_range: String
 });
 
-// Mongoose will create a collection named 'delhirestaurants'
-const DelhiRestaurant = mongoose.model('DelhiRestaurant', delhiRestaurantSchema);
+// The 3rd argument is the EXACt collection name in MongoDB
+const DelhiRestaurant = mongoose.model('DelhiRestaurant', delhiRestaurantSchema, 'delhi_restaurants');
 
 export default DelhiRestaurant;

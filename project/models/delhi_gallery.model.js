@@ -1,12 +1,11 @@
 import mongoose from 'mongoose';
 
-// Based on delhi_gallery.json
 const delhiGallerySchema = new mongoose.Schema({
   src: String,
   alt: String
 });
 
-// Mongoose will create a collection named 'delhigalleries'
-const DelhiGallery = mongoose.model('DelhiGallery', delhiGallerySchema);
+// The 3rd argument is the EXACt collection name in MongoDB
+const DelhiGallery = mongoose.model('DelhiGallery', delhiGallerySchema, 'delhi_gallery');
 
 export default DelhiGallery;

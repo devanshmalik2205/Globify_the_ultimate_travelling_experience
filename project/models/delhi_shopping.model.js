@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 
-// Based on delhi_shopping.json
 const delhiShoppingSchema = new mongoose.Schema({
   name: String,
   description: String,
@@ -8,7 +7,7 @@ const delhiShoppingSchema = new mongoose.Schema({
   googleMapsUrl: String
 });
 
-// Mongoose will create a collection named 'delhishoppings'
-const DelhiShopping = mongoose.model('DelhiShopping', delhiShoppingSchema);
+// The 3rd argument is the EXACt collection name in MongoDB
+const DelhiShopping = mongoose.model('DelhiShopping', delhiShoppingSchema, 'delhi_shopping');
 
 export default DelhiShopping;

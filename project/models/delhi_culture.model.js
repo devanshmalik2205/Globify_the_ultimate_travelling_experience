@@ -1,13 +1,12 @@
 import mongoose from 'mongoose';
 
-// Based on delhi_culture.json
 const delhiCultureSchema = new mongoose.Schema({
   name: String,
   description: String,
   image: String
 });
 
-// Mongoose will create a collection named 'delhicultures'
-const DelhiCulture = mongoose.model('DelhiCulture', delhiCultureSchema);
+// The 3rd argument is the EXACt collection name in MongoDB
+const DelhiCulture = mongoose.model('DelhiCulture', delhiCultureSchema, 'delhi_culture');
 
 export default DelhiCulture;

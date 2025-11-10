@@ -627,7 +627,7 @@
             noResultsMessage.style.display = 'block';
 
             try {
-                const response = await fetch('./flights.json');
+                const response = await fetch('/api/flights');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

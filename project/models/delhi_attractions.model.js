@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 
-// Based on delhi_attractions.json
 const delhiAttractionSchema = new mongoose.Schema({
   name: String,
   description: String,
@@ -12,7 +11,7 @@ const delhiAttractionSchema = new mongoose.Schema({
   best_time_to_visit: String
 });
 
-// Mongoose will create a collection named 'delhiattractions'
-const DelhiAttraction = mongoose.model('DelhiAttraction', delhiAttractionSchema);
+// The 3rd argument is the EXACt collection name in MongoDB
+const DelhiAttraction = mongoose.model('DelhiAttraction', delhiAttractionSchema, 'delhi_attractions');
 
 export default DelhiAttraction;

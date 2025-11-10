@@ -1,14 +1,13 @@
 import mongoose from 'mongoose';
 
-// Based on holiday_inn_rooms.json
 const holidayInnRoomSchema = new mongoose.Schema({
   name: String,
-  features: [String], // This defines an array of strings
+  features: [String],
   price: String,
   priceSubtext: String
 });
 
-// Mongoose will create a collection named 'holidayinnrooms'
-const HolidayInnRoom = mongoose.model('HolidayInnRoom', holidayInnRoomSchema);
+// The 3rd argument is the EXACt collection name in MongoDB
+const HolidayInnRoom = mongoose.model('HolidayInnRoom', holidayInnRoomSchema, 'holiday_inn_rooms');
 
 export default HolidayInnRoom;

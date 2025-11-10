@@ -186,7 +186,7 @@
                 `).join('');
             };
 
-            fetch('homes.json')
+            fetch('/api/homes')
                 .then(response => response.json())
                 .then(renderAllHomes)
                 .catch(error => {

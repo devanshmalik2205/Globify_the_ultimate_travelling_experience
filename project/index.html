@@ -334,7 +334,7 @@
             const toSubtext = document.getElementById('to-subtext');
             const toSuggestions = document.getElementById('to-suggestions');
 
-            fetch('./airports.json')
+            fetch('/api/airports')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -505,7 +505,7 @@
             };
 
 
-            fetch('./locations.json')
+            fetch('/api/locations')
                 .then(response => response.json())
                 .then(renderLocations)
                 .catch(error => {
@@ -513,7 +513,7 @@
                     document.getElementById('locationsContainer').innerHTML = "<p>Could not load locations.</p>";
                 });
 
-            fetch('./homes.json')
+            fetch('/api/homes')
                 .then(response => response.json())
                 .then(renderHomes)
                 .catch(error => {
@@ -521,7 +521,7 @@
                     document.getElementById('homesContainer').innerHTML = "<p>Could not load homes.</p>";
                 });
 
-            fetch('./testimonials.json')
+            fetch('/api/testimonials')
                 .then(response => response.json())
                 .then(renderTestimonials)
                 .catch(error => {

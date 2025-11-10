@@ -394,9 +394,9 @@
             </div>
 
             <div class="image-gallery">
-                <div class="gallery-item"><img src="holiday_inn_images/224786058.jpg" alt="Hotel Lobby"></div>
-                <div class="gallery-item"><img src="holiday_inn_images/224786134.jpg" alt="Hotel Room"></div>
-                <div class="gallery-item"><img src="holiday_inn_images/508888869.jpg" alt="Swimming Pool"></div>
+                <div class="gallery-item"><img src="https://digital.ihg.com/is/image/ihg/holiday-inn-new-delhi-10124542435-4x3" alt="Hotel Lobby"></div>
+                <div class="gallery-item"><img src="https://digital.ihg.com/is/image/ihg/holiday-inn-new-delhi-2532768083-4x3" alt="Hotel Room"></div>
+                <div class="gallery-item"><img src="https://digital.ihg.com/is/image/ihg/holiday-inn-new-delhi-8132760214-4x3" alt="Swimming Pool"></div>
             </div>
 
             <section class="section">
@@ -488,7 +488,7 @@
                 `;
             };
 
-            fetch('holiday_inn_rooms.json')
+            fetch('/api/rooms/holiday-inn')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');

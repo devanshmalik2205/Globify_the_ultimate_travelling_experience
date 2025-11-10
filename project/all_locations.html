@@ -176,7 +176,7 @@
                 `).join('');
             };
 
-            fetch('locations.json')
+            fetch('/api/locations')
                 .then(response => response.json())
                 .then(renderAllLocations)
                 .catch(error => {

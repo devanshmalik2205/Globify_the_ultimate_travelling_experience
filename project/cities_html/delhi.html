@@ -919,7 +919,7 @@
                     </a>
                 </div>`;
 
-            fetch('delhi_attractions.json')
+            fetch('/api/delhi/attractions')
                 .then(response => response.json())
                 .then(attractions => {
                     let html = attractions.map(createAttractionCard).join('');
@@ -950,7 +950,7 @@
                     </a>
                 </div>`;
 
-            fetch('delhi_restaurants.json')
+            fetch('/api/delhi/restaurants')
                 .then(response => response.json())
                 .then(restaurants => {
                     let html = restaurants.map(createRestaurantCard).join('');
@@ -979,7 +979,7 @@
                     </div>
                 </div>`;
             
-            fetch('delhi_food.json')
+            fetch('/api/delhi/food')
                 .then(response => response.json())
                 .then(foods => {
                     foodGrid.innerHTML = foods.map(createFoodCard).join('');
@@ -1003,7 +1003,7 @@
                     </div>
                 </div>`;
 
-            fetch('delhi_shopping.json')
+            fetch('/api/delhi/shopping')
                 .then(response => response.json())
                 .then(shops => {
                     shoppingGrid.innerHTML = shops.map(createShoppingCard).join('');
@@ -1023,7 +1023,7 @@
                     </div>
                 </div>`;
 
-            fetch('delhi_culture.json')
+            fetch('/api/delhi/culture')
                 .then(response => response.json())
                 .then(items => {
                     let html = items.map(createCultureCard).join('');
@@ -1051,7 +1051,7 @@
                 lightboxOverlay.classList.remove('visible');
             };
 
-            fetch('delhi_gallery.json')
+            fetch('/api/delhi/gallery')
                 .then(response => response.json())
                 .then(images => {
                     let html = '';
@@ -1082,7 +1082,7 @@
                 }
             });
 
-            fetch('delhi_attractions.json')
+            fetch('/api/delhi/attractions')
                 .then(response => response.json())
                 .then(attractions => {
                     let html = attractions.map(createAttractionCard).join('');

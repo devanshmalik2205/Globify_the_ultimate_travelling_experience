@@ -9,7 +9,6 @@ const delhiRestaurantSchema = new mongoose.Schema({
   price_range: String
 });
 
-// The 3rd argument is the EXACt collection name in MongoDB
 const DelhiRestaurant = mongoose.model('DelhiRestaurant', delhiRestaurantSchema, 'delhi_restaurants');
 
 export default DelhiRestaurant;

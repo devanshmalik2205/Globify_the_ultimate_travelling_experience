@@ -7,7 +7,6 @@ const delhiShoppingSchema = new mongoose.Schema({
   googleMapsUrl: String
 });
 
-// The 3rd argument is the EXACt collection name in MongoDB
 const DelhiShopping = mongoose.model('DelhiShopping', delhiShoppingSchema, 'delhi_shopping');
 
 export default DelhiShopping;

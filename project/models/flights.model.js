@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 
-// Based on your flights.json
 const flightSchema = new mongoose.Schema({
   id: Number,
   airlineName: String,
@@ -18,7 +17,6 @@ const flightSchema = new mongoose.Schema({
   refundable: Boolean
 });
 
-// Mongoose will create a collection named 'flights'
 const Flight = mongoose.model('Flight', flightSchema);
 
 export default Flight;

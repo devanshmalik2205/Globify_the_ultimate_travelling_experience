@@ -9,7 +9,6 @@ const delhiFoodSchema = new mongoose.Schema({
   area: String
 });
 
-// The 3rd argument is the EXACt collection name in MongoDB
 const DelhiFood = mongoose.model('DelhiFood', delhiFoodSchema, 'delhi_food');
 
 export default DelhiFood;

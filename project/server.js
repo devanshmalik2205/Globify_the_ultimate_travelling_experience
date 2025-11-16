@@ -1,18 +1,16 @@
 import "dotenv/config"; 
 import express from "express";
 import mongoose from "mongoose";
-import cors from "cors"; // Import CORS
-import path from "path"; // Import path
-import { fileURLToPath } from "url"; // Import url
+import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
 
-// --- Import all your models ---
 import Location from './models/locations.model.js';
 import Home from './models/homes.model.js';
 import Flight from './models/flights.model.js';
 import Testimonial from './models/testimonials.model.js';
 import Airport from './models/airports.model.js';
 
-// --- NEW DELHI MODELS ---
 import DelhiAttraction from './models/delhi_attractions.model.js';
 import DelhiRestaurant from './models/delhi_restaurants.model.js';
 import DelhiFood from './models/delhi_food.model.js';
@@ -20,32 +18,22 @@ import DelhiShopping from './models/delhi_shopping.model.js';
 import DelhiCulture from './models/delhi_culture.model.js';
 import DelhiGallery from './models/delhi_gallery.model.js';
 
-// --- NEW ROOM MODELS ---
 import HolidayInnRoom from './models/holiday_inn_rooms.model.js';
 
 
-// --- Setup for ESM __dirname ---
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-// ------------------------------
 
 const app = express();
 
-// --- Middleware ---
-app.use(cors()); // Use CORS - This allows fetch() from your HTML files
-app.use(express.json()); // For parsing JSON bodies
-// This line serves ALL your files (index.html, style.css, etc.)
+app.use(cors());
+app.use(express.json());
 app.use(express.static(__dirname));
-// --------------------
 
 const PORT = process.env.PORT || 8000;
 const MONGOURL = process.env.MONGO_URL;
 
-// ===================
-// --- API Routes ---
-// ===================
 
-// --- Main Page Routes ---
 
 app.get('/api/locations', async (req, res) => {
     try {
@@ -100,7 +88,6 @@ app.get('/api/flights', async (req, res) => {
     }
 });
 
-// --- NEW: Delhi Page Routes ---
 
 app.get('/api/delhi/attractions', async (req, res) => {
     try {
@@ -156,7 +143,6 @@ app.get('/api/delhi/gallery', async (req, res) => {
     }
 });
 
-// --- NEW: Room Page Routes ---
 
 app.get('/api/rooms/holiday-inn', async (req, res) => {
     try {
@@ -168,9 +154,6 @@ app.get('/api/rooms/holiday-inn', async (req, res) => {
 });
 
 
-// ===========================
-// --- Database Connection ---
-// ===========================
 
 mongoose.connect(MONGOURL).then(()=>{ 
     console.log("Database is connected successfully.")

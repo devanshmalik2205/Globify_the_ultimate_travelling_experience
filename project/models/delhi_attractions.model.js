@@ -11,7 +11,6 @@ const delhiAttractionSchema = new mongoose.Schema({
   best_time_to_visit: String
 });
 
-// The 3rd argument is the EXACt collection name in MongoDB
 const DelhiAttraction = mongoose.model('DelhiAttraction', delhiAttractionSchema, 'delhi_attractions');
 
 export default DelhiAttraction;

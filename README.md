@@ -37,5 +37,5 @@ Globify is a full-stack travel web application designed to provide users with an
 
 ---
 
-👨‍💻 **Author:** Devansh Malik  
+👨‍💻 **Authors:** Devansh Malik, Avni Raja and Ashwika Sharma
 B.Tech Computer Science Engineering

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Holiday Inn New Delhi - Globify</title>
+    <title>Loading Hotel - Globify</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -47,11 +47,6 @@
             text-decoration: none;
         }
 
-        .logo img {
-            width: 2rem;
-            height: 2rem;
-        }
-
         .top-nav-links {
             display: flex;
             align-items: center;
@@ -76,55 +71,18 @@
             border-radius: 0.5rem;
             text-decoration: none;
             transition: all 0.2s;
-            border: 1px solid transparent;
             font-weight: 500;
+            border: none;
+            cursor: pointer;
         }
 
         .btn-primary {
             background-color: #3b82f6;
-            color: rgb(255, 255, 255) !important;
+            color: white;
         }
 
         .btn-primary:hover {
-            background-color: #ffffff;
-            color: #002fb0 !important;
-            border-color: #002fb0;
-        }
-
-        .btn-secondary {
-            border-color: #d1d5db;
-            color: #374151;
-        }
-
-        .btn-secondary:hover {
-            background-color: #f3f4f6;
-        }
-
-        .user-profile {
-            display: none;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .user-profile-icon {
-            width: 2.25rem;
-            height: 2.25rem;
-            border-radius: 50%;
-            background-color: #e0e7ff;
-            color: #3730a3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-        }
-
-        .user-profile-name {
-            font-weight: 500;
-            color: #1f2937;
-        }
-
-        .hidden {
-            display: none !important;
+            background-color: #2563eb;
         }
 
         .main-content {
@@ -170,7 +128,7 @@
         .image-gallery {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, 200px);
+            grid-template-rows: 400px;
             gap: 0.75rem;
             margin-bottom: 2.5rem;
         }
@@ -192,8 +150,7 @@
         }
 
         .gallery-item:first-child {
-            grid-column: 1 / 2;
-            grid-row: 1 / 3;
+            grid-column: 1 / 3;
         }
 
         .section {
@@ -269,8 +226,15 @@
             margin: 0;
         }
 
+        .room-features li {
+            margin-bottom: 0.25rem;
+        }
+
         .room-pricing {
             text-align: right;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .price {
@@ -297,12 +261,18 @@
             cursor: pointer;
             font-size: 1rem;
             font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .book-now-btn:hover {
+            background-color: #2563eb;
         }
 
         .footer {
             background-color: #1f2937;
             color: #d1d5db;
             padding: 4rem 0 2rem 0;
+            margin-top: 3rem;
         }
 
         .footer-grid {
@@ -316,42 +286,6 @@
                 grid-template-columns: repeat(4, 1fr);
             }
         }
-
-        .footer h4 {
-            font-weight: 600;
-            color: white;
-            margin-bottom: 1rem;
-        }
-
-        .footer-links {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .footer-links a {
-            color: #d1d5db;
-            text-decoration: none;
-            font-size: 0.875rem;
-        }
-
-        .footer-bottom {
-            margin-top: 3rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #374151;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.875rem;
-        }
-
-        .socials {
-            display: flex;
-            gap: 1rem;
-        }
     </style>
 </head>
 
@@ -360,21 +294,13 @@
     <header class="header">
         <div class="container">
             <div class="top-nav">
-                <a href="../index.html" class="logo">
-                    <img src="../Icon.svg" alt="Globify Logo">
+                <a href="index.html" class="logo">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12 2.1 12"></path><path d="m12 12 6.9-6.9"></path></svg>
                     <span>Globify</span>
                 </a>
                 <nav class="top-nav-links">
-                    <a href="#">List Your Property</a>
-                    <div id="auth-links" style="display: flex; gap: 1rem; align-items: center;">
-                        <a href="../index.html#signInModal">Sign In</a>
-                        <a href="../index.html#registerModal" class="btn btn-primary">Register</a>
-                    </div>
-                    <div id="user-profile" class="user-profile">
-                        <div id="user-icon" class="user-profile-icon"></div>
-                        <span id="user-name" class="user-profile-name"></span>
-                    </div>
-                    <a href="../About_Us.html" class="btn btn-secondary">About Us</a>
+                    <a href="admin.html" style="color: #3b82f6; font-weight: 600;">Admin Panel</a>
+                    <a href="index.html">Home</a>
                 </nav>
             </div>
         </div>
@@ -384,31 +310,27 @@
         <div class="container">
             <div class="hotel-header">
                 <div class="hotel-title">
-                    <h1>Holiday Inn New Delhi</h1>
-                    <p>Mayur Vihar, New Delhi</p>
+                    <h1 id="hotel-main-title">Loading Hotel...</h1>
+                    <p id="hotel-main-subtitle">Fetching details...</p>
                 </div>
                 <div class="rating">
-                    <div class="rating-score">9.1</div>
-                    <div class="rating-reviews">320 Reviews</div>
+                    <div class="rating-score" id="hotel-main-rating">0.0</div>
+                    <div class="rating-reviews">Rating</div>
                 </div>
             </div>
 
             <div class="image-gallery">
-                <div class="gallery-item"><img src="https://digital.ihg.com/is/image/ihg/holiday-inn-new-delhi-10124542435-4x3" alt="Hotel Lobby"></div>
-                <div class="gallery-item"><img src="https://digital.ihg.com/is/image/ihg/holiday-inn-new-delhi-2532768083-4x3" alt="Hotel Room"></div>
-                <div class="gallery-item"><img src="https://digital.ihg.com/is/image/ihg/holiday-inn-new-delhi-8132760214-4x3" alt="Swimming Pool"></div>
+                <div class="gallery-item">
+                    <img id="hotel-main-image" src="" alt="Hotel Preview" onerror="this.style.display='none'">
+                </div>
             </div>
 
             <section class="section">
-                <h2 class="section-title">Most Popular Amenities</h2>
+                <h2 class="section-title">Standard Amenities</h2>
                 <div class="amenities-grid">
-                    <div class="amenity"><span>🏊</span><span>Swimming Pool</span></div>
                     <div class="amenity"><span>📶</span><span>Free WiFi</span></div>
-                    <div class="amenity"><span>✈️</span><span>Airport Shuttle</span></div>
-                    <div class="amenity"><span>🅿️</span><span>Free Parking</span></div>
-                    <div class="amenity"><span>🏋️</span><span>Fitness Center</span></div>
-                    <div class="amenity"><span>🍽️</span><span>Restaurant</span></div>
-                    <div class="amenity"><span>☕</span><span>Tea/Coffee Maker</span></div>
+                    <div class="amenity"><span>❄️</span><span>Air Conditioning</span></div>
+                    <div class="amenity"><span>🅿️</span><span>Parking</span></div>
                     <div class="amenity"><span>🧼</span><span>Room Service</span></div>
                 </div>
             </section>
@@ -416,6 +338,7 @@
             <section class="section">
                 <h2 class="section-title">Available Rooms</h2>
                 <div id="roomOptions" class="room-options">
+                    <p>Loading rooms...</p>
                 </div>
             </section>
         </div>
@@ -424,112 +347,122 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
-                <div><a href="../index.html" class="logo" style="color:white;"><img src="../Icon.svg"
-                            alt="Globify Logo"><span>Globify</span></a></div>
                 <div>
-                    <h4>Explore</h4>
-                    <ul class="footer-links">
-                        <li><a href="../index.html">Flights</a></li>
-                        <li><a href="#">Hotels</a></li>
-                    </ul>
+                    <a href="index.html" class="logo" style="color:white; font-size:1.5rem; text-decoration:none;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12 2.1 12"></path><path d="m12 12 6.9-6.9"></path></svg>
+                        <span style="margin-left:0.5rem;">Globify</span>
+                    </a>
                 </div>
-                <div>
-                    <h4>Company</h4>
-                    <ul class="footer-links">
-                        <li><a href="../About_Us.html">About Us</a></li>
-                        <li><a href="#">Careers</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>Support</h4>
-                    <ul class="footer-links">
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>Copyright @ 2025 Globify. All rights reserved.</p>
-                <div class="socials"><span>f</span><span>i</span><span>t</span></div>
+                <div><p>Copyright @ 2025 Globify. All rights reserved.</p></div>
             </div>
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const roomOptionsContainer = document.getElementById('roomOptions');
-            const hotelTitle = document.querySelector('.hotel-title h1').textContent;
-            const hotelSubtitle = document.querySelector('.hotel-title p').textContent;
-            const hotelImage = document.querySelector('.gallery-item:first-child img').src;
+            const urlParams = new URLSearchParams(window.location.search);
+            const homeId = urlParams.get('id');
 
-            const createRoomCard = (room) => {
-                const featuresList = room.features.map(feature => `<li>• ${feature}</li>`).join('');
+            if (!homeId) {
+                document.getElementById('hotel-main-title').textContent = "Hotel Not Found";
+                alert("Please provide a valid hotel ID in the URL, for example: hotel.html?id=1");
+                return;
+            }
 
-                const cleanPrice = String(room.price).replace(/[^0-9.]/g, '');
+            const API_BASE = 'http://localhost:8000/api';
+            let currentHotelData = null;
 
-                return `
-                    <div class="room-card">
-                        <div class="room-details">
-                            <h3>${room.name}</h3>
-                            <ul class="room-features">
-                                ${featuresList}
-                            </ul>
-                        </div>
-                        <div class="room-pricing">
-                            <p class="price">${room.price}</p>
-                            <p class="price-subtext">${room.priceSubtext}</p>
-                            <button class="book-now-btn" 
-                                data-room-name="${encodeURIComponent(room.name)}" 
-                                data-room-price="${cleanPrice}">
-                                Book Now
-                            </button>
-                        </div>
-                    </div>
-                `;
-            };
-
-            fetch('/api/rooms/holiday-inn')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
+            // 1. Fetch Hotel details
+            fetch(`${API_BASE}/homes/${homeId}`)
+                .then(res => res.json())
+                .then(hotelData => {
+                    // Adjust based on how your backend returns a single home
+                    const hotel = Array.isArray(hotelData) ? hotelData[0] : hotelData;
+                    if(hotel) {
+                        currentHotelData = hotel;
+                        document.title = `${hotel.title} - Globify`;
+                        document.getElementById('hotel-main-title').textContent = hotel.title || 'Hotel';
+                        document.getElementById('hotel-main-subtitle').textContent = hotel.subtitle || hotel.location_name || 'Location';
+                        document.getElementById('hotel-main-rating').textContent = hotel.rating || 'N/A';
+                        if(hotel.image) {
+                            const imgEl = document.getElementById('hotel-main-image');
+                            imgEl.src = hotel.image;
+                            imgEl.style.display = 'block';
+                        }
                     }
-                    return response.json();
                 })
+                .catch(err => console.error("Could not load hotel info", err));
+
+            // 2. Fetch Rooms for this Hotel
+            fetch(`${API_BASE}/homes/${homeId}/rooms`)
+                .then(response => response.json())
                 .then(rooms => {
-                    let roomsHTML = '';
-                    rooms.forEach(room => {
-                        roomsHTML += createRoomCard(room);
-                    });
-                    roomOptionsContainer.innerHTML = roomsHTML;
+                    const roomContainer = document.getElementById('roomOptions');
+                    
+                    if (!rooms || rooms.length === 0) {
+                        roomContainer.innerHTML = '<p>No specific rooms currently available. Please check back later or contact the property directly.</p>';
+                        return;
+                    }
+
+                    roomContainer.innerHTML = rooms.map(room => {
+                        const features = room.features || [];
+                        const featuresList = features.length > 0 
+                            ? features.map(feature => `<li>• ${feature}</li>`).join('')
+                            : '<li>• Standard amenities included</li>';
+
+                        const roomName = room.name || 'Standard Room';
+                        const roomPrice = room.price || '$0';
+                        const priceSubtext = room.priceSubtext || '+ taxes & fees';
+                        const cleanPrice = String(roomPrice).replace(/[^0-9.]/g, '');
+
+                        return `
+                            <div class="room-card">
+                                <div class="room-details">
+                                    <h3>${roomName}</h3>
+                                    <ul class="room-features">
+                                        ${featuresList}
+                                    </ul>
+                                </div>
+                                <div class="room-pricing">
+                                    <p class="price">${roomPrice}</p>
+                                    <p class="price-subtext">${priceSubtext}</p>
+                                    <button class="book-now-btn" 
+                                        data-room-name="${encodeURIComponent(roomName)}" 
+                                        data-room-price="${cleanPrice}">
+                                        Book Now
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
                 })
                 .catch(error => {
-                    console.error('Error fetching room data:', error);
-                    roomOptionsContainer.innerHTML = '<p>Could not load available rooms. Please try again later.</p>';
+                    console.error('Error fetching rooms:', error);
+                    document.getElementById('roomOptions').innerHTML = '<p style="color: red;">Failed to load available rooms. Ensure your local server is running.</p>';
                 });
 
-            roomOptionsContainer.addEventListener('click', (event) => {
+            // 3. Booking Forwarding Logic
+            document.getElementById('roomOptions').addEventListener('click', (event) => {
                 if (event.target.classList.contains('book-now-btn')) {
-                    const button = event.target;
-                    const roomName = button.dataset.roomName;
-                    const roomPrice = button.dataset.roomPrice;
+                    if(!currentHotelData) return alert("Hotel details are still loading!");
 
+                    const button = event.target;
                     const params = new URLSearchParams({
                         type: 'hotel',
-                        title: encodeURIComponent(hotelTitle),
-                        subtitle: encodeURIComponent(hotelSubtitle),
-                        image: encodeURIComponent(hotelImage),
-                        room: roomName,
-                        price: roomPrice,
+                        title: encodeURIComponent(currentHotelData.title),
+                        subtitle: encodeURIComponent(currentHotelData.subtitle || currentHotelData.location_name || ''),
+                        image: encodeURIComponent(currentHotelData.image),
+                        room: button.dataset.roomName,
+                        price: button.dataset.roomPrice,
                         checkIn: encodeURIComponent('16 Sep 2025'), 
                         checkOut: encodeURIComponent('17 Sep 2025'),
                         guests: encodeURIComponent('1 Room, 2 Adults')
                     });
 
-                    window.location.href = `../checkout.html?${params.toString()}`;
+                    window.location.href = `checkout.html?${params.toString()}`;
                 }
             });
         });
     </script>
 </body>
-
 </html>

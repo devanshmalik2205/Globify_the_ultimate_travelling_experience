@@ -1,11 +1,25 @@
-import mongoose from 'mongoose';
+import db from "../db.js";
 
-const airportSchema = new mongoose.Schema({
-  city: String,
-  code: String,
-  name: String
-});
+/* ✅ Get all airports */
+export const getAirports = () => {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT * FROM Airport", (err, results) => {
+      if (err) reject(err);
+      else resolve(results);
+    });
+  });
+};
 
-const Airport = mongoose.model('Airport', airportSchema);
-
-export default Airport;
+/* ✅ Get airport by code */
+export const getAirportByCode = (code) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "SELECT * FROM Airport WHERE code = ?",
+      [code],
+      (err, results) => {
+        if (err) reject(err);
+        else resolve(results);
+      }
+    );
+  });
+};

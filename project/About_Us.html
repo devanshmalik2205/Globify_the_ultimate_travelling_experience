@@ -47,13 +47,6 @@
             text-decoration: none;
         }
 
-        .logo img {
-            width: 2rem;
-            height: 2rem;
-            border-radius: 0.375rem;
-            object-fit: cover;
-        }
-
         .top-nav-links {
             display: flex;
             align-items: center;
@@ -104,7 +97,8 @@
 
         .about-hero {
             padding: 4rem 0;
-            background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('Hero background.svg') no-repeat center center/cover;
+            /* Updated to use a high-quality Unsplash placeholder instead of a missing local SVG */
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1488085061387-422e15b4086c?auto=format&fit=crop&w=2070&q=80') no-repeat center center/cover;
             min-height: 40vh;
             display: flex;
             align-items: center;
@@ -293,7 +287,7 @@
         <div class="container">
             <div class="top-nav">
                 <a href="index.html" class="logo">
-                    <img src="Icon.svg" alt="Globify Logo">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12 2.1 12"></path><path d="m12 12 6.9-6.9"></path></svg>
                     <span>Globify</span>
                 </a>
                 <nav class="top-nav-links">
@@ -371,7 +365,7 @@
             <div class="footer-grid">
                 <div>
                     <a href="index.html" class="logo" style="color:white; font-size:1.5rem;">
-                        <img src="Icon.svg" alt="Globify Logo">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12 2.1 12"></path><path d="m12 12 6.9-6.9"></path></svg>
                         <span>Globify</span>
                     </a>
                 </div>

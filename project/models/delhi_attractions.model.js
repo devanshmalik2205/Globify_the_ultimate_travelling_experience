@@ -1,16 +1,26 @@
-import mongoose from 'mongoose';
+import db from "../db.js";
 
-const delhiAttractionSchema = new mongoose.Schema({
-  name: String,
-  description: String,
-  image: String,
-  googleMapsUrl: String,
-  category: String,
-  opening_hours: String,
-  ticket_price: String,
-  best_time_to_visit: String
-});
+/* ✅ Get all Delhi attractions */
+export const getDelhiAttractions = () => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      SELECT 
+        attraction_id,
+        name,
+        description,
+        image,
+        googleMapsUrl,
+        category,
+        opening_hours,
+        ticket_price,
+        best_time_to_visit
+      FROM Attraction
+      WHERE location_id = 8
+    `;
 
-const DelhiAttraction = mongoose.model('DelhiAttraction', delhiAttractionSchema, 'delhi_attractions');
-
-export default DelhiAttraction;
+    db.query(sql, (err, results) => {
+      if (err) reject(err);
+      else resolve(results);
+    });
+  });
+};

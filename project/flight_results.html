@@ -480,6 +480,8 @@
         <div class="container">
             <div class="top-nav">
                 <a href="index.html" class="logo">
+                    <!-- Default fallback SVG if Icon.svg is missing locally -->
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12 2.1 12"></path><path d="m12 12 6.9-6.9"></path></svg>
                     <span>Globify</span>
                 </a>
                 <nav class="top-nav-links">
@@ -560,6 +562,7 @@
             <div class="footer-grid">
                 <div>
                     <a href="#" class="logo" style="color:white; font-size:1.5rem;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12 2.1 12"></path><path d="m12 12 6.9-6.9"></path></svg>
                         <span>Globify</span>
                     </a>
                 </div>
@@ -599,6 +602,9 @@
             let allFlights = [];
             let currentFilteredFlights = [];
 
+            // Centralized API Base for MySQL backend
+            const API_BASE = 'http://localhost:8000/api';
+
             const resultsContainer = document.getElementById('results-list-container');
             const searchTitle = document.getElementById('search-title');
             const searchDetails = document.getElementById('search-details');
@@ -627,16 +633,23 @@
             noResultsMessage.style.display = 'block';
 
             try {
-                const response = await fetch('/api/flights');
+                // MySQL flights.model.js queries by location_name so we pass from and to in the URL
+                const response = await fetch(`${API_BASE}/flights?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 allFlights = await response.json();
 
+                // If backend filtered them, this list is exact. Fallback filter just in case.
                 currentFilteredFlights = allFlights.filter(flight =>
                     flight.departureCity.toLowerCase() === from.toLowerCase() &&
                     flight.arrivalCity.toLowerCase() === to.toLowerCase()
                 );
+
+                // If DB returned records without case matching exactly, just use what it returned
+                if(currentFilteredFlights.length === 0 && allFlights.length > 0) {
+                    currentFilteredFlights = allFlights;
+                }
                 
                 populateFilters(currentFilteredFlights);
                 setupFilterListeners();
@@ -644,7 +657,7 @@
 
             } catch (error) {
                 console.error('Error fetching flights:', error);
-                noResultsMessage.innerHTML = '<p>Sorry, something went wrong. Could not load flights.</p>';
+                noResultsMessage.innerHTML = '<p style="color:red;">Sorry, something went wrong. Could not load flights. Make sure server is running on port 8000.</p>';
             }
 
             function populateFilters(flights) {
@@ -699,7 +712,10 @@
                 const newFilteredList = currentFilteredFlights.filter(flight => {
                     const stopsMatch = selectedStops.length === 0 || selectedStops.includes(flight.stops);
                     const airlineMatch = selectedAirlines.length === 0 || selectedAirlines.includes(flight.airlineName);
-                    const refundableMatch = !selectedRefundable || (selectedRefundable && flight.refundable);
+                    
+                    // Handle MySQL integer boolean (1/0) or standard boolean true/false
+                    const isRefundable = flight.refundable === 1 || flight.refundable === true;
+                    const refundableMatch = !selectedRefundable || (selectedRefundable && isRefundable);
 
                     let timeMatch = false;
                     if (selectedTimes.length === 0) {
@@ -734,7 +750,10 @@
                     const flightCard = document.createElement('div');
                     flightCard.classList.add('flight-card');
                     
-                    const refundableText = flight.refundable ? 'Fully Refundable' : 'Non-Refundable';
+                    const isRefundable = flight.refundable === 1 || flight.refundable === true;
+                    const refundableText = isRefundable ? 'Fully Refundable' : 'Non-Refundable';
+                    
+                    const priceValue = Number(flight.price);
 
                     flightCard.innerHTML = `
                         <div class="flight-card-main">
@@ -767,11 +786,11 @@
 
                             <!-- Price & Book Button -->
                             <div class="flight-price-info">
-                                <div class="flight-price">₹${flight.price.toLocaleString('en-IN')}</div>
+                                <div class="flight-price">₹${priceValue.toLocaleString('en-IN')}</div>
                                 <div class="flight-price-subtext">per traveller</div>
                             </div>
-                            <!-- MODIFIED LINK -->
-                            <a href="checkout.html?type=flight&id=${flight.id}" class="book-now-btn">Book Now</a>
+                            <!-- Book using MySQL flight_id -->
+                            <a href="checkout.html?type=flight&id=${flight.flight_id || flight.id}" class="book-now-btn">Book Now</a>
                         </div>
                         <div class="flight-card-footer">
                             <span>${refundableText}</span>

@@ -1,12 +1,22 @@
-import mongoose from 'mongoose';
+import db from "../db.js";
 
-const delhiShoppingSchema = new mongoose.Schema({
-  name: String,
-  description: String,
-  image: String,
-  googleMapsUrl: String
-});
+/* ✅ Get all Delhi shopping places */
+export const getDelhiShopping = () => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      SELECT 
+        shopping_id,
+        name,
+        description,
+        image,
+        googleMapsUrl
+      FROM ShoppingPlace
+      WHERE location_id = 8
+    `;
 
-const DelhiShopping = mongoose.model('DelhiShopping', delhiShoppingSchema, 'delhi_shopping');
-
-export default DelhiShopping;
+    db.query(sql, (err, results) => {
+      if (err) reject(err);
+      else resolve(results);
+    });
+  });
+};

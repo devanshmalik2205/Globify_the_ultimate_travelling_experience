@@ -1,14 +1,24 @@
-import mongoose from 'mongoose';
+import db from "../db.js";
 
-const delhiFoodSchema = new mongoose.Schema({
-  name: String,
-  description: String,
-  image: String,
-  googleMapsUrl: String,
-  type: String,
-  area: String
-});
+/* ✅ Get all Delhi food places */
+export const getDelhiFood = () => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      SELECT 
+        food_id,
+        name,
+        description,
+        image,
+        googleMapsUrl,
+        type,
+        area
+      FROM FoodPlace
+      WHERE location_id = 8
+    `;
 
-const DelhiFood = mongoose.model('DelhiFood', delhiFoodSchema, 'delhi_food');
-
-export default DelhiFood;
+    db.query(sql, (err, results) => {
+      if (err) reject(err);
+      else resolve(results);
+    });
+  });
+};

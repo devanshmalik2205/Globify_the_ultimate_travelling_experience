@@ -1,11 +1,22 @@
-import mongoose from 'mongoose';
+import db from "../db.js";
 
-const testimonialSchema = new mongoose.Schema({
-  name: String,
-  ratingStars: String,
-  quote: String
-});
+/* ✅ Get all testimonials */
+export const getTestimonials = () => {
+  return new Promise((resolve, reject) => {
 
-const Testimonial = mongoose.model('Testimonial', testimonialSchema);
+    const sql = `
+      SELECT 
+        testimonial_id,
+        name,
+        quote,
+        ratingStars
+      FROM Testimonial
+    `;
 
-export default Testimonial;
+    db.query(sql, (err, results) => {
+      if (err) reject(err);
+      else resolve(results);
+    });
+
+  });
+};

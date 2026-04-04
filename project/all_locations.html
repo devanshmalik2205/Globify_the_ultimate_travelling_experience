@@ -8,8 +8,308 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
     <style>
+        /* Combined style.css */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .header {
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1f2937;
+            text-decoration: none;
+        }
+
+        .top-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .top-nav-links a {
+            text-decoration: none;
+            color: #4b5563;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .top-nav-links a:hover {
+            color: #3b82f6;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: rgb(255, 255, 255) !important;
+        }
+
+        .btn-primary:hover {
+            background-color: #ffffff;
+            color: #002fb0 !important;
+            border-color: #002fb0;
+        }
+
+        .btn-secondary {
+            border-color: #d1d5db;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f3f4f6;
+        }
+
+        .user-profile {
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-profile-icon {
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 50%;
+            background-color: #e0e7ff;
+            color: #3730a3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .user-profile-name {
+            font-weight: 500;
+            color: #1f2937;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .footer {
+            background-color: #1f2937;
+            color: #d1d5db;
+            padding: 4rem 0 2rem 0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .footer-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .footer h4 {
+            font-weight: 600;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #d1d5db;
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .subscribe-form {
+            margin-top: 1rem;
+            display: flex;
+        }
+
+        .subscribe-form input {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 0.5rem 0 0 0.5rem;
+            border: none;
+            color: #1f2937;
+        }
+
+        .subscribe-form button {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0 1rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+            cursor: pointer;
+        }
+
+        .footer-bottom {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #374151;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.875rem;
+        }
+
+        @media (min-width: 768px) {
+            .footer-bottom {
+                flex-direction: row;
+            }
+        }
+
+        .socials {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay:target {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #f8f9fa;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            text-align: center;
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: #6b7285;
+            cursor: pointer;
+            line-height: 1;
+            text-decoration: none;
+        }
+
+        .modal-close-btn:hover {
+            color: #1f2937;
+        }
+
+        .auth-card h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-card form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .auth-card input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        .auth-card input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .auth-switch {
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+
+        .auth-switch a {
+            color: #3b82f6;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .auth-switch a:hover {
+            text-decoration: underline;
+        }
+
+        /* All Locations Specific Styles */
         .search-bar-sticky {
             position: sticky;
             top: 61px;
@@ -74,16 +374,68 @@
             padding-bottom: 4rem;
         }
 
+        .section {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .section-subtitle {
+            color: #4b5563;
+            margin-top: 0.5rem;
+            max-width: 42rem;
+        }
+
         .location-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
             width: 100%;
+            position: relative;
+        }
+
+        .location-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-img-container {
+            height: 288px;
+            background-color: #e5e7eb;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .location-card .card-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            color: white;
+            font-weight: bold;
+            font-size: 1.25rem;
+            text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.8);
+            margin: 0;
         }
         
         .location-card-link {
             text-decoration: none;
+            display: block;
         }
 
         .hidden {
-            display: none;
+            display: none !important;
         }
 
         @media (max-width: 768px) {
@@ -100,7 +452,8 @@
         <div class="container">
             <div class="top-nav">
                 <a href="index.html" class="logo">
-                    <img src="Icon.svg" alt="G">
+                    <!-- Default fallback SVG if Icon.svg is missing locally -->
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12 2.1 12"></path><path d="m12 12 6.9-6.9"></path></svg>
                     <span>Globify</span>
                 </a>
                 <nav class="top-nav-links">
@@ -142,7 +495,12 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
-                <div><a href="#" class="logo" style="color:white; font-size:1.5rem;"><img src="Icon.svg" alt="G"><span>Globify</span></a></div>
+                <div>
+                    <a href="#" class="logo" style="color:white; font-size:1.5rem;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12 2.1 12"></path><path d="m12 12 6.9-6.9"></path></svg>
+                        <span>Globify</span>
+                    </a>
+                </div>
                 <div><h4>Explore</h4><ul class="footer-links"><li><a href="#">Flights</a></li><li><a href="#">Hotels</a></li><li><a href="#">Cabs</a></li><li><a href="#">Car Rental</a></li></ul></div>
                 <div><h4>Company</h4><ul class="footer-links"><li><a href="About_Us.html">About Us</a></li><li><a href="#">How it works</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li></ul></div>
                 <div><h4>Subscribe</h4><p style="font-size:0.875rem;">Join our newsletter to stay updated.</p><div class="subscribe-form"><input type="email" placeholder="Your email"><button>→</button></div></div>
@@ -166,22 +524,29 @@
                     return;
                 }
 
-                container.innerHTML = locations.map(location => `
-                    <a href="${location.link}" class="location-card-link" data-title="${location.title.toLowerCase()}">
+                container.innerHTML = locations.map(location => {
+                    // Mapped to match MySQL Model exactly
+                    const title = location.title || location.location_name || 'Location';
+                    const image = location.image || location.image_url || 'https://placehold.co/240x288/E0E0E0/757575?text=Location';
+                    const link = location.link || `checkout.html?type=location&title=${encodeURIComponent(title)}`;
+
+                    return `
+                    <a href="${link}" class="location-card-link" data-title="${title.toLowerCase()}">
                         <div class="location-card">
-                            <div class="card-img-container"><img src="${location.image}" alt="${location.title}" class="card-img"></div>
-                            <h3 class="card-title">${location.title}</h3>
+                            <div class="card-img-container"><img src="${image}" alt="${title}" class="card-img" onerror="this.src='https://placehold.co/240x288/E0E0E0/757575?text=Location';"></div>
+                            <h3 class="card-title">${title}</h3>
                         </div>
                     </a>
-                `).join('');
+                `}).join('');
             };
 
-            fetch('/api/locations')
+            // Using local port config matching the other files
+            fetch('http://localhost:8000/api/locations')
                 .then(response => response.json())
                 .then(renderAllLocations)
                 .catch(error => {
                     console.error('Error fetching locations:', error);
-                    document.getElementById('locationsGridContainer').innerHTML = "<p>Could not load locations.</p>";
+                    document.getElementById('locationsGridContainer').innerHTML = "<p style='grid-column: 1 / -1; color: red;'>Could not load locations from server. Please make sure your local server is running on port 8000.</p>";
                 });
 
             const searchInput = document.getElementById('searchInput');
@@ -235,7 +600,7 @@
                 signInForm.addEventListener('submit', function (event) {
                     event.preventDefault();
                     handleLogin('User');
-V                });
+                });
             }
 
             if (registerForm) {

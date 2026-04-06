@@ -575,7 +575,7 @@
                     const price = home.price || '$99';
                     const rating = home.rating || '4.5';
                     const image = home.image || 'https://placehold.co/320x192/E0E0E0/757575?text=Home';
-                    const link = home.link || `checkout.html?type=hotel&title=${encodeURIComponent(title)}`;
+                    const link = home.link || `hotel.html?id=${home.home_id || ''}`;
 
                     return `
                     <div class="hotel-card" data-title="${title.toLowerCase()}" data-subtitle="${subtitle.toLowerCase()}">
@@ -587,7 +587,7 @@
                             <h3 class="card-title-main">${title}</h3>
                             <p class="card-subtitle">${subtitle}</p>
                             <p class="price">${price} <span class="price-subtext">/ night</span></p>
-                            <a href="${link}" class="details-btn" style="display: block; text-align: center; text-decoration: none; padding-left:0rem; padding-right:0rem">Book Now</a>
+                            <a href="${link}" class="details-btn" style="display: block; text-align: center; text-decoration: none; padding-left:0rem; padding-right:0rem">View Details</a>
                         </div>
                     </div>
                 `}).join('');

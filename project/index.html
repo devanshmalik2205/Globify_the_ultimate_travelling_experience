@@ -231,7 +231,6 @@
             transform: translateY(-2px);
         }
 
-
         .form-field {
             cursor: default;
         }
@@ -1041,10 +1040,10 @@
                         <div class="booking-form-grid">
                             <div class="form-field form-field-wrapper">
                                 <label for="from-input">From</label>
-                                <input type="text" id="from-input" class="main-text-input" value="Delhi"
+                                <input type="text" id="from-input" class="main-text-input" value=""
                                     placeholder="Enter city or airport" autocomplete="off">
                                 <input type="text" id="from-subtext" class="sub-text-input"
-                                    value="DEL, Delhi Airport India" placeholder="Airport code" readonly>
+                                    value="" placeholder="Airport code" readonly>
                                 <div id="from-suggestions" class="suggestions-list"></div>
                             </div>
 
@@ -1058,9 +1057,9 @@
 
                             <div class="form-field form-field-wrapper">
                                 <label for="to-input">To</label>
-                                <input type="text" id="to-input" class="main-text-input" value="Bengaluru"
+                                <input type="text" id="to-input" class="main-text-input" value=""
                                     placeholder="Enter city or airport" autocomplete="off">
-                                <input type="text" id="to-subtext" class="sub-text-input" value="BLR, Bengaluru Intl"
+                                <input type="text" id="to-subtext" class="sub-text-input" value=""
                                     placeholder="Airport code" readonly>
                                 <div id="to-suggestions" class="suggestions-list"></div>
                             </div>
@@ -1068,8 +1067,8 @@
                             <div class="form-field">
                                 <label for="departure-date">Departure</label>
                                 <input type="date" id="departure-date" class="main-text-input date-input"
-                                    value="2025-09-15">
-                                <p id="departure-day" class="sub-text">Monday</p>
+                                    value="">
+                                <p id="departure-day" class="sub-text">&nbsp;</p>
                             </div>
 
                             <div class="form-field">
@@ -1316,22 +1315,28 @@
                 })
                 .catch(error => console.error('Error fetching airports:', error));
 
-            const renderSuggestions = (inputEl, listEl, subtextEl) => {
+            const renderSuggestions = (inputEl, listEl, subtextEl, showAllOnEmpty = false) => {
                 const filterText = inputEl.value.toLowerCase();
                 listEl.innerHTML = '';
 
-                if (filterText.length < 1) {
-                    listEl.style.display = 'none';
-                    return;
-                }
+                let filteredAirports = [];
 
-                // Handling columns securely, prioritizing explicit MySQL DB fields
-                const filteredAirports = allAirports.filter(airport => {
-                    const city = (airport.city || airport.location_name || '').toLowerCase();
-                    const code = (airport.code || airport.airport_code || '').toLowerCase();
-                    const name = (airport.name || airport.airport_name || '').toLowerCase();
-                    return city.includes(filterText) || code.includes(filterText) || name.includes(filterText);
-                }).slice(0, 5);
+                if (filterText.length < 1) {
+                    if (showAllOnEmpty && allAirports.length > 0) {
+                        filteredAirports = allAirports.slice(0, 5); // Show first 5 defaults when empty
+                    } else {
+                        listEl.style.display = 'none';
+                        return;
+                    }
+                } else {
+                    // Handling columns securely, prioritizing explicit MySQL DB fields
+                    filteredAirports = allAirports.filter(airport => {
+                        const city = (airport.city || airport.location_name || '').toLowerCase();
+                        const code = (airport.code || airport.airport_code || '').toLowerCase();
+                        const name = (airport.name || airport.airport_name || '').toLowerCase();
+                        return city.includes(filterText) || code.includes(filterText) || name.includes(filterText);
+                    }).slice(0, 5);
+                }
 
                 if (filteredAirports.length === 0) {
                     listEl.style.display = 'none';
@@ -1362,9 +1367,11 @@
 
             if(fromInput && fromSuggestions && fromSubtext) {
                 fromInput.addEventListener('input', () => renderSuggestions(fromInput, fromSuggestions, fromSubtext));
+                fromInput.addEventListener('focus', () => renderSuggestions(fromInput, fromSuggestions, fromSubtext, true));
             }
             if(toInput && toSuggestions && toSubtext) {
                 toInput.addEventListener('input', () => renderSuggestions(toInput, toSuggestions, toSubtext));
+                toInput.addEventListener('focus', () => renderSuggestions(toInput, toSuggestions, toSubtext, true));
             }
 
             document.addEventListener('click', (e) => {
@@ -1412,7 +1419,7 @@
                 let locationsHTML = locations.slice(0, 6).map(location => {
                     const title = location.location_name || location.title || 'Location';
                     const image = location.image_url || location.image || 'https://placehold.co/240x288/E0E0E0/757575?text=Location';
-                    const link = location.link || `all_locations.html?id=${location.location_id || ''}`;
+                    const link = location.link || `city.html?id=${location.location_id || ''}`;
 
                     return `
                     <a href="${link}">
@@ -1446,7 +1453,7 @@
                     const price = home.price_per_night || home.price || '$99';
                     const rating = home.rating || home.ratingStars || '4.5';
                     const image = home.image_url || home.image || 'https://placehold.co/320x192/E0E0E0/757575?text=Home';
-                    const link = home.link || `all_homes.html?id=${home.home_id || ''}`;
+                    const link = home.link || `hotel.html?id=${home.home_id || ''}`;
 
                     return `
                     <a href="${link}" class="link_rooms">
@@ -1588,6 +1595,12 @@
             };
 
             if (departureDate && departureDay) {
+                // Initialize with today's date if empty
+                if (!departureDate.value) {
+                    const today = new Date();
+                    departureDate.value = today.toISOString().split('T')[0];
+                }
+
                 updateDay(departureDate, departureDay);
                 departureDate.addEventListener('change', () => updateDay(departureDate, departureDay));
             }

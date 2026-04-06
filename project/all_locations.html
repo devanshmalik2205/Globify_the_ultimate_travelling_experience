@@ -528,7 +528,7 @@
                     // Mapped to match MySQL Model exactly
                     const title = location.title || location.location_name || 'Location';
                     const image = location.image || location.image_url || 'https://placehold.co/240x288/E0E0E0/757575?text=Location';
-                    const link = location.link || `checkout.html?type=location&title=${encodeURIComponent(title)}`;
+                    const link = location.link || `city.html?id=${location.location_id || ''}`;
 
                     return `
                     <a href="${link}" class="location-card-link" data-title="${title.toLowerCase()}">

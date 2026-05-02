@@ -376,7 +376,6 @@
             fetch(`${API_BASE}/homes/${homeId}`)
                 .then(res => res.json())
                 .then(hotelData => {
-                    // Adjust based on how your backend returns a single home
                     const hotel = Array.isArray(hotelData) ? hotelData[0] : hotelData;
                     if(hotel) {
                         currentHotelData = hotel;
@@ -426,8 +425,10 @@
                                 <div class="room-pricing">
                                     <p class="price">${roomPrice}</p>
                                     <p class="price-subtext">${priceSubtext}</p>
+                                    <!-- ✅ FIX: Properly injecting room.room_id so the transaction knows which room to book! -->
                                     <button class="book-now-btn" 
-                                        data-room-name="${encodeURIComponent(roomName)}" 
+                                        data-room-id="${room.room_id}"
+                                        data-room-name="${roomName}" 
                                         data-room-price="${cleanPrice}">
                                         Book Now
                                     </button>
@@ -447,16 +448,24 @@
                     if(!currentHotelData) return alert("Hotel details are still loading!");
 
                     const button = event.target;
+                    const roomId = button.dataset.roomId;
+
+                    if (!roomId || roomId === 'undefined') {
+                        alert("This room is not available for booking at the moment.");
+                        return;
+                    }
+
+                    // ✅ FIX: Removed encodeURIComponent here because URLSearchParams encodes automatically.
+                    // Also changed type to 'room' and included the exact 'id' for the ACID transaction!
                     const params = new URLSearchParams({
-                        type: 'hotel',
-                        title: encodeURIComponent(currentHotelData.title),
-                        subtitle: encodeURIComponent(currentHotelData.subtitle || currentHotelData.location_name || ''),
-                        image: encodeURIComponent(currentHotelData.image),
+                        type: 'room',
+                        id: roomId, 
+                        title: currentHotelData.title,
+                        subtitle: currentHotelData.subtitle || currentHotelData.location_name || '',
+                        image: currentHotelData.image,
                         room: button.dataset.roomName,
                         price: button.dataset.roomPrice,
-                        checkIn: encodeURIComponent('16 Sep 2025'), 
-                        checkOut: encodeURIComponent('17 Sep 2025'),
-                        guests: encodeURIComponent('1 Room, 2 Adults')
+                        guests: '1'
                     });
 
                     window.location.href = `checkout.html?${params.toString()}`;

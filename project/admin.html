@@ -333,10 +333,11 @@
             <a href="index.html" class="back-home-link">← Back to Home</a>
             <h2><i data-lucide="globe"></i> Globify Admin</h2>
             <form id="admin-login-form">
-                <label>Email / Username</label>
-                <input type="text" id="admin-email" value="admin@globify.com" required>
+                <label>Email</label>
+                <!-- Cleared default placeholders to test live connection -->
+                <input type="email" id="admin-email" placeholder="admin@globify.com" required>
                 <label>Password</label>
-                <input type="password" id="admin-password" value="admin123" required>
+                <input type="password" id="admin-password" placeholder="••••••••" required>
                 <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
                     Login <i data-lucide="arrow-right" class="lucide-sm"></i>
                 </button>
@@ -375,7 +376,7 @@
                     <h2 id="topbar-title" style="font-size: 1.25rem; font-weight: 600;">Dashboard</h2>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.75rem;">
-                    <span style="font-weight: 500; font-size: 0.875rem;" class="hide-mobile">Admin User</span>
+                    <span style="font-weight: 500; font-size: 0.875rem;" class="hide-mobile" id="admin-user-name-display">Admin User</span>
                     <div style="width: 36px; height: 36px; background: var(--bg-light); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-main); font-weight: 600;">A</div>
                 </div>
             </div>
@@ -811,13 +812,37 @@
             document.getElementById('sidebar-backdrop').classList.toggle('active');
         }
 
-        // App Init & Navigation
-        document.getElementById('admin-login-form').addEventListener('submit', (e) => {
+        // ✅ Live Admin Authentication Implementation
+        document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('dashboard-layout').style.display = 'block';
-            showToast('Welcome to Globify Admin');
-            loadBaseData();
+            const email = document.getElementById('admin-email').value;
+            const password = document.getElementById('admin-password').value;
+
+            try {
+                const res = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+
+                if (data.success && data.user.role === 'admin') {
+                    // Success logic
+                    document.getElementById('login-screen').style.display = 'none';
+                    document.getElementById('dashboard-layout').style.display = 'block';
+                    document.getElementById('admin-user-name-display').textContent = data.user.name;
+                    showToast('Welcome to Globify Admin');
+                    loadBaseData();
+                } else if (data.success) {
+                    // User exists, but is not an admin
+                    alert('Access Denied. Your account does not have administrator privileges.');
+                } else {
+                    // Invalid login
+                    alert(data.message || 'Invalid email or password.');
+                }
+            } catch (err) {
+                alert('Server error. Please make sure the backend is running.');
+            }
         });
 
         // Logout Implementation

@@ -279,7 +279,6 @@
             color: #6b7285;
         }
 
-
         .form-field label {
             font-size: 0.75rem;
             font-weight: 600;
@@ -881,7 +880,6 @@
             transform: translateX(4px);
         }
 
-
         .form-field .main-text-input,
         .form-field .sub-text-input {
             border: none;
@@ -994,14 +992,17 @@
                 </a>
                 <nav class="top-nav-links">
                     <a href="#">List Your Property</a>
-                    <a href="admin.html" style="color: #3b82f6; font-weight: 600;">Admin Panel</a>
+                    
+                    <a href="admin.html" style="color: #3b82f6; font-weight: 600; display: none;" id="admin-link-nav">Admin Panel</a>
+                    
                     <div id="auth-links" style="display: flex; gap: 1rem; align-items: center;">
-                        <a href="#signInModal">Sign In</a>
-                        <a href="#registerModal" class="btn btn-primary">Register</a>
+                        <a href="#signInModal" class="btn btn-primary">Login</a>
                     </div>
+                    
                     <div id="user-profile" class="user-profile">
                         <div id="user-icon" class="user-profile-icon"></div>
                         <span id="user-name" class="user-profile-name"></span>
+                        <button id="logout-btn" style="background:none; border:none; color:#ef4444; font-weight:600; cursor:pointer; font-size:0.875rem; margin-left:0.5rem;">Logout</button>
                     </div>
                     <a href="About_Us.html" class="btn btn-secondary">About Us</a>
                 </nav>
@@ -1262,8 +1263,9 @@
         <div class="modal-content">
             <a href="#" class="modal-close-btn">&times;</a>
             <div class="auth-card">
-                <h2>Sign In</h2>
+                <h2>Login</h2>
                 <form id="signInForm">
+                    <p id="login-error" style="color: #ef4444; font-size: 0.875rem; display: none; margin: 0;"></p>
                     <input type="email" placeholder="Your email" required>
                     <input type="password" placeholder="Password" required>
                     <button type="submit" class="btn btn-primary auth-btn">Enter</button>
@@ -1277,14 +1279,13 @@
         <div class="modal-content">
             <a href="#" class="modal-close-btn">&times;</a>
             <div class="auth-card">
-                <h2>Register</h2>
+                <h2>Create Account</h2>
                 <form id="registerForm">
+                    <p id="register-error" style="color: #ef4444; font-size: 0.875rem; display: none; margin: 0;"></p>
                     <input id="register-name" type="text" placeholder="Name" required>
                     <input type="email" placeholder="Your email" required>
-                    <input type="date" placeholder="Date of Birth" required>
-                    <input type="password" placeholder="Create Password" required>
-                    <input type="password" placeholder="Confirm Password" required>
-                    <button type="submit" class="btn btn-primary auth-btn">Enter</button>
+                    <input type="password" placeholder="Create Password" required minlength="6">
+                    <button type="submit" class="btn btn-primary auth-btn">Create</button>
                 </form>
                 <p class="auth-switch">Already have an account? <a href="#signInModal">Sign in</a></p>
             </div>
@@ -1293,6 +1294,44 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            
+            // ✅ Fix: Properly hoisted UI update function so it doesn't cause a ReferenceError
+            function restoreLoginState() {
+                const storedUserStr = localStorage.getItem('globify_user');
+                if (storedUserStr) {
+                    try {
+                        const userObj = JSON.parse(storedUserStr);
+                        const userNameEl = document.getElementById('user-name');
+                        const userIconEl = document.getElementById('user-icon');
+                        const authLinks = document.getElementById('auth-links');
+                        const userProfile = document.getElementById('user-profile');
+                        const adminLink = document.getElementById('admin-link-nav');
+
+                        if (userNameEl) userNameEl.textContent = userObj.name;
+                        if (userIconEl) userIconEl.textContent = userObj.name.charAt(0).toUpperCase();
+                        if (authLinks) authLinks.style.display = 'none';
+                        if (userProfile) userProfile.style.display = 'flex';
+                        if (adminLink && userObj.role === 'admin') adminLink.style.display = 'inline-block';
+                        
+                        return userObj;
+                    } catch (e) {
+                        console.error('Error parsing user data:', e);
+                    }
+                }
+                return null;
+            }
+
+            // Execute immediately on page load
+            restoreLoginState();
+
+            // Setup Logout logic
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', () => {
+                    localStorage.removeItem('globify_user');
+                    window.location.reload();
+                });
+            }
 
             let allAirports = [];
             const fromInput = document.getElementById('from-input');
@@ -1302,7 +1341,6 @@
             const toSubtext = document.getElementById('to-subtext');
             const toSuggestions = document.getElementById('to-suggestions');
 
-            // Local Node Server configuration
             const API_BASE = 'http://localhost:8000/api';
 
             fetch(`${API_BASE}/airports`)
@@ -1323,13 +1361,12 @@
 
                 if (filterText.length < 1) {
                     if (showAllOnEmpty && allAirports.length > 0) {
-                        filteredAirports = allAirports.slice(0, 5); // Show first 5 defaults when empty
+                        filteredAirports = allAirports.slice(0, 5); 
                     } else {
                         listEl.style.display = 'none';
                         return;
                     }
                 } else {
-                    // Handling columns securely, prioritizing explicit MySQL DB fields
                     filteredAirports = allAirports.filter(airport => {
                         const city = (airport.city || airport.location_name || '').toLowerCase();
                         const code = (airport.code || airport.airport_code || '').toLowerCase();
@@ -1529,39 +1566,73 @@
                 });
 
 
+            // ✅ LIVE AUTHENTICATION SYSTEM LOGIC
             const signInForm = document.getElementById('signInForm');
             const registerForm = document.getElementById('registerForm');
 
-            const authLinks = document.getElementById('auth-links');
-            const userProfile = document.getElementById('user-profile');
-            const userNameEl = document.getElementById('user-name');
-            const userIconEl = document.getElementById('user-icon');
-            const registerNameInput = document.getElementById('register-name');
-
-            const handleLogin = (name) => {
-                userNameEl.textContent = name;
-                userIconEl.textContent = name.charAt(0).toUpperCase();
-
-                authLinks.style.display = 'none';
-                userProfile.style.display = 'flex';
-
-                window.location.hash = '#';
-            };
-
             if (signInForm) {
-                signInForm.addEventListener('submit', function (event) {
+                signInForm.addEventListener('submit', async function (event) {
                     event.preventDefault();
-                    handleLogin('User');
+                    const email = signInForm.querySelector('input[type="email"]').value;
+                    const password = signInForm.querySelector('input[type="password"]').value;
+                    const errEl = document.getElementById('login-error');
+                    
+                    try {
+                        const res = await fetch(`${API_BASE}/auth/login`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email, password })
+                        });
+                        const data = await res.json();
+                        
+                        if (data.success) {
+                            errEl.style.display = 'none';
+                            // MUST SAVE TOKEN HERE
+                            localStorage.setItem('globify_user', JSON.stringify(data.user));
+                            restoreLoginState();
+                            window.location.hash = '#';
+                        } else {
+                            errEl.textContent = data.message || "Invalid credentials.";
+                            errEl.style.display = 'block';
+                        }
+                    } catch (error) {
+                        errEl.textContent = "Server error. Ensure backend is running.";
+                        errEl.style.display = 'block';
+                    }
                 });
             }
 
             if (registerForm) {
-                registerForm.addEventListener('submit', function (event) {
+                registerForm.addEventListener('submit', async function (event) {
                     event.preventDefault();
-                    const userName = registerNameInput.value.trim() || 'User';
-                    handleLogin(userName);
+                    const name = document.getElementById('register-name').value.trim();
+                    const email = registerForm.querySelector('input[type="email"]').value;
+                    const password = registerForm.querySelector('input[placeholder="Create Password"]').value;
+                    const errEl = document.getElementById('register-error');
+
+                    try {
+                        const res = await fetch(`${API_BASE}/auth/register`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ name, email, password })
+                        });
+                        const data = await res.json();
+                        
+                        if (data.success) {
+                            errEl.style.display = 'none';
+                            alert('Account created successfully! Please log in.');
+                            window.location.hash = '#signInModal'; 
+                        } else {
+                            errEl.textContent = data.message || "Registration failed.";
+                            errEl.style.display = 'block';
+                        }
+                    } catch (error) {
+                        errEl.textContent = "Server error. Ensure backend is running.";
+                        errEl.style.display = 'block';
+                    }
                 });
             }
+
 
             const swapBtn = document.getElementById('swap-btn');
 
@@ -1595,7 +1666,6 @@
             };
 
             if (departureDate && departureDay) {
-                // Initialize with today's date if empty
                 if (!departureDate.value) {
                     const today = new Date();
                     departureDate.value = today.toISOString().split('T')[0];

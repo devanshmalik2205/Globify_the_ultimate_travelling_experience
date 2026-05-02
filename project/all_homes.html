@@ -426,6 +426,22 @@
             font-weight: bold;
             padding: 0.25rem 0.5rem;
             border-radius: 0.25rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* ✅ NEW FEATURE: Dynamic Badge UI */
+        .dynamic-badge {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .card-content {
@@ -518,7 +534,7 @@
 
     <div class="search-bar-sticky">
         <div class="container search-bar-container">
-            <input type="text" id="searchInput" class="search-input" placeholder="Search for homes or hotels (e.g., Holiday Inn)...">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search for homes or hotels (e.g., Holiday Inn, Mumbai)...">
             <button id="searchButton" class="search-button">Search</button>
         </div>
     </div>
@@ -559,17 +575,31 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
+            const noResultsMsg = document.getElementById('noResults');
+
+            // ✅ APPEALING ADDITION: Generate vibrant CSS Gradients based on the backend SQL CASE output!
+            const getBadgeStyle = (badgeText) => {
+                if (!badgeText) return '';
+                if (badgeText.includes('Top Rated')) return 'background: linear-gradient(135deg, #f59e0b, #d97706);'; // Gold
+                if (badgeText.includes('Great Value')) return 'background: linear-gradient(135deg, #10b981, #059669);'; // Emerald Green
+                if (badgeText.includes('Luxury')) return 'background: linear-gradient(135deg, #8b5cf6, #6d28d9);'; // Deep Purple
+                return 'background: linear-gradient(135deg, #ef4444, #b91c1c);'; // Red (Popular)
+            };
+
             const renderAllHomes = (homes) => {
                 const container = document.getElementById('homesGridContainer');
                 if (!container) return;
 
                 if (homes.length === 0) {
-                    container.innerHTML = "<p>No homes available at this time.</p>";
+                    container.innerHTML = "";
+                    noResultsMsg.style.display = 'block';
                     return;
                 }
+                
+                noResultsMsg.style.display = 'none';
 
                 container.innerHTML = homes.map(home => {
-                    // Mapped dynamically based on the exact columns returned from homes.model.js
+                    // Mapped dynamically based on the exact columns returned from SQL
                     const title = home.title || 'Accommodation';
                     const subtitle = home.subtitle || home.location_name || 'Best Deal';
                     const price = home.price || '$99';
@@ -577,63 +607,63 @@
                     const image = home.image || 'https://placehold.co/320x192/E0E0E0/757575?text=Home';
                     const link = home.link || `hotel.html?id=${home.home_id || ''}`;
 
+                    // Extract our optimized SQL dynamic badge
+                    const dynamicBadgeHTML = home.dynamic_badge ? 
+                        `<span class="dynamic-badge" style="${getBadgeStyle(home.dynamic_badge)}">${home.dynamic_badge}</span>` : '';
+
                     return `
-                    <div class="hotel-card" data-title="${title.toLowerCase()}" data-subtitle="${subtitle.toLowerCase()}">
+                    <div class="hotel-card">
                         <div class="card-img-container">
                             <img src="${image}" alt="${title}" class="card-img" onerror="this.src='https://placehold.co/320x192/E0E0E0/757575?text=Home';">
                             <span class="rating-badge">${rating}</span>
+                            ${dynamicBadgeHTML}
                         </div>
                         <div class="card-content">
                             <h3 class="card-title-main">${title}</h3>
                             <p class="card-subtitle">${subtitle}</p>
-                            <p class="price">${price} <span class="price-subtext">/ night</span></p>
+                            <p class="price">₹${price} <span class="price-subtext">/ night</span></p>
                             <a href="${link}" class="details-btn" style="display: block; text-align: center; text-decoration: none; padding-left:0rem; padding-right:0rem">View Details</a>
                         </div>
                     </div>
                 `}).join('');
             };
 
-            // Using local port config just like index.html
-            fetch('http://localhost:8000/api/homes')
-                .then(response => response.json())
-                .then(renderAllHomes)
-                .catch(error => {
-                    console.error('Error fetching homes:', error);
-                    document.getElementById('homesGridContainer').innerHTML = "<p style='grid-column: 1 / -1; color: red;'>Could not load homes from server. Please make sure your local server is running on port 8000.</p>";
-                });
+            // ✅ SQL OPTIMIZATION IMPLEMENTATION: Server-side API filtering 
+            const fetchHomes = (searchTerm = '') => {
+                // By sending ?search= we let the backend SQL `LIKE` operator handle it!
+                const url = searchTerm 
+                    ? `http://localhost:8000/api/homes?search=${encodeURIComponent(searchTerm)}`
+                    : 'http://localhost:8000/api/homes';
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(renderAllHomes)
+                    .catch(error => {
+                        console.error('Error fetching homes:', error);
+                        document.getElementById('homesGridContainer').innerHTML = "<p style='grid-column: 1 / -1; color: red;'>Could not load homes from server. Please make sure your local server is running on port 8000.</p>";
+                    });
+            };
+
+            // Initial Load
+            fetchHomes();
 
             const searchInput = document.getElementById('searchInput');
             const searchButton = document.getElementById('searchButton');
-            const noResultsMsg = document.getElementById('noResults');
 
-            const filterHomes = () => {
-                const searchTerm = searchInput.value.toLowerCase().trim();
-                const cards = document.querySelectorAll('#homesGridContainer .hotel-card');
-                let resultsFound = false;
-
-                cards.forEach(card => {
-                    const title = card.dataset.title;
-                    const subtitle = card.dataset.subtitle;
-                    
-                    if (title.includes(searchTerm) || subtitle.includes(searchTerm)) {
-                        card.classList.remove('hidden');
-                        resultsFound = true;
-                    } else {
-                        card.classList.add('hidden');
-                    }
-                });
-
-                noResultsMsg.style.display = resultsFound ? 'none' : 'block';
+            const triggerSearch = () => {
+                const searchTerm = searchInput.value.trim();
+                fetchHomes(searchTerm); // Let the backend do the filtering
             };
 
-            searchButton.addEventListener('click', filterHomes);
+            searchButton.addEventListener('click', triggerSearch);
 
             searchInput.addEventListener('keyup', (event) => {
                 if (event.key === 'Enter') {
-                    filterHomes();
+                    triggerSearch();
                 }
             });
 
+            /* --- User Auth Mocks --- */
             const signInForm = document.getElementById('signInForm');
             const registerForm = document.getElementById('registerForm');
             const authLinks = document.getElementById('auth-links');

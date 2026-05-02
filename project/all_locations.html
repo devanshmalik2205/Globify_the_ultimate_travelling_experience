@@ -514,24 +514,28 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            
+            const noResultsMsg = document.getElementById('noResults');
 
             const renderAllLocations = (locations) => {
                 const container = document.getElementById('locationsGridContainer');
                 if (!container) return;
 
                 if (locations.length === 0) {
-                    container.innerHTML = "<p>No locations available at this time.</p>";
+                    container.innerHTML = "";
+                    noResultsMsg.style.display = 'block';
                     return;
                 }
 
+                noResultsMsg.style.display = 'none';
+
                 container.innerHTML = locations.map(location => {
-                    // Mapped to match MySQL Model exactly
                     const title = location.title || location.location_name || 'Location';
                     const image = location.image || location.image_url || 'https://placehold.co/240x288/E0E0E0/757575?text=Location';
                     const link = location.link || `city.html?id=${location.location_id || ''}`;
 
                     return `
-                    <a href="${link}" class="location-card-link" data-title="${title.toLowerCase()}">
+                    <a href="${link}" class="location-card-link">
                         <div class="location-card">
                             <div class="card-img-container"><img src="${image}" alt="${title}" class="card-img" onerror="this.src='https://placehold.co/240x288/E0E0E0/757575?text=Location';"></div>
                             <h3 class="card-title">${title}</h3>
@@ -540,46 +544,42 @@
                 `}).join('');
             };
 
-            // Using local port config matching the other files
-            fetch('http://localhost:8000/api/locations')
-                .then(response => response.json())
-                .then(renderAllLocations)
-                .catch(error => {
-                    console.error('Error fetching locations:', error);
-                    document.getElementById('locationsGridContainer').innerHTML = "<p style='grid-column: 1 / -1; color: red;'>Could not load locations from server. Please make sure your local server is running on port 8000.</p>";
-                });
+            // ✅ SQL OPTIMIZATION IMPLEMENTATION: Server-side API filtering
+            const fetchLocations = (searchTerm = '') => {
+                // If a search term exists, send it to the optimized SQL endpoint
+                const url = searchTerm 
+                    ? `http://localhost:8000/api/locations?search=${encodeURIComponent(searchTerm)}`
+                    : 'http://localhost:8000/api/locations';
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(renderAllLocations)
+                    .catch(error => {
+                        console.error('Error fetching locations:', error);
+                        document.getElementById('locationsGridContainer').innerHTML = "<p style='grid-column: 1 / -1; color: red;'>Could not load locations from server. Please make sure your local server is running on port 8000.</p>";
+                    });
+            };
+
+            // Initial load of all locations
+            fetchLocations();
 
             const searchInput = document.getElementById('searchInput');
             const searchButton = document.getElementById('searchButton');
-            const noResultsMsg = document.getElementById('noResults');
 
-            const filterLocations = () => {
-                const searchTerm = searchInput.value.toLowerCase().trim();
-                const cards = document.querySelectorAll('#locationsGridContainer .location-card-link');
-                let resultsFound = false;
-
-                cards.forEach(card => {
-                    const title = card.dataset.title;
-                    if (title.includes(searchTerm)) {
-                        card.classList.remove('hidden');
-                        resultsFound = true;
-                    } else {
-                        card.classList.add('hidden');
-                    }
-                });
-
-                noResultsMsg.style.display = resultsFound ? 'none' : 'block';
+            const triggerSearch = () => {
+                const searchTerm = searchInput.value.trim();
+                fetchLocations(searchTerm);
             };
 
-            searchButton.addEventListener('click', filterLocations);
+            searchButton.addEventListener('click', triggerSearch);
 
             searchInput.addEventListener('keyup', (event) => {
                 if (event.key === 'Enter') {
-                    filterLocations();
+                    triggerSearch();
                 }
             });
             
-
+            /* --- User Auth Mocks --- */
             const signInForm = document.getElementById('signInForm');
             const registerForm = document.getElementById('registerForm');
             const authLinks = document.getElementById('auth-links');

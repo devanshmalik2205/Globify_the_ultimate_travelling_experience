@@ -121,6 +121,13 @@ app.put("/api/locations/:id", (req, res) => {
   });
 });
 
+app.delete("/api/locations/:id", (req, res) => {
+  db.query("DELETE FROM Location WHERE location_id=?", [req.params.id], (err) => {
+    if (err) return res.status(500).json(err);
+    res.json({ success: true });
+  });
+});
+
 /* --- Homes/Hotels --- */
 app.get("/api/homes", (req, res) => {
   const searchTerm = req.query.search;
@@ -180,19 +187,36 @@ app.put("/api/homes/:id", (req, res) => {
   });
 });
 
+app.delete("/api/homes/:id", (req, res) => {
+  db.query("DELETE FROM Home WHERE home_id=?", [req.params.id], (err) => {
+    if (err) return res.status(500).json(err);
+    res.json({ success: true });
+  });
+});
+
 /* --- Hotel Rooms --- */
 app.get("/api/homes/:id/rooms", (req, res) => {
+  const search = req.query.search;
   db.query("SHOW COLUMNS FROM HotelRoom LIKE 'home_id'", (err, cols) => {
     let sql = "";
+    let params = [];
     if (cols && cols.length > 0) {
         sql = `SELECT hr.room_id, hr.name, hr.price, hr.priceSubtext, rf.feature_name 
                FROM HotelRoom hr LEFT JOIN RoomFeature rf ON hr.room_id = rf.room_id 
                WHERE hr.home_id = ?`;
+        params.push(req.params.id);
     } else {
         sql = `SELECT hr.room_id, hr.name, hr.price, hr.priceSubtext, rf.feature_name 
-               FROM HotelRoom hr LEFT JOIN RoomFeature rf ON hr.room_id = rf.room_id`;
+               FROM HotelRoom hr LEFT JOIN RoomFeature rf ON hr.room_id = rf.room_id
+               WHERE 1=1`;
     }
-    db.query(sql, [req.params.id], (err, results) => {
+
+    if (search) {
+        sql += ` AND hr.name LIKE ?`;
+        params.push(`%${search}%`);
+    }
+
+    db.query(sql, params, (err, results) => {
       if (err) return res.status(500).json([]);
       
       const roomsMap = {};
@@ -259,20 +283,60 @@ app.delete("/api/rooms/:id", (req, res) => {
 
 /* --- Airports --- */
 app.get("/api/airports", (req, res) => {
-  db.query("SELECT * FROM Airport", (err, results) => {
+  const searchTerm = req.query.search;
+  let sql = `
+    SELECT a.*, l.location_name 
+    FROM Airport a 
+    LEFT JOIN Location l ON a.location_id = l.location_id
+  `;
+  let params = [];
+
+  if (searchTerm) {
+    sql += " WHERE a.name LIKE ? OR a.code LIKE ? OR l.location_name LIKE ?";
+    params.push(`%${searchTerm}%`, `%${searchTerm}%`, `%${searchTerm}%`);
+  }
+
+  db.query(sql, params, (err, results) => {
     if (err) return res.status(500).json([]);
     res.json(results);
   });
 });
 
+app.post("/api/airports", (req, res) => {
+  const { name, code, location_id } = req.body;
+  db.query("INSERT INTO Airport (name, code, location_id) VALUES (?, ?, ?)", [name, code, location_id], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ success: true, id: results.insertId });
+  });
+});
+
+app.put("/api/airports/:id", (req, res) => {
+  const { name, code, location_id } = req.body;
+  db.query("UPDATE Airport SET name=?, code=?, location_id=? WHERE airport_id=?", [name, code, location_id, req.params.id], (err) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ success: true });
+  });
+});
+
+app.delete("/api/airports/:id", (req, res) => {
+  db.query("DELETE FROM Airport WHERE airport_id=?", [req.params.id], (err) => {
+    if (err) return res.status(500).json(err);
+    res.json({ success: true });
+  });
+});
+
 /* --- Flights --- */
 app.get("/api/flights", (req, res) => {
-  const { from, to } = req.query;
+  const { from, to, search } = req.query;
   const params = [];
 
   let viewSql = `SELECT * FROM vw_flight_details WHERE 1=1`;
   if (from) { viewSql += " AND from_city = ?"; params.push(from); }
   if (to) { viewSql += " AND to_city = ?"; params.push(to); }
+  if (search) {
+    viewSql += " AND (flightNumber LIKE ? OR airlineName LIKE ? OR departure_code LIKE ? OR arrival_code LIKE ?)";
+    params.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`);
+  }
 
   db.query(viewSql, params, (err, results) => {
     if (err) {
@@ -280,17 +344,23 @@ app.get("/api/flights", (req, res) => {
         SELECT 
           f.*, 
           l1.location_name AS departureCity, a1.code AS departureAirportCode,
-          l2.location_name AS arrivalCity, a2.code AS arrivalAirportCode
+          l2.location_name AS arrivalCity, a2.code AS arrivalAirportCode,
+          al.airlineName, al.airlineLogo
         FROM Flight f
         LEFT JOIN Location l1 ON f.from_location_id = l1.location_id
         LEFT JOIN Location l2 ON f.to_location_id = l2.location_id
         LEFT JOIN Airport a1 ON f.departure_airport_id = a1.airport_id
         LEFT JOIN Airport a2 ON f.arrival_airport_id = a2.airport_id
+        LEFT JOIN Airline al ON f.airline_id = al.airline_id
         WHERE 1=1
       `;
       const fallbackParams = [];
       if (from) { fallbackSql += " AND l1.location_name = ?"; fallbackParams.push(from); }
       if (to) { fallbackSql += " AND l2.location_name = ?"; fallbackParams.push(to); }
+      if (search) {
+         fallbackSql += " AND (f.flightNumber LIKE ? OR al.airlineName LIKE ? OR a1.code LIKE ? OR a2.code LIKE ?)";
+         fallbackParams.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`);
+      }
       
       db.query(fallbackSql, fallbackParams, (fallbackErr, fallbackResults) => {
         if (fallbackErr) return res.status(500).json([]);
@@ -330,6 +400,7 @@ app.get("/api/cities/:id", (req, res) => {
 
 app.get("/api/cities/:id/:category", (req, res) => {
   const { id, category } = req.params;
+  const search = req.query.search;
   const tables = {
     'attractions': 'Attraction', 'restaurants': 'Restaurant', 'food': 'FoodPlace',
     'shopping': 'ShoppingPlace', 'culture': 'Culture', 'gallery': 'GalleryImage'
@@ -337,7 +408,19 @@ app.get("/api/cities/:id/:category", (req, res) => {
   const tableName = tables[category];
   if (!tableName) return res.status(404).json({ error: "Category not found" });
 
-  db.query(`SELECT * FROM ${tableName} WHERE location_id = ?`, [id], (err, results) => {
+  let sql = `SELECT * FROM ${tableName} WHERE location_id = ?`;
+  let params = [id];
+
+  if (search) {
+    if (category === 'gallery') {
+        sql += " AND alt LIKE ?";
+    } else {
+        sql += " AND name LIKE ?";
+    }
+    params.push(`%${search}%`);
+  }
+
+  db.query(sql, params, (err, results) => {
     if (err) return res.status(500).json([]);
     res.json(results);
   });

@@ -213,10 +213,36 @@
         }
 
         .header-actions {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;
-            flex-wrap: wrap; gap: 1rem;
+            display: flex; flex-direction: column; margin-bottom: 1.5rem;
+            gap: 1rem;
         }
-        .header-actions p { color: var(--text-muted); font-size: 0.9rem; }
+        .header-actions p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem; }
+        
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* --- Search Bar Styles --- */
+        .search-container { position: relative; max-width: 350px; width: 100%; }
+        .search-container .lucide { position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+        .search-container input { width: 100%; margin-bottom: 0; padding-left: 2.5rem; padding-top: 0.625rem; padding-bottom: 0.625rem; border-radius: 9999px; font-size: 0.875rem; background-color: var(--bg-light); border: 1px solid var(--border); }
+        .search-container input:focus { background-color: white; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+
+        /* Custom Searchable Dropdown */
+        .custom-searchable-dropdown { position: relative; max-width: 350px; width: 100%; }
+        .csd-input-box { position: relative; cursor: text; }
+        .csd-input-box input { margin-bottom: 0; padding-right: 2.5rem; cursor: text; background: white; }
+        .csd-input-box .lucide { position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
+        .csd-list { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid var(--border); border-radius: 0.5rem; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); max-height: 250px; overflow-y: auto; z-index: 1000; display: none; margin-top: 0.25rem; }
+        .csd-list.active { display: block; }
+        .csd-item { padding: 0.75rem 1rem; font-size: 0.875rem; cursor: pointer; transition: background 0.2s; border-bottom: 1px solid var(--border); }
+        .csd-item:last-child { border-bottom: none; }
+        .csd-item:hover { background: var(--bg-light); color: var(--primary); font-weight: 500; }
 
         /* --- Stats Grid --- */
         .stats-grid {
@@ -320,6 +346,7 @@
             .topbar { padding: 0 1rem; }
             .content-area { padding: 1rem; }
             .header-actions { flex-direction: column; align-items: flex-start; }
+            .search-container { max-width: 100%; }
             .header-actions .btn { width: 100%; justify-content: center; }
             .stat-card { padding: 1.25rem; }
             .content-tabs { padding-bottom: 0.75rem; }
@@ -430,9 +457,15 @@
                 <div id="locations-view" class="view-section">
                     <div class="header-actions">
                         <p>Manage your main locations and link them to HTML pages.</p>
-                        <button class="btn btn-primary" onclick="openAddNewModal('location-modal', 'location-form', 'location-modal-title', 'Add New Location')">
-                            <i data-lucide="plus" class="lucide-sm"></i> Add Location
-                        </button>
+                        <div class="action-bar">
+                            <div class="search-container">
+                                <i data-lucide="search"></i>
+                                <input type="text" id="search-locations" placeholder="Filter locations (e.g. 'D' for Delhi)...">
+                            </div>
+                            <button class="btn btn-primary" onclick="openAddNewModal('location-modal', 'location-form', 'location-modal-title', 'Add New Location')">
+                                <i data-lucide="plus" class="lucide-sm"></i> Add Location
+                            </button>
+                        </div>
                     </div>
                     <div class="table-container">
                         <table>
@@ -456,9 +489,15 @@
                 <div id="homes-view" class="view-section">
                     <div class="header-actions">
                         <p>Manage your homes, hotels and map them to physical room files.</p>
-                        <button class="btn btn-primary" onclick="openAddNewModal('home-modal', 'home-form', 'home-modal-title', 'Add New Property')">
-                            <i data-lucide="plus" class="lucide-sm"></i> Add Property
-                        </button>
+                        <div class="action-bar">
+                            <div class="search-container">
+                                <i data-lucide="search"></i>
+                                <input type="text" id="search-homes" placeholder="Filter by property name or location...">
+                            </div>
+                            <button class="btn btn-primary" onclick="openAddNewModal('home-modal', 'home-form', 'home-modal-title', 'Add New Property')">
+                                <i data-lucide="plus" class="lucide-sm"></i> Add Property
+                            </button>
+                        </div>
                     </div>
                     <div class="table-container">
                         <table>
@@ -483,9 +522,15 @@
                 <div id="city-content-view" class="view-section">
                     <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem; background: white; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid var(--border); box-shadow: var(--card-shadow); flex-wrap: wrap;">
                         <label style="margin: 0; min-width: max-content;">Select City to Manage:</label>
-                        <select id="content-city-select" style="margin: 0; max-width: 300px;" onchange="fetchCityContent()">
-                            <option value="">Select a Location...</option>
-                        </select>
+                        <!-- Custom Searchable Dropdown for Cities -->
+                        <div class="custom-searchable-dropdown" id="city-dropdown-wrapper">
+                            <div class="csd-input-box" onclick="toggleDropdown('city-dropdown-list', event)">
+                                <input type="text" id="content-city-input" placeholder="Search & Select City..." oninput="filterDropdown('city-dropdown-list', this.value)" autocomplete="off">
+                                <i data-lucide="chevron-down"></i>
+                            </div>
+                            <div class="csd-list" id="city-dropdown-list"></div>
+                            <input type="hidden" id="content-city-select">
+                        </div>
                     </div>
 
                     <div id="content-workspace" style="display: none;">
@@ -500,9 +545,15 @@
                         
                         <div class="header-actions">
                             <h3 id="current-content-title" style="text-transform: capitalize; font-size: 1.25rem; font-weight: 600;">Attractions</h3>
-                            <button class="btn btn-primary" onclick="openContentModal()">
-                                <i data-lucide="plus" class="lucide-sm"></i> Add Item
-                            </button>
+                            <div class="action-bar">
+                                <div class="search-container">
+                                    <i data-lucide="search"></i>
+                                    <input type="text" id="search-content" placeholder="Filter by name, category, cuisine...">
+                                </div>
+                                <button class="btn btn-primary" onclick="openContentModal()">
+                                    <i data-lucide="plus" class="lucide-sm"></i> Add Item
+                                </button>
+                            </div>
                         </div>
 
                         <div class="table-container">
@@ -520,17 +571,29 @@
                 <div id="hotel-rooms-view" class="view-section">
                     <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem; background: white; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid var(--border); box-shadow: var(--card-shadow); flex-wrap: wrap;">
                         <label style="margin: 0; min-width: max-content;">Select Hotel to Manage:</label>
-                        <select id="room-hotel-select" style="margin: 0; max-width: 300px;" onchange="fetchHotelRooms()">
-                            <option value="">Select a Hotel...</option>
-                        </select>
+                        <!-- Custom Searchable Dropdown for Hotels -->
+                        <div class="custom-searchable-dropdown" id="hotel-dropdown-wrapper">
+                            <div class="csd-input-box" onclick="toggleDropdown('hotel-dropdown-list', event)">
+                                <input type="text" id="room-hotel-input" placeholder="Search & Select Hotel..." oninput="filterDropdown('hotel-dropdown-list', this.value)" autocomplete="off">
+                                <i data-lucide="chevron-down"></i>
+                            </div>
+                            <div class="csd-list" id="hotel-dropdown-list"></div>
+                            <input type="hidden" id="room-hotel-select">
+                        </div>
                     </div>
 
                     <div id="room-workspace" style="display: none;">
                         <div class="header-actions">
                             <h3 style="font-size: 1.25rem; font-weight: 600;">Available Rooms</h3>
-                            <button class="btn btn-primary" onclick="openRoomModal()">
-                                <i data-lucide="plus" class="lucide-sm"></i> Add Room
-                            </button>
+                            <div class="action-bar">
+                                <div class="search-container">
+                                    <i data-lucide="search"></i>
+                                    <input type="text" id="search-rooms" placeholder="Filter rooms by name or features...">
+                                </div>
+                                <button class="btn btn-primary" onclick="openRoomModal()">
+                                    <i data-lucide="plus" class="lucide-sm"></i> Add Room
+                                </button>
+                            </div>
                         </div>
 
                         <div class="table-container">
@@ -556,9 +619,15 @@
                 <div id="airports-view" class="view-section">
                     <div class="header-actions">
                         <p>Manage airports to connect your flights.</p>
-                        <button class="btn btn-primary" onclick="openAddNewModal('airport-modal', 'airport-form', 'airport-modal-title', 'Add New Airport')">
-                            <i data-lucide="plus" class="lucide-sm"></i> Add Airport
-                        </button>
+                        <div class="action-bar">
+                            <div class="search-container">
+                                <i data-lucide="search"></i>
+                                <input type="text" id="search-airports" placeholder="Filter by code, name, or city...">
+                            </div>
+                            <button class="btn btn-primary" onclick="openAddNewModal('airport-modal', 'airport-form', 'airport-modal-title', 'Add New Airport')">
+                                <i data-lucide="plus" class="lucide-sm"></i> Add Airport
+                            </button>
+                        </div>
                     </div>
                     <div class="table-container">
                         <table>
@@ -608,9 +677,15 @@
 
                     <div class="header-actions">
                         <p>Manage flight schedules, pricing, and routes.</p>
-                        <button class="btn btn-primary" onclick="openAddNewModal('flight-modal', 'flight-form', 'flight-modal-title', 'Add New Flight')">
-                            <i data-lucide="plus" class="lucide-sm"></i> Add Flight
-                        </button>
+                        <div class="action-bar">
+                            <div class="search-container">
+                                <i data-lucide="search"></i>
+                                <input type="text" id="search-flights" placeholder="Filter flight no, airline, or route...">
+                            </div>
+                            <button class="btn btn-primary" onclick="openAddNewModal('flight-modal', 'flight-form', 'flight-modal-title', 'Add New Flight')">
+                                <i data-lucide="plus" class="lucide-sm"></i> Add Flight
+                            </button>
+                        </div>
                     </div>
                     <div class="table-container">
                         <table>
@@ -734,7 +809,7 @@
                     </div>
                     <div>
                         <label>City / Location Mapping</label>
-                        <input type="text" id="airport-city" required placeholder="e.g. Delhi">
+                        <select id="airport-loc-id" required></select>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Save Airport</button>
@@ -785,6 +860,8 @@
 
     <script>
         const API_BASE = 'http://localhost:8000/api';
+        
+        // Base Data arrays fetched from Database
         let currentLocations = [];
         let currentHomes = [];
         let currentAirports = [];
@@ -810,6 +887,133 @@
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('open');
             document.getElementById('sidebar-backdrop').classList.toggle('active');
+        }
+
+        // --- Custom Searchable Dropdown Logic ---
+        function toggleDropdown(listId, event) {
+            if (event) event.stopPropagation();
+            const list = document.getElementById(listId);
+            document.querySelectorAll('.csd-list').forEach(l => { if (l !== list) l.classList.remove('active'); });
+            list.classList.toggle('active');
+        }
+
+        function filterDropdown(listId, query) {
+            const list = document.getElementById(listId);
+            list.classList.add('active'); 
+            const items = list.querySelectorAll('.csd-item');
+            items.forEach(item => {
+                if (item.getAttribute('data-text').toLowerCase().includes(query.toLowerCase())) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function populateCustomDropdown(listId, inputId, hiddenId, data, valKey, textKey, callback) {
+            const list = document.getElementById(listId);
+            list.innerHTML = data.map(item => `
+                <div class="csd-item" data-value="${item[valKey]}" data-text="${(item[textKey] || '').replace(/"/g, '&quot;')}">
+                    ${item[textKey]}
+                </div>
+            `).join('');
+
+            const currentHidden = document.getElementById(hiddenId).value;
+            let found = false;
+
+            list.querySelectorAll('.csd-item').forEach(el => {
+                if (el.getAttribute('data-value') === currentHidden) found = true;
+                
+                el.addEventListener('click', () => {
+                    document.getElementById(hiddenId).value = el.getAttribute('data-value');
+                    document.getElementById(inputId).value = el.getAttribute('data-text');
+                    list.classList.remove('active');
+                    if (callback) callback();
+                });
+            });
+            
+            if (!found) {
+                document.getElementById(hiddenId).value = '';
+                document.getElementById(inputId).value = '';
+            }
+        }
+
+        // Close dropdowns on outside click
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.custom-searchable-dropdown')) {
+                document.querySelectorAll('.csd-list').forEach(l => l.classList.remove('active'));
+            }
+        });
+
+
+        // --- SQL-like Backend Search Filters Engine ---
+        // Debounce helper to prevent spamming API requests while typing
+        function debounce(func, timeout = 300){
+            let timer;
+            return (...args) => {
+                clearTimeout(timer);
+                timer = setTimeout(() => { func.apply(this, args); }, timeout);
+            };
+        }
+
+        function setupBackendSearch() {
+            document.getElementById('search-locations').addEventListener('input', debounce((e) => {
+                fetchLocationsData(e.target.value);
+            }));
+
+            document.getElementById('search-homes').addEventListener('input', debounce((e) => {
+                fetchHomesData(e.target.value);
+            }));
+
+            document.getElementById('search-content').addEventListener('input', debounce((e) => {
+                if(activeCityId) loadCategoryData(e.target.value);
+            }));
+
+            document.getElementById('search-rooms').addEventListener('input', debounce((e) => {
+                if(activeHotelId) fetchHotelRooms(e.target.value);
+            }));
+
+            document.getElementById('search-airports').addEventListener('input', debounce((e) => {
+                fetchAirportsData(e.target.value);
+            }));
+
+            document.getElementById('search-flights').addEventListener('input', debounce((e) => {
+                fetchFlightsData(e.target.value);
+            }));
+        }
+        setupBackendSearch();
+
+        // ✅ Data Fetching Layers
+        async function fetchLocationsData(search = '') {
+            try {
+                const res = await fetch(`${API_BASE}/locations${search ? `?search=${encodeURIComponent(search)}` : ''}`);
+                currentLocations = await res.json();
+                renderLocations();
+            } catch (e) { console.error(e); }
+        }
+
+        async function fetchHomesData(search = '') {
+            try {
+                const res = await fetch(`${API_BASE}/homes${search ? `?search=${encodeURIComponent(search)}` : ''}`);
+                currentHomes = await res.json();
+                renderHomes();
+            } catch (e) { console.error(e); }
+        }
+
+        async function fetchAirportsData(search = '') {
+            try {
+                const res = await fetch(`${API_BASE}/airports${search ? `?search=${encodeURIComponent(search)}` : ''}`);
+                currentAirports = await res.json();
+                renderAirports();
+            } catch (e) { console.error(e); }
+        }
+
+        async function fetchFlightsData(search = '') {
+            try {
+                const res = await fetch(`${API_BASE}/flights${search ? `?search=${encodeURIComponent(search)}` : ''}`);
+                currentFlights = await res.json();
+                renderFlights();
+            } catch (e) { console.error(e); }
         }
 
         // ✅ Live Admin Authentication Implementation
@@ -897,7 +1101,6 @@
             openModal(modalId);
         }
 
-        // Reliably format MySQL datestrings into the <input type="datetime-local"> format
         function formatDateTimeLocal(dateString) {
             if(!dateString) return '';
             let safeString = dateString.toString();
@@ -911,24 +1114,15 @@
 
         // Load Base Data
         async function loadBaseData() {
+            document.getElementById('db-status').innerHTML = '<span style="display:inline-block; width:8px; height:8px; background: currentColor; border-radius: 50%;"></span> Fetching...';
             try {
-                // MOCK DATA FALLBACK IF SERVER FAILS
-                let locRes, homeRes, airRes, flightRes;
-                try {
-                    [locRes, homeRes, airRes, flightRes] = await Promise.all([
-                        fetch(`${API_BASE}/locations`), 
-                        fetch(`${API_BASE}/homes`),
-                        fetch(`${API_BASE}/airports`),
-                        fetch(`${API_BASE}/flights`)
-                    ]);
-                    currentLocations = await locRes.json();
-                    currentHomes = await homeRes.json();
-                    currentAirports = await airRes.json();
-                    currentFlights = await flightRes.json();
-                } catch(e) {
-                    // Fallback empty arrays if offline to let UI render empty states
-                    currentLocations = []; currentHomes = []; currentAirports = []; currentFlights = [];
-                }
+                // Fetch all data utilizing the centralized methods
+                await Promise.all([
+                    fetchLocationsData(),
+                    fetchHomesData(),
+                    fetchAirportsData(),
+                    fetchFlightsData()
+                ]);
                 
                 document.getElementById('stat-locations').textContent = currentLocations.length;
                 document.getElementById('stat-homes').textContent = currentHomes.length;
@@ -938,31 +1132,26 @@
                 const dbStatus = document.getElementById('db-status');
                 dbStatus.innerHTML = '<span style="display:inline-block; width:8px; height:8px; background: currentColor; border-radius: 50%;"></span> Synced';
                 dbStatus.style.color = 'var(--success-text)';
-
-                renderLocations();
-                renderHomes();
-                renderAirports();
-                renderFlights();
                 
-                // Populate Dropdowns for Locations & Homes
-                const optionsHTML = '<option value="">Select a location...</option>' + 
+                // Populate Standard Modal Dropdowns
+                const locationOptsHTML = '<option value="">Select a location...</option>' + 
                     currentLocations.map(l => `<option value="${l.location_id}">${l.title || l.location_name}</option>`).join('');
-                document.getElementById('home-location-id').innerHTML = optionsHTML;
-                document.getElementById('content-city-select').innerHTML = optionsHTML;
+                document.getElementById('home-location-id').innerHTML = locationOptsHTML;
+                document.getElementById('flight-from-loc').innerHTML = locationOptsHTML;
+                document.getElementById('flight-to-loc').innerHTML = locationOptsHTML;
+                document.getElementById('airport-loc-id').innerHTML = locationOptsHTML; // Updated to Dropdown
 
-                document.getElementById('flight-from-loc').innerHTML = optionsHTML;
-                document.getElementById('flight-to-loc').innerHTML = optionsHTML;
-
-                // Populate Dropdowns for Airports
                 const airportOptsHTML = '<option value="">Select an airport...</option>' + 
                     currentAirports.map(a => `<option value="${a.airport_id}">${a.code} - ${a.name}</option>`).join('');
                 document.getElementById('flight-from-airport').innerHTML = airportOptsHTML;
                 document.getElementById('flight-to-airport').innerHTML = airportOptsHTML;
 
-                // Populate Dropdowns for Hotel Rooms
-                const hotelOptionsHTML = '<option value="">Select a hotel...</option>' + 
-                    currentHomes.map(h => `<option value="${h.home_id}">${h.title}</option>`).join('');
-                document.getElementById('room-hotel-select').innerHTML = hotelOptionsHTML;
+                // Populate the highly efficient Custom Searchable Dropdowns!
+                const locationData = currentLocations.map(l => ({ id: l.location_id, name: l.title || l.location_name }));
+                populateCustomDropdown('city-dropdown-list', 'content-city-input', 'content-city-select', locationData, 'id', 'name', () => fetchCityContent(true));
+
+                const hotelData = currentHomes.map(h => ({ id: h.home_id, name: h.title }));
+                populateCustomDropdown('hotel-dropdown-list', 'room-hotel-input', 'room-hotel-select', hotelData, 'id', 'name', () => fetchHotelRooms('', true));
 
             } catch (error) {
                 console.error(error);
@@ -972,14 +1161,15 @@
             }
         }
 
-        // --- Basic Renders ---
-        function renderLocations() {
+        // --- Render functions modified to take filterable parameters ---
+        
+        function renderLocations(dataToRender = currentLocations) {
             const tbody = document.getElementById('locations-table-body');
-            if (currentLocations.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem;">No locations found.</td></tr>';
+            if (dataToRender.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem;">No locations found matching your search.</td></tr>';
                 return;
             }
-            tbody.innerHTML = currentLocations.map(loc => {
+            tbody.innerHTML = dataToRender.map(loc => {
                 const link = loc.link || `city.html?id=${loc.location_id}`;
                 return `
                 <tr>
@@ -990,19 +1180,36 @@
                     <td class="action-btns">
                         <a href="${link}" target="_blank" class="btn btn-sm btn-outline btn-success-outline"><i data-lucide="external-link" class="lucide-sm"></i> View</a>
                         <button class="btn btn-sm btn-outline" onclick="editLocation(${loc.location_id})"><i data-lucide="edit-2" class="lucide-sm"></i> Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteLocation(${loc.location_id})"><i data-lucide="trash-2" class="lucide-sm"></i> Delete</button>
                     </td>
                 </tr>`
             }).join('');
             updateIcons();
         }
 
-        function renderHomes() {
+        async function deleteLocation(id) {
+            if(confirm('Are you sure you want to delete this location? \\n\\nWARNING: This will automatically delete all Homes, Hotels, City Content (Attractions, Restaurants), Airports, and Flights linked to this location!')) {
+                try {
+                    const res = await fetch(`${API_BASE}/locations/${id}`, { method: 'DELETE' });
+                    if(res.ok) { 
+                        showToast('Location deleted successfully.'); 
+                        loadBaseData(); // Refresh everything since children are deleted
+                        document.getElementById('content-city-input').value = '';
+                        document.getElementById('content-workspace').style.display = 'none';
+                    } else {
+                        showToast('Failed to delete location.');
+                    }
+                } catch (error) { showToast('Network error.'); }
+            }
+        }
+
+        function renderHomes(dataToRender = currentHomes) {
             const tbody = document.getElementById('homes-table-body');
-            if (currentHomes.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem;">No properties found.</td></tr>';
+            if (dataToRender.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem;">No properties found matching your search.</td></tr>';
                 return;
             }
-            tbody.innerHTML = currentHomes.map(h => {
+            tbody.innerHTML = dataToRender.map(h => {
                 const link = h.link || `hotel.html?id=${h.home_id}`;
                 return `
                 <tr>
@@ -1017,19 +1224,36 @@
                     <td class="action-btns">
                         <a href="${link}" target="_blank" class="btn btn-sm btn-outline btn-success-outline"><i data-lucide="external-link" class="lucide-sm"></i> View</a>
                         <button class="btn btn-sm btn-outline" onclick="editHome(${h.home_id})"><i data-lucide="edit-2" class="lucide-sm"></i> Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteHome(${h.home_id})"><i data-lucide="trash-2" class="lucide-sm"></i> Delete</button>
                     </td>
                 </tr>`
             }).join('');
             updateIcons();
         }
 
-        function renderAirports() {
+        async function deleteHome(id) {
+            if(confirm('Are you sure you want to delete this property? \\n\\nWARNING: All hotel rooms linked to this property will also be deleted.')) {
+                try {
+                    const res = await fetch(`${API_BASE}/homes/${id}`, { method: 'DELETE' });
+                    if(res.ok) { 
+                        showToast('Property deleted successfully.'); 
+                        loadBaseData();
+                        document.getElementById('room-hotel-input').value = '';
+                        document.getElementById('room-workspace').style.display = 'none';
+                    } else {
+                        showToast('Failed to delete property.');
+                    }
+                } catch (error) { showToast('Network error.'); }
+            }
+        }
+
+        function renderAirports(dataToRender = currentAirports) {
             const tbody = document.getElementById('airports-table-body');
-            if (currentAirports.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem;">No airports found.</td></tr>';
+            if (dataToRender.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem;">No airports found matching your search.</td></tr>';
                 return;
             }
-            tbody.innerHTML = currentAirports.map(a => `
+            tbody.innerHTML = dataToRender.map(a => `
                 <tr>
                     <td><span style="color:var(--text-muted)">#${a.airport_id}</span></td>
                     <td><span style="background:var(--bg-light); padding:0.25rem 0.5rem; border-radius:0.25rem; font-weight:600; font-size:0.8rem">${a.code || a.airport_code}</span></td>
@@ -1037,22 +1261,37 @@
                     <td>${a.city || a.location_name || ''}</td>
                     <td class="action-btns">
                         <button class="btn btn-sm btn-outline" onclick="editAirport(${a.airport_id})"><i data-lucide="edit-2" class="lucide-sm"></i> Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteAirport(${a.airport_id})"><i data-lucide="trash-2" class="lucide-sm"></i> Delete</button>
                     </td>
                 </tr>
             `).join('');
             updateIcons();
         }
 
+        async function deleteAirport(id) {
+            if(confirm('Are you sure you want to delete this airport? \\n\\nWARNING: All flights departing from or arriving at this airport will be affected.')) {
+                try {
+                    const res = await fetch(`${API_BASE}/airports/${id}`, { method: 'DELETE' });
+                    if(res.ok) { 
+                        showToast('Airport deleted successfully.'); 
+                        loadBaseData();
+                    } else {
+                        showToast('Failed to delete airport.');
+                    }
+                } catch (error) { showToast('Network error.'); }
+            }
+        }
+
         // ==========================================
         // FLIGHTS ADD/EDIT/DELETE & INSIGHTS LOGIC
         // ==========================================
 
-        function calculateFlightInsights() {
+        function calculateFlightInsights(flights = currentFlights) {
             const avgElem = document.getElementById('insight-avg-price');
             const airlineElem = document.getElementById('insight-airlines');
             const popRouteElem = document.getElementById('insight-popular-route');
 
-            if (!currentFlights || currentFlights.length === 0) {
+            if (!flights || flights.length === 0) {
                 avgElem.textContent = '$0';
                 airlineElem.textContent = '0';
                 popRouteElem.textContent = 'N/A';
@@ -1061,12 +1300,12 @@
             }
 
             // Calculate Avg Price
-            const total = currentFlights.reduce((sum, f) => sum + parseFloat(f.price || 0), 0);
-            const avg = total / currentFlights.length;
+            const total = flights.reduce((sum, f) => sum + parseFloat(f.price || 0), 0);
+            const avg = total / flights.length;
             avgElem.textContent = `$${avg.toFixed(2)}`;
 
             // Distinct Airlines
-            const airlines = new Set(currentFlights.map(f => f.airlineName).filter(name => name));
+            const airlines = new Set(flights.map(f => f.airlineName).filter(name => name));
             airlineElem.textContent = airlines.size;
 
             // Popular Route Map Calculation
@@ -1074,7 +1313,7 @@
             let maxCount = 0;
             let popRoute = 'N/A';
             
-            currentFlights.forEach(f => {
+            flights.forEach(f => {
                 const dep = f.departureCity || f.departureAirportCode || '?';
                 const arr = f.arrivalCity || f.arrivalAirportCode || '?';
                 const routeName = `${dep} ➝ ${arr}`;
@@ -1087,21 +1326,21 @@
             });
             
             popRouteElem.textContent = popRoute;
-            popRouteElem.title = popRoute; // For tooltip on overflow
+            popRouteElem.title = popRoute; 
         }
 
-        function renderFlights() {
+        function renderFlights(dataToRender = currentFlights) {
             const tbody = document.getElementById('flights-table-body');
             
-            // Calculate and display insights
-            calculateFlightInsights();
+            // Calculate and display insights based on filtered view
+            calculateFlightInsights(dataToRender);
 
-            if (currentFlights.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem;">No flights found.</td></tr>';
+            if (dataToRender.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem;">No flights found matching your search.</td></tr>';
                 return;
             }
             
-            tbody.innerHTML = currentFlights.map(f => `
+            tbody.innerHTML = dataToRender.map(f => `
                 <tr>
                     <td><span style="color:var(--text-muted)">#${f.flight_id}</span></td>
                     <td>
@@ -1146,8 +1385,12 @@
         // DYNAMIC CITY CONTENT MANAGER LOGIC
         // ==========================================
         
-        async function fetchCityContent() {
-            activeCityId = document.getElementById('content-city-select').value;
+        async function fetchCityContent(isDropdownChange = false) {
+            if (isDropdownChange) {
+                activeCityId = document.getElementById('content-city-select').value;
+                document.getElementById('search-content').value = ''; // clear table search
+            }
+            
             const workspace = document.getElementById('content-workspace');
             
             if(!activeCityId) {
@@ -1164,16 +1407,21 @@
             document.querySelectorAll('.content-tab').forEach(t => t.classList.remove('active'));
             event.target.classList.add('active');
             document.getElementById('current-content-title').textContent = category;
+            
+            // Clear search field on tab switch
+            document.getElementById('search-content').value = '';
+            
             loadCategoryData();
         }
 
-        async function loadCategoryData() {
+        async function loadCategoryData(search = '') {
             if(!activeCityId) return;
             const tbody = document.getElementById('content-table-body');
             tbody.innerHTML = '<tr><td colspan="10" style="padding: 2rem; text-align: center;">Loading...</td></tr>';
             
             try {
-                const res = await fetch(`${API_BASE}/cities/${activeCityId}/${activeContentCategory}`);
+                const url = `${API_BASE}/cities/${activeCityId}/${activeContentCategory}${search ? `?search=${encodeURIComponent(search)}` : ''}`;
+                const res = await fetch(url);
                 currentCategoryData = await res.json();
                 renderCategoryTable();
             } catch (err) {
@@ -1183,13 +1431,13 @@
             }
         }
 
-        function renderCategoryTable() {
+        function renderCategoryTable(dataToRender = currentCategoryData) {
             const thead = document.getElementById('content-table-head');
             const tbody = document.getElementById('content-table-body');
             
-            if(currentCategoryData.length === 0) {
+            if(dataToRender.length === 0) {
                 thead.innerHTML = '';
-                tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 2rem;">No items found. Click "Add Item" to create one.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 2rem;">No items found. Adjust search or Click "Add Item" to create one.</td></tr>';
                 return;
             }
 
@@ -1203,7 +1451,7 @@
             thead.innerHTML = headers;
 
             // Generate Rows
-            tbody.innerHTML = currentCategoryData.map(item => {
+            tbody.innerHTML = dataToRender.map(item => {
                 let row = `<tr>`;
                 const idField = Object.keys(item).find(key => key.endsWith('_id'));
                 const id = item[idField] || Math.floor(Math.random()*1000); // fallback id
@@ -1337,7 +1585,7 @@
             if(confirm(`Delete this item?`)) {
                 try {
                     const res = await fetch(`${API_BASE}/${activeContentCategory}/${itemId}`, { method: 'DELETE' });
-                    if(res.ok) { showToast('Deleted.'); loadCategoryData(); }
+                    if(res.ok) { showToast('Deleted.'); loadCategoryData(document.getElementById('search-content').value); }
                     else showToast('Failed to delete.');
                 } catch (error) { showToast('Network error.'); }
             }
@@ -1347,10 +1595,17 @@
         // HOTEL ROOMS MANAGER LOGIC
         // ==========================================
 
-        async function fetchHotelRooms() {
-            activeHotelId = document.getElementById('room-hotel-select').value;
-            const workspace = document.getElementById('room-workspace');
+        async function fetchHotelRooms(search = '', isDropdownChange = false) {
+            if (typeof search !== 'string') search = ''; 
             
+            if (isDropdownChange) {
+                activeHotelId = document.getElementById('room-hotel-select').value;
+                document.getElementById('search-rooms').value = '';
+                search = '';
+            }
+
+            const workspace = document.getElementById('room-workspace');
+
             if(!activeHotelId) {
                 workspace.style.display = 'none';
                 return;
@@ -1361,7 +1616,8 @@
             tbody.innerHTML = '<tr><td colspan="5" style="padding: 2rem; text-align: center;">Loading rooms...</td></tr>';
             
             try {
-                const res = await fetch(`${API_BASE}/homes/${activeHotelId}/rooms`);
+                const url = `${API_BASE}/homes/${activeHotelId}/rooms${search ? `?search=${encodeURIComponent(search)}` : ''}`;
+                const res = await fetch(url);
                 currentRoomData = await res.json();
                 renderRoomsTable();
             } catch (err) {
@@ -1371,14 +1627,14 @@
             }
         }
 
-        function renderRoomsTable() {
+        function renderRoomsTable(dataToRender = currentRoomData) {
             const tbody = document.getElementById('rooms-table-body');
-            if(currentRoomData.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 2rem;">No rooms found. Add one above.</td></tr>';
+            if(dataToRender.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 2rem;">No rooms found matching your search.</td></tr>';
                 return;
             }
 
-            tbody.innerHTML = currentRoomData.map(room => {
+            tbody.innerHTML = dataToRender.map(room => {
                 const featStr = (room.features || []).join(', ');
                 const shortFeat = featStr.length > 40 ? featStr.substring(0, 40) + '...' : featStr;
 
@@ -1429,7 +1685,7 @@
                 name: document.getElementById('room-name').value,
                 price: document.getElementById('room-price').value,
                 priceSubtext: document.getElementById('room-price-subtext').value,
-                features: featuresStr.split(',').map(f => f.trim()).filter(f => f) // array of strings
+                features: featuresStr.split(',').map(f => f.trim()).filter(f => f) 
             };
 
             const method = roomId ? 'PUT' : 'POST';
@@ -1444,7 +1700,7 @@
                 if (response.ok) {
                     showToast(`Room saved successfully.`);
                     closeModal('room-modal');
-                    fetchHotelRooms();
+                    fetchHotelRooms('', true);
                 } else showToast(`Failed to save room.`);
             } catch (error) { showToast("Network error."); }
         });
@@ -1453,7 +1709,7 @@
             if(confirm(`Are you sure you want to delete this room?`)) {
                 try {
                     const res = await fetch(`${API_BASE}/rooms/${roomId}`, { method: 'DELETE' });
-                    if(res.ok) { showToast('Room deleted.'); fetchHotelRooms(); }
+                    if(res.ok) { showToast('Room deleted.'); fetchHotelRooms('', true); }
                     else showToast('Failed to delete room.');
                 } catch (error) { showToast('Network error.'); }
             }
@@ -1554,7 +1810,7 @@
             const payload = {
                 name: document.getElementById('airport-name').value,
                 code: document.getElementById('airport-code').value,
-                city: document.getElementById('airport-city').value
+                location_id: document.getElementById('airport-loc-id').value // Using ID now
             };
 
             const method = id ? 'PUT' : 'POST';
@@ -1580,7 +1836,7 @@
             document.getElementById('airport-id').value = airport.airport_id;
             document.getElementById('airport-name').value = airport.name || airport.airport_name || '';
             document.getElementById('airport-code').value = airport.code || airport.airport_code || '';
-            document.getElementById('airport-city').value = airport.city || airport.location_name || '';
+            document.getElementById('airport-loc-id').value = airport.location_id || ''; // Maps to Dropdown
             document.getElementById('airport-modal-title').textContent = "Edit Airport";
             openModal('airport-modal');
         }

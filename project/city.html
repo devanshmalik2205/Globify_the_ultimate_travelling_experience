@@ -168,28 +168,12 @@
             padding-bottom: 3rem;
         }
 
-        @media (min-width: 1024px) {
-            .page-layout {
-                grid-template-columns: 2.5fr 1fr;
-            }
-        }
-
         .main-column {
             display: flex;
             flex-direction: column;
             gap: 2.5rem;
             min-width: 0; 
         }
-
-        .sidebar-column {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            position: sticky;
-            top: 100px;
-            align-self: flex-start;
-        }
-
 
         .section-title {
             font-size: 1.75rem;
@@ -209,6 +193,12 @@
         @media (min-width: 768px) {
             .info-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .info-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
         
@@ -368,21 +358,6 @@
             height: 20px;
         }
 
-        .sidebar-card {
-            background-color: #ffffff;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .sidebar-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #1f2937;
-            margin-top: 0;
-            margin-bottom: 1.25rem;
-        }
-        
         .info-list {
             display: flex;
             flex-direction: column;
@@ -578,14 +553,6 @@
                     </section>
 
                 </div>
-
-                <aside class="sidebar-column">
-                    <div class="sidebar-card">
-                        <h3 class="sidebar-title">Quick Information</h3>
-                        <p style="color: #4b5563; font-size: 0.875rem; line-height: 1.5;">This city page is generated dynamically using data pulled straight from your MySQL Database. Use the Globify Admin portal to easily populate new attractions, restaurants, and galleries mapped to this City ID.</p>
-                    </div>
-                </aside>
-
             </div>
         </div>
     </div>

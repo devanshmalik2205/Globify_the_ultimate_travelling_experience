@@ -17,42 +17,30 @@ const PORT = process.env.PORT || 8000;
 
 /* ===================== AUTHENTICATION ROUTES ===================== */
 
-/* ✅ Register New User */
 app.post("/api/auth/register", (req, res) => {
   const { name, email, password } = req.body;
-  
   const sql = "INSERT INTO Users (name, email, password, role) VALUES (?, ?, ?, 'user')";
   db.query(sql, [name, email, password], (err, results) => {
     if (err) {
-      if (err.code === 'ER_DUP_ENTRY') {
-        return res.status(400).json({ success: false, message: "Email is already registered." });
-      }
+      if (err.code === 'ER_DUP_ENTRY') return res.status(400).json({ success: false, message: "Email is already registered." });
       return res.status(500).json({ success: false, message: "Database error." });
     }
     res.json({ success: true, message: "Registration successful! You can now log in." });
   });
 });
 
-/* ✅ Login User / Admin */
 app.post("/api/auth/login", (req, res) => {
   const { email, password } = req.body;
-
   const sql = "SELECT user_id, name, email, role FROM Users WHERE email = ? AND password = ?";
   db.query(sql, [email, password], (err, results) => {
     if (err) return res.status(500).json({ success: false, message: "Server error." });
-    
-    if (results.length > 0) {
-      res.json({ success: true, user: results[0] });
-    } else {
-      res.status(401).json({ success: false, message: "Invalid email or password." });
-    }
+    if (results.length > 0) res.json({ success: true, user: results[0] });
+    else res.status(401).json({ success: false, message: "Invalid email or password." });
   });
 });
 
-
 /* ===================== NEW ADVANCED ROUTES ===================== */
 
-/* ✅ Premium Destinations (Uses our SQL View with Subqueries & Grouping) */
 app.get("/api/stats/premium-destinations", (req, res) => {
   db.query("SELECT * FROM vw_premium_destinations", (err, results) => {
     if (err) return res.status(500).json([]);
@@ -60,45 +48,46 @@ app.get("/api/stats/premium-destinations", (req, res) => {
   });
 });
 
+/* ✅ DYNAMIC PRICE RANGE: Extracts exact Min and Max values from database */
+app.get("/api/homes/price-range", (req, res) => {
+  db.query("SELECT MIN(price) AS minPrice, MAX(price) AS maxPrice FROM Home", (err, results) => {
+    if (err) return res.status(500).json({ minPrice: 0, maxPrice: 100000 });
+    res.json({
+        minPrice: results[0].minPrice || 0,
+        maxPrice: results[0].maxPrice || 100000
+    });
+  });
+});
 
 /* ===================== ACID TRANSACTION ROUTES ===================== */
 
-/* ✅ Book a Flight (Uses Stored Procedure for Atomicity & Isolation) */
 app.post("/api/book-flight", (req, res) => {
   const { flight_id, guest_name, seats } = req.body;
-  
   db.query("CALL sp_book_flight(?, ?, ?)", [flight_id, guest_name, seats], (err, results) => {
     if (err) return res.status(500).json({ error: "System Error", details: err });
     res.json(results[0][0]); 
   });
 });
 
-/* ✅ Book a Room (Uses Stored Procedure for Atomicity & Isolation) */
 app.post("/api/book-room", (req, res) => {
   const { room_id, guest_name, nights } = req.body;
-  
   db.query("CALL sp_book_room(?, ?, ?)", [room_id, guest_name, nights], (err, results) => {
     if (err) return res.status(500).json({ error: "System Error", details: err });
     res.json(results[0][0]); 
   });
 });
 
-
 /* ===================== STANDARD ROUTES ===================== */
 
-/* --- Locations --- */
 app.get("/api/locations", (req, res) => {
   const searchTerm = req.query.search;
   let sql = "SELECT * FROM Location";
   let params = [];
-
   if (searchTerm) {
     sql += " WHERE location_name LIKE ?";
     params.push(`%${searchTerm}%`);
   }
-  
   sql += " ORDER BY location_name ASC";
-
   db.query(sql, params, (err, results) => {
     if (err) return res.status(500).json([]);
     res.json(results);
@@ -128,9 +117,9 @@ app.delete("/api/locations/:id", (req, res) => {
   });
 });
 
-/* --- Homes/Hotels --- */
+/* --- Homes/Hotels (With Advanced Search & Slider Filters) --- */
 app.get("/api/homes", (req, res) => {
-  const searchTerm = req.query.search;
+  const { search, minPrice, maxPrice } = req.query;
   
   let sql = `
     SELECT h.*, l.location_name,
@@ -142,12 +131,23 @@ app.get("/api/homes", (req, res) => {
             END) AS dynamic_badge
     FROM Home h
     LEFT JOIN Location l ON h.location_id = l.location_id
+    WHERE 1=1
   `;
   let params = [];
 
-  if (searchTerm) {
-    sql += " WHERE h.title LIKE ? OR l.location_name LIKE ?";
-    params.push(`%${searchTerm}%`, `%${searchTerm}%`);
+  if (search) {
+    sql += " AND (h.title LIKE ? OR l.location_name LIKE ?)";
+    params.push(`%${search}%`, `%${search}%`);
+  }
+
+  if (minPrice && !isNaN(minPrice)) {
+    sql += " AND h.price >= ?";
+    params.push(Number(minPrice));
+  }
+
+  if (maxPrice && !isNaN(maxPrice)) {
+    sql += " AND h.price <= ?";
+    params.push(Number(maxPrice));
   }
 
   sql += " ORDER BY h.rating DESC, h.price ASC";
@@ -210,21 +210,16 @@ app.get("/api/homes/:id/rooms", (req, res) => {
                FROM HotelRoom hr LEFT JOIN RoomFeature rf ON hr.room_id = rf.room_id
                WHERE 1=1`;
     }
-
     if (search) {
         sql += ` AND hr.name LIKE ?`;
         params.push(`%${search}%`);
     }
-
     db.query(sql, params, (err, results) => {
       if (err) return res.status(500).json([]);
-      
       const roomsMap = {};
       results.forEach(row => {
         if (!roomsMap[row.room_id]) {
-          roomsMap[row.room_id] = {
-            room_id: row.room_id, name: row.name, price: row.price, priceSubtext: row.priceSubtext, features: []
-          };
+          roomsMap[row.room_id] = { room_id: row.room_id, name: row.name, price: row.price, priceSubtext: row.priceSubtext, features: [] };
         }
         if (row.feature_name) roomsMap[row.room_id].features.push(row.feature_name);
       });
@@ -284,18 +279,12 @@ app.delete("/api/rooms/:id", (req, res) => {
 /* --- Airports --- */
 app.get("/api/airports", (req, res) => {
   const searchTerm = req.query.search;
-  let sql = `
-    SELECT a.*, l.location_name 
-    FROM Airport a 
-    LEFT JOIN Location l ON a.location_id = l.location_id
-  `;
+  let sql = `SELECT a.*, l.location_name FROM Airport a LEFT JOIN Location l ON a.location_id = l.location_id`;
   let params = [];
-
   if (searchTerm) {
     sql += " WHERE a.name LIKE ? OR a.code LIKE ? OR l.location_name LIKE ?";
     params.push(`%${searchTerm}%`, `%${searchTerm}%`, `%${searchTerm}%`);
   }
-
   db.query(sql, params, (err, results) => {
     if (err) return res.status(500).json([]);
     res.json(results);
@@ -329,7 +318,6 @@ app.delete("/api/airports/:id", (req, res) => {
 app.get("/api/flights", (req, res) => {
   const { from, to, search } = req.query;
   const params = [];
-
   let viewSql = `SELECT * FROM vw_flight_details WHERE 1=1`;
   if (from) { viewSql += " AND from_city = ?"; params.push(from); }
   if (to) { viewSql += " AND to_city = ?"; params.push(to); }
@@ -341,18 +329,11 @@ app.get("/api/flights", (req, res) => {
   db.query(viewSql, params, (err, results) => {
     if (err) {
       let fallbackSql = `
-        SELECT 
-          f.*, 
-          l1.location_name AS departureCity, a1.code AS departureAirportCode,
-          l2.location_name AS arrivalCity, a2.code AS arrivalAirportCode,
-          al.airlineName, al.airlineLogo
-        FROM Flight f
-        LEFT JOIN Location l1 ON f.from_location_id = l1.location_id
-        LEFT JOIN Location l2 ON f.to_location_id = l2.location_id
-        LEFT JOIN Airport a1 ON f.departure_airport_id = a1.airport_id
-        LEFT JOIN Airport a2 ON f.arrival_airport_id = a2.airport_id
-        LEFT JOIN Airline al ON f.airline_id = al.airline_id
-        WHERE 1=1
+        SELECT f.*, l1.location_name AS departureCity, a1.code AS departureAirportCode,
+          l2.location_name AS arrivalCity, a2.code AS arrivalAirportCode, al.airlineName, al.airlineLogo
+        FROM Flight f LEFT JOIN Location l1 ON f.from_location_id = l1.location_id
+        LEFT JOIN Location l2 ON f.to_location_id = l2.location_id LEFT JOIN Airport a1 ON f.departure_airport_id = a1.airport_id
+        LEFT JOIN Airport a2 ON f.arrival_airport_id = a2.airport_id LEFT JOIN Airline al ON f.airline_id = al.airline_id WHERE 1=1
       `;
       const fallbackParams = [];
       if (from) { fallbackSql += " AND l1.location_name = ?"; fallbackParams.push(from); }
@@ -361,20 +342,63 @@ app.get("/api/flights", (req, res) => {
          fallbackSql += " AND (f.flightNumber LIKE ? OR al.airlineName LIKE ? OR a1.code LIKE ? OR a2.code LIKE ?)";
          fallbackParams.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`);
       }
-      
       db.query(fallbackSql, fallbackParams, (fallbackErr, fallbackResults) => {
         if (fallbackErr) return res.status(500).json([]);
         res.json(fallbackResults);
       });
     } else {
-        const mappedResults = results.map(f => ({
-            ...f,
-            departureCity: f.from_city,
-            departureAirportCode: f.departure_code,
-            arrivalCity: f.to_city,
-            arrivalAirportCode: f.arrival_code
-        }));
+        const mappedResults = results.map(f => ({ ...f, departureCity: f.from_city, departureAirportCode: f.departure_code, arrivalCity: f.to_city, arrivalAirportCode: f.arrival_code }));
         res.json(mappedResults);
+    }
+  });
+});
+
+app.post("/api/flights", (req, res) => {
+  const { flightNumber, airlineName, airlineLogo, from_location_id, departure_airport_id, to_location_id, arrival_airport_id, departureTime, arrivalTime, duration, price, stops, refundable } = req.body;
+  
+  db.query("SELECT airline_id FROM Airline WHERE airlineName = ?", [airlineName], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    
+    const insertFlight = (airline_id) => {
+        const sql = "INSERT INTO Flight (from_location_id, to_location_id, departure_airport_id, arrival_airport_id, airline_id, flightNumber, departureTime, arrivalTime, duration, price, stops, refundable) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        db.query(sql, [from_location_id, to_location_id, departure_airport_id, arrival_airport_id, airline_id, flightNumber, departureTime, arrivalTime, duration, price, stops, refundable], (err, result) => {
+            if (err) return res.status(500).json({ error: err.message });
+            res.json({ success: true, id: result.insertId });
+        });
+    };
+
+    if (results.length > 0) {
+        insertFlight(results[0].airline_id);
+    } else {
+        db.query("INSERT INTO Airline (airlineName, airlineLogo) VALUES (?, ?)", [airlineName, airlineLogo], (err, result) => {
+            if (err) return res.status(500).json({ error: err.message });
+            insertFlight(result.insertId);
+        });
+    }
+  });
+});
+
+app.put("/api/flights/:id", (req, res) => {
+  const { flightNumber, airlineName, airlineLogo, from_location_id, departure_airport_id, to_location_id, arrival_airport_id, departureTime, arrivalTime, duration, price, stops, refundable } = req.body;
+  
+  db.query("SELECT airline_id FROM Airline WHERE airlineName = ?", [airlineName], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    
+    const updateFlight = (airline_id) => {
+        const sql = "UPDATE Flight SET from_location_id=?, to_location_id=?, departure_airport_id=?, arrival_airport_id=?, airline_id=?, flightNumber=?, departureTime=?, arrivalTime=?, duration=?, price=?, stops=?, refundable=? WHERE flight_id=?";
+        db.query(sql, [from_location_id, to_location_id, departure_airport_id, arrival_airport_id, airline_id, flightNumber, departureTime, arrivalTime, duration, price, stops, refundable, req.params.id], (err) => {
+            if (err) return res.status(500).json({ error: err.message });
+            res.json({ success: true });
+        });
+    };
+
+    if (results.length > 0) {
+        updateFlight(results[0].airline_id);
+    } else {
+        db.query("INSERT INTO Airline (airlineName, airlineLogo) VALUES (?, ?)", [airlineName, airlineLogo], (err, result) => {
+            if (err) return res.status(500).json({ error: err.message });
+            updateFlight(result.insertId);
+        });
     }
   });
 });
@@ -426,11 +450,67 @@ app.get("/api/cities/:id/:category", (req, res) => {
   });
 });
 
-/* ✅ GLOBAL 404 HANDLER */
-app.use("/api/*", (req, res) => {
-  res.status(404).json({ error: "API Route Not Found." });
+/* --- Add/Edit/Delete Dynamic City Content Engine --- */
+const dynamicTables = {
+  'attractions': { name: 'Attraction', idCol: 'attraction_id' },
+  'restaurants': { name: 'Restaurant', idCol: 'restaurant_id' },
+  'food': { name: 'FoodPlace', idCol: 'food_id' },
+  'shopping': { name: 'ShoppingPlace', idCol: 'shopping_id' },
+  'culture': { name: 'Culture', idCol: 'culture_id' },
+  'gallery': { name: 'GalleryImage', idCol: 'image_id' }
+};
+
+app.post("/api/:category", (req, res, next) => {
+  const { category } = req.params;
+  const tableInfo = dynamicTables[category];
+  if (!tableInfo) return next(); // Not a dynamic category, pass to 404 handler
+
+  const data = req.body;
+  const keys = Object.keys(data);
+  const values = Object.values(data);
+  if(keys.length === 0) return res.status(400).json({ error: "No data provided" });
+
+  const placeholders = keys.map(() => '?').join(', ');
+  const sql = `INSERT INTO ${tableInfo.name} (${keys.join(', ')}) VALUES (${placeholders})`;
+
+  db.query(sql, values, (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.status(201).json({ success: true, id: results.insertId });
+  });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT} 🚀`);
+app.put("/api/:category/:id", (req, res, next) => {
+  const { category, id } = req.params;
+  const tableInfo = dynamicTables[category];
+  if (!tableInfo) return next();
+
+  const data = req.body;
+  const keys = Object.keys(data);
+  const values = Object.values(data);
+  if(keys.length === 0) return res.status(400).json({ error: "No data provided" });
+
+  const setClause = keys.map(k => `${k}=?`).join(', ');
+  const sql = `UPDATE ${tableInfo.name} SET ${setClause} WHERE ${tableInfo.idCol} = ?`;
+  values.push(id);
+
+  db.query(sql, values, (err) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ success: true });
+  });
 });
+
+app.delete("/api/:category/:id", (req, res, next) => {
+  const { category, id } = req.params;
+  const tableInfo = dynamicTables[category];
+  if (!tableInfo) return next();
+
+  db.query(`DELETE FROM ${tableInfo.name} WHERE ${tableInfo.idCol} = ?`, [id], (err) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ success: true });
+  });
+});
+
+/* ✅ GLOBAL 404 HANDLER */
+app.use("/api/*", (req, res) => res.status(404).json({ error: "API Route Not Found." }));
+
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT} 🚀`));

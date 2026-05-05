@@ -52,7 +52,7 @@
         .top-nav-links {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.5rem; /* Matched spacing from image */
         }
 
         .top-nav-links a {
@@ -89,23 +89,31 @@
         }
 
         .btn-secondary {
-            border-color: #d1d5db;
+            border: 1px solid #d1d5db !important; /* Fixed border for About Us */
             color: #374151;
+            background-color: transparent;
         }
 
         .btn-secondary:hover {
             background-color: #f3f4f6;
         }
 
+        /* --- Updated Navbar User Profile Styles based on Image --- */
         .user-profile {
             display: none;
             align-items: center;
-            gap: 0.75rem;
+            gap: 1.25rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .user-profile-icon {
-            width: 2.25rem;
-            height: 2.25rem;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             background-color: #e0e7ff;
             color: #3730a3;
@@ -113,11 +121,30 @@
             align-items: center;
             justify-content: center;
             font-weight: 600;
+            font-size: 1rem;
         }
 
         .user-profile-name {
             font-weight: 500;
             color: #1f2937;
+        }
+
+        .admin-link {
+            color: #3b82f6 !important;
+            font-weight: 600 !important;
+            display: none; /* Only visible for admins via JS */
+        }
+
+        .logout-btn {
+            font-size: 0.875rem;
+            color: #ef4444 !important;
+            text-decoration: none;
+            font-weight: 600 !important;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            text-decoration: underline;
         }
 
         .hidden {
@@ -442,6 +469,9 @@
             .search-bar-sticky {
                 top: 61px;
             }
+            .top-nav-links {
+                gap: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -452,20 +482,29 @@
         <div class="container">
             <div class="top-nav">
                 <a href="index.html" class="logo">
-                    <!-- Default fallback SVG if Icon.svg is missing locally -->
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12 2.1 12"></path><path d="m12 12 6.9-6.9"></path></svg>
                     <span>Globify</span>
                 </a>
                 <nav class="top-nav-links">
                     <a href="#">List Your Property</a>
+                    
+                    <!-- Guest View -->
                     <div id="auth-links" style="display: flex; gap: 1rem; align-items: center;">
                         <a href="#signInModal">Sign In</a>
                         <a href="#registerModal" class="btn btn-primary">Register</a>
                     </div>
+                    
+                    <!-- Logged-in Match View based on provided mock -->
                     <div id="user-profile" class="user-profile">
-                        <div id="user-icon" class="user-profile-icon"></div>
-                        <span id="user-name" class="user-profile-name"></span>
+                        <a href="admin.html" id="adminPanelLink" class="admin-link">Admin Panel</a>
+                        <div class="user-info">
+                            <div id="user-icon" class="user-profile-icon"></div>
+                            <span id="user-name" class="user-profile-name"></span>
+                        </div>
+                        <a href="#" id="logoutBtn" class="logout-btn">Logout</a>
                     </div>
+
+                    <!-- Shared Button -->
                     <a href="About_Us.html" class="btn btn-secondary">About Us</a>
                 </nav>
             </div>
@@ -544,9 +583,7 @@
                 `}).join('');
             };
 
-            // ✅ SQL OPTIMIZATION IMPLEMENTATION: Server-side API filtering
             const fetchLocations = (searchTerm = '') => {
-                // If a search term exists, send it to the optimized SQL endpoint
                 const url = searchTerm 
                     ? `http://localhost:8000/api/locations?search=${encodeURIComponent(searchTerm)}`
                     : 'http://localhost:8000/api/locations';
@@ -560,7 +597,6 @@
                     });
             };
 
-            // Initial load of all locations
             fetchLocations();
 
             const searchInput = document.getElementById('searchInput');
@@ -572,42 +608,114 @@
             };
 
             searchButton.addEventListener('click', triggerSearch);
-
-            searchInput.addEventListener('keyup', (event) => {
-                if (event.key === 'Enter') {
-                    triggerSearch();
-                }
-            });
+            searchInput.addEventListener('keyup', (event) => { if (event.key === 'Enter') triggerSearch(); });
             
-            /* --- User Auth Mocks --- */
+            /* --- Real API User Authentication --- */
             const signInForm = document.getElementById('signInForm');
             const registerForm = document.getElementById('registerForm');
             const authLinks = document.getElementById('auth-links');
             const userProfile = document.getElementById('user-profile');
             const userNameEl = document.getElementById('user-name');
             const userIconEl = document.getElementById('user-icon');
-            const registerNameInput = document.getElementById('register-name');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const adminPanelLink = document.getElementById('adminPanelLink');
 
-            const handleLogin = (name) => {
-                userNameEl.textContent = name;
-                userIconEl.textContent = name.charAt(0).toUpperCase();
+            const handleLogin = (user) => {
+                userNameEl.textContent = user.name;
+                userIconEl.textContent = user.name.charAt(0).toUpperCase();
+                
+                // Show/hide based on exact layout request
                 authLinks.style.display = 'none';
                 userProfile.style.display = 'flex';
-                window.location.hash = '#';
+                
+                if (user.role === 'admin') {
+                    adminPanelLink.style.display = 'block';
+                } else {
+                    adminPanelLink.style.display = 'none';
+                }
+
+                window.location.hash = '#'; // Close modal
             };
 
+            const storedUser = localStorage.getItem('globify_user');
+            if (storedUser) {
+                try {
+                    const user = JSON.parse(storedUser);
+                    handleLogin(user);
+                } catch (e) {
+                    console.error("Session parse error", e);
+                }
+            }
+
             if (signInForm) {
-                signInForm.addEventListener('submit', function (event) {
-                    event.preventDefault();
-                    handleLogin('User');
+                signInForm.addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    const email = this.querySelector('input[type="email"]').value;
+                    const password = this.querySelector('input[type="password"]').value;
+
+                    try {
+                        const res = await fetch('http://localhost:8000/api/auth/login', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email, password })
+                        });
+                        const data = await res.json();
+
+                        if (data.success) {
+                            localStorage.setItem('globify_user', JSON.stringify(data.user));
+                            handleLogin(data.user);
+                            signInForm.reset();
+                        } else {
+                            alert(data.message || 'Invalid email or password.');
+                        }
+                    } catch (err) {
+                        console.error('Login error:', err);
+                        alert('Could not connect to the server.');
+                    }
                 });
             }
 
             if (registerForm) {
-                registerForm.addEventListener('submit', function (event) {
-                    event.preventDefault();
-                    const userName = registerNameInput.value.trim() || 'User';
-                    handleLogin(userName);
+                registerForm.addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    const name = document.getElementById('register-name').value.trim();
+                    const email = this.querySelector('input[type="email"]').value;
+                    const pwdInputs = this.querySelectorAll('input[type="password"]');
+                    const password = pwdInputs[0].value;
+                    const confirmPassword = pwdInputs[1].value;
+
+                    if (password !== confirmPassword) {
+                        alert("Passwords do not match!");
+                        return;
+                    }
+
+                    try {
+                        const res = await fetch('http://localhost:8000/api/auth/register', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ name, email, password })
+                        });
+                        const data = await res.json();
+
+                        if (data.success) {
+                            alert('Registration successful! Please sign in.');
+                            registerForm.reset();
+                            window.location.hash = '#signInModal';
+                        } else {
+                            alert(data.message || 'Registration failed.');
+                        }
+                    } catch (err) {
+                        console.error('Register error:', err);
+                        alert('Could not connect to the server.');
+                    }
+                });
+            }
+
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    localStorage.removeItem('globify_user');
+                    window.location.reload(); 
                 });
             }
         });

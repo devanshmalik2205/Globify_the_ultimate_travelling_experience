@@ -15,7 +15,6 @@ app.use(express.static(__dirname));
 
 const PORT = process.env.PORT || 8000;
 
-/* ===================== AUTHENTICATION ROUTES ===================== */
 
 app.post("/api/auth/register", (req, res) => {
   const { name, email, password } = req.body;
@@ -39,7 +38,6 @@ app.post("/api/auth/login", (req, res) => {
   });
 });
 
-/* ===================== NEW ADVANCED ROUTES ===================== */
 
 app.get("/api/stats/premium-destinations", (req, res) => {
   db.query("SELECT * FROM vw_premium_destinations", (err, results) => {
@@ -48,7 +46,6 @@ app.get("/api/stats/premium-destinations", (req, res) => {
   });
 });
 
-/* ✅ DYNAMIC PRICE RANGE: Extracts exact Min and Max values from database */
 app.get("/api/homes/price-range", (req, res) => {
   db.query("SELECT MIN(price) AS minPrice, MAX(price) AS maxPrice FROM Home", (err, results) => {
     if (err) return res.status(500).json({ minPrice: 0, maxPrice: 100000 });
@@ -59,12 +56,10 @@ app.get("/api/homes/price-range", (req, res) => {
   });
 });
 
-/* ===================== ACID TRANSACTION ROUTES ===================== */
 
 app.post("/api/book-flight", (req, res) => {
   const { flight_id, guest_name, seats } = req.body;
   
-  // Backend Validation for maximum allowed limit
   if (!seats || seats < 1 || seats > 10) {
       return res.status(400).json({ Message: "Invalid booking request. A maximum of 10 seats is allowed per booking." });
   }
@@ -78,7 +73,6 @@ app.post("/api/book-flight", (req, res) => {
 app.post("/api/book-room", (req, res) => {
   const { room_id, guest_name, nights } = req.body;
   
-  // Backend Validation for maximum allowed limit
   if (!nights || nights < 1 || nights > 5) {
       return res.status(400).json({ Message: "Invalid booking request. A maximum of 5 nights is allowed per booking." });
   }
@@ -89,7 +83,6 @@ app.post("/api/book-room", (req, res) => {
   });
 });
 
-/* ===================== STANDARD ROUTES ===================== */
 
 app.get("/api/locations", (req, res) => {
   const searchTerm = req.query.search;
@@ -129,7 +122,6 @@ app.delete("/api/locations/:id", (req, res) => {
   });
 });
 
-/* --- Homes/Hotels (With Advanced Search & Slider Filters) --- */
 app.get("/api/homes", (req, res) => {
   const { search, minPrice, maxPrice } = req.query;
   
@@ -206,7 +198,6 @@ app.delete("/api/homes/:id", (req, res) => {
   });
 });
 
-/* --- Hotel Rooms --- */
 app.get("/api/homes/:id/rooms", (req, res) => {
   const search = req.query.search;
   db.query("SHOW COLUMNS FROM HotelRoom LIKE 'home_id'", (err, cols) => {
@@ -288,7 +279,6 @@ app.delete("/api/rooms/:id", (req, res) => {
   });
 });
 
-/* --- Airports --- */
 app.get("/api/airports", (req, res) => {
   const searchTerm = req.query.search;
   let sql = `SELECT a.*, l.location_name FROM Airport a LEFT JOIN Location l ON a.location_id = l.location_id`;
@@ -326,7 +316,6 @@ app.delete("/api/airports/:id", (req, res) => {
   });
 });
 
-/* --- Flights --- */
 app.get("/api/flights", (req, res) => {
   const { from, to, search } = req.query;
   const params = [];
@@ -421,7 +410,6 @@ app.delete("/api/flights/:id", (req, res) => {
   });
 });
 
-/* --- Testimonials --- */
 app.get("/api/testimonials", (req, res) => {
   db.query("SELECT * FROM Testimonial", (err, results) => {
     if (err) return res.status(500).json([]);
@@ -429,7 +417,6 @@ app.get("/api/testimonials", (req, res) => {
   });
 });
 
-/* --- Dynamic City Content Categories --- */
 app.get("/api/cities/:id", (req, res) => {
   db.query("SELECT * FROM Location WHERE location_id = ?", [req.params.id], (err, results) => res.json(results[0] || {}));
 });
@@ -462,7 +449,6 @@ app.get("/api/cities/:id/:category", (req, res) => {
   });
 });
 
-/* --- Add/Edit/Delete Dynamic City Content Engine --- */
 const dynamicTables = {
   'attractions': { name: 'Attraction', idCol: 'attraction_id' },
   'restaurants': { name: 'Restaurant', idCol: 'restaurant_id' },
@@ -475,7 +461,7 @@ const dynamicTables = {
 app.post("/api/:category", (req, res, next) => {
   const { category } = req.params;
   const tableInfo = dynamicTables[category];
-  if (!tableInfo) return next(); // Not a dynamic category, pass to 404 handler
+  if (!tableInfo) return next();
 
   const data = req.body;
   const keys = Object.keys(data);
@@ -522,7 +508,6 @@ app.delete("/api/:category/:id", (req, res, next) => {
   });
 });
 
-/* ✅ GLOBAL 404 HANDLER */
 app.use("/api/*", (req, res) => res.status(404).json({ error: "API Route Not Found." }));
 
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT} 🚀`));

@@ -1,14 +1,24 @@
-import mongoose from 'mongoose';
+import db from "../db.js";
 
-const delhiRestaurantSchema = new mongoose.Schema({
-  name: String,
-  description: String,
-  image: String,
-  googleMapsUrl: String,
-  cuisine: String,
-  price_range: String
-});
+/* ✅ Get all Delhi restaurants */
+export const getDelhiRestaurants = () => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      SELECT 
+        restaurant_id,
+        name,
+        description,
+        image,
+        googleMapsUrl,
+        cuisine,
+        price_range
+      FROM Restaurant
+      WHERE location_id = 8
+    `;
 
-const DelhiRestaurant = mongoose.model('DelhiRestaurant', delhiRestaurantSchema, 'delhi_restaurants');
-
-export default DelhiRestaurant;
+    db.query(sql, (err, results) => {
+      if (err) reject(err);
+      else resolve(results);
+    });
+  });
+};

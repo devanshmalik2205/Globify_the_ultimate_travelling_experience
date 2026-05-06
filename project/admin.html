@@ -1,0 +1,1927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Globify Admin - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons for a mature, modern look -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            /* Mature SaaS Color Palette */
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --bg-light: #f8fafc;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --sidebar-bg: #0f172a;
+            --sidebar-text: #94a3b8;
+            --sidebar-hover: #1e293b;
+            --sidebar-active: #ffffff;
+            --danger: #ef4444;
+            --danger-dark: #dc2626;
+            --success-bg: #ecfdf5;
+            --success-text: #047857;
+            --success-border: #a7f3d0;
+            --card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- UI Components --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+        }
+        .btn-sm { padding: 0.375rem 0.75rem; font-size: 0.8125rem; }
+        .btn-primary { background-color: var(--primary); color: white; box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+        .btn-primary:hover { background-color: var(--primary-dark); }
+        .btn-danger { background-color: var(--danger); color: white; }
+        .btn-danger:hover { background-color: var(--danger-dark); }
+        .btn-outline { background-color: white; border: 1px solid var(--border); color: var(--text-main); }
+        .btn-outline:hover { background-color: var(--bg-light); }
+        .btn-success-outline { color: var(--success-text); border-color: var(--success-border); background-color: var(--success-bg); text-decoration: none;}
+        .btn-success-outline:hover { background-color: #d1fae5; }
+        .btn-icon { padding: 0.5rem; border-radius: 0.5rem; background: none; border: none; cursor: pointer; color: var(--text-muted); }
+        .btn-icon:hover { background-color: var(--bg-light); color: var(--text-main); }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            font-family: inherit;
+            font-size: 0.875rem;
+            margin-bottom: 1.25rem;
+            background-color: white;
+            color: var(--text-main);
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.375rem;
+            color: var(--text-main);
+        }
+
+        .lucide { width: 1.25rem; height: 1.25rem; }
+        .lucide-sm { width: 1rem; height: 1rem; }
+
+        /* --- Login Screen --- */
+        #login-screen {
+            position: fixed;
+            inset: 0;
+            background-color: var(--bg-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+        .login-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: var(--card-shadow);
+            width: 100%;
+            max-width: 420px;
+        }
+        .login-card h2 { text-align: center; margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; gap: 0.75rem; font-weight: 600; color: var(--text-main); }
+        
+        .back-home-link {
+            display: block;
+            text-align: left;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            transition: color 0.2s;
+        }
+        .back-home-link:hover {
+            color: var(--primary);
+        }
+
+        /* --- Dashboard Layout --- */
+        #dashboard-layout { display: none; height: 100vh; }
+        
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar-bg);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100%;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 50;
+        }
+        
+        .sidebar-header {
+            padding: 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: white;
+        }
+
+        .nav-links { padding: 1.5rem 1rem; flex-grow: 1; display: flex; flex-direction: column; gap: 0.25rem; }
+
+        .nav-item {
+            padding: 0.75rem 1rem;
+            color: var(--sidebar-text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .nav-item:hover {
+            background-color: var(--sidebar-hover);
+            color: var(--sidebar-active);
+        }
+        .nav-item.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            transition: margin 0.3s ease;
+        }
+
+        .topbar {
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            flex-shrink: 0;
+        }
+
+        .topbar-left { display: flex; align-items: center; gap: 1rem; }
+        
+        .menu-toggle { display: none; }
+
+        .content-area {
+            padding: 2rem;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .header-actions {
+            display: flex; flex-direction: column; margin-bottom: 1.5rem;
+            gap: 1rem;
+        }
+        .header-actions p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem; }
+        
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* --- Search Bar Styles --- */
+        .search-container { position: relative; max-width: 350px; width: 100%; }
+        .search-container .lucide { position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+        .search-container input { width: 100%; margin-bottom: 0; padding-left: 2.5rem; padding-top: 0.625rem; padding-bottom: 0.625rem; border-radius: 9999px; font-size: 0.875rem; background-color: var(--bg-light); border: 1px solid var(--border); }
+        .search-container input:focus { background-color: white; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+
+        /* Custom Searchable Dropdown */
+        .custom-searchable-dropdown { position: relative; max-width: 350px; width: 100%; }
+        .csd-input-box { position: relative; cursor: text; }
+        .csd-input-box input { margin-bottom: 0; padding-right: 2.5rem; cursor: text; background: white; }
+        .csd-input-box .lucide { position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
+        .csd-list { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid var(--border); border-radius: 0.5rem; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); max-height: 250px; overflow-y: auto; z-index: 1000; display: none; margin-top: 0.25rem; }
+        .csd-list.active { display: block; }
+        .csd-item { padding: 0.75rem 1rem; font-size: 0.875rem; cursor: pointer; transition: background 0.2s; border-bottom: 1px solid var(--border); }
+        .csd-item:last-child { border-bottom: none; }
+        .csd-item:hover { background: var(--bg-light); color: var(--primary); font-weight: 500; }
+
+        /* --- Stats Grid --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border);
+            display: flex; flex-direction: column; gap: 0.5rem;
+        }
+        .stat-card h3 { color: var(--text-muted); font-size: 0.875rem; font-weight: 500; }
+        .stat-card p { font-size: 2rem; font-weight: 600; color: var(--text-main); }
+        .stat-card .icon-wrapper { display: flex; align-items: center; justify-content: space-between; }
+
+        /* --- Tables --- */
+        .table-container {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border);
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+        table { width: 100%; border-collapse: collapse; min-width: 700px; }
+        th, td { padding: 1rem 1.5rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background-color: #f8fafc; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+        td { font-size: 0.875rem; vertical-align: middle; }
+        tbody tr:hover { background-color: #f8fafc; }
+        tr:last-child td { border-bottom: none; }
+        .action-btns { display: flex; gap: 0.5rem; align-items: center; }
+
+        .img-preview { width: 48px; height: 48px; border-radius: 0.375rem; object-fit: cover; background-color: var(--bg-light); border: 1px solid var(--border); }
+
+        /* Content Sub-Navigation */
+        .content-tabs {
+            display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; overflow-x: auto;
+        }
+        .content-tab {
+            background: none; border: none; font-size: 0.875rem; color: var(--text-muted);
+            cursor: pointer; padding: 0.625rem 1rem; font-weight: 500; border-radius: 0.5rem; white-space: nowrap; transition: all 0.2s;
+        }
+        .content-tab:hover { background: var(--bg-light); color: var(--text-main); }
+        .content-tab.active { background: var(--bg-light); color: var(--primary); font-weight: 600; }
+
+        /* --- Modal --- */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
+            display: none; align-items: center; justify-content: center; z-index: 2000; padding: 1rem;
+            opacity: 0; transition: opacity 0.2s;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-content {
+            background: white; padding: 2rem; border-radius: 1rem; width: 100%; max-width: 650px;
+            max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            transform: scale(0.95); transition: transform 0.2s;
+        }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .modal-header h3 { font-size: 1.25rem; font-weight: 600; color: var(--text-main); }
+        .close-modal { cursor: pointer; color: var(--text-muted); background: none; border: none; padding: 0.25rem; border-radius: 0.25rem; }
+        .close-modal:hover { background: var(--bg-light); color: var(--text-main); }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem; background: #1e293b; color: white;
+            padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+            transform: translateY(100px); opacity: 0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 3000;
+            display: flex; align-items: center; gap: 0.75rem; font-weight: 500; font-size: 0.875rem;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+
+        .view-section { display: none; animation: fadeIn 0.3s ease; }
+        .view-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; }
+        .form-grid .full-width { grid-column: 1 / -1; }
+
+        /* Mobile Sidebar Backdrop */
+        .sidebar-backdrop {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 40;
+            display: none; opacity: 0; transition: opacity 0.3s;
+        }
+
+        /* --- Responsive Styles --- */
+        @media (max-width: 1024px) {
+            .form-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .sidebar-backdrop.active { display: block; opacity: 1; }
+            .main-content { margin-left: 0; }
+            .menu-toggle { display: block; }
+            .topbar { padding: 0 1rem; }
+            .content-area { padding: 1rem; }
+            .header-actions { flex-direction: column; align-items: flex-start; }
+            .search-container { max-width: 100%; }
+            .header-actions .btn { width: 100%; justify-content: center; }
+            .stat-card { padding: 1.25rem; }
+            .content-tabs { padding-bottom: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <div class="login-card">
+            <a href="index.html" class="back-home-link">← Back to Home</a>
+            <h2><i data-lucide="globe"></i> Globify Admin</h2>
+            <form id="admin-login-form">
+                <label>Email</label>
+                <!-- Cleared default placeholders to test live connection -->
+                <input type="email" id="admin-email" placeholder="admin@globify.com" required>
+                <label>Password</label>
+                <input type="password" id="admin-password" placeholder="••••••••" required>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+                    Login <i data-lucide="arrow-right" class="lucide-sm"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Mobile Sidebar Backdrop -->
+    <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleSidebar()"></div>
+
+    <div id="dashboard-layout">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <i data-lucide="globe" style="color: var(--primary);"></i> Globify
+            </div>
+            <div class="nav-links">
+                <div class="nav-item active" data-target="dashboard-view"><i data-lucide="layout-dashboard"></i> Dashboard</div>
+                <div class="nav-item" data-target="locations-view"><i data-lucide="map-pin"></i> Main Locations</div>
+                <div class="nav-item" data-target="homes-view"><i data-lucide="building"></i> Homes & Hotels</div>
+                <div class="nav-item" data-target="city-content-view"><i data-lucide="file-text"></i> City Content</div>
+                <div class="nav-item" data-target="hotel-rooms-view"><i data-lucide="bed"></i> Hotel Rooms</div>
+                <div class="nav-item" data-target="airports-view"><i data-lucide="plane-takeoff"></i> Airports</div>
+                <div class="nav-item" data-target="flights-view"><i data-lucide="plane"></i> Flights</div>
+            </div>
+            <div class="nav-item" id="logout-btn" style="border-top: 1px solid rgba(255,255,255,0.05); margin: 1rem; margin-top: auto;">
+                <i data-lucide="log-out"></i> Logout
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="btn-icon menu-toggle" onclick="toggleSidebar()">
+                        <i data-lucide="menu"></i>
+                    </button>
+                    <h2 id="topbar-title" style="font-size: 1.25rem; font-weight: 600;">Dashboard</h2>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <span style="font-weight: 500; font-size: 0.875rem;" class="hide-mobile" id="admin-user-name-display">Admin User</span>
+                    <div style="width: 36px; height: 36px; background: var(--bg-light); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-main); font-weight: 600;">A</div>
+                </div>
+            </div>
+
+            <div class="content-area">
+                
+                <!-- Dashboard View -->
+                <div id="dashboard-view" class="view-section active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="icon-wrapper">
+                                <h3>Total Locations</h3>
+                                <i data-lucide="map-pin" style="color: var(--primary); opacity: 0.8;"></i>
+                            </div>
+                            <p id="stat-locations">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="icon-wrapper">
+                                <h3>Total Homes/Hotels</h3>
+                                <i data-lucide="building" style="color: var(--primary); opacity: 0.8;"></i>
+                            </div>
+                            <p id="stat-homes">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="icon-wrapper">
+                                <h3>Total Airports</h3>
+                                <i data-lucide="plane-takeoff" style="color: var(--primary); opacity: 0.8;"></i>
+                            </div>
+                            <p id="stat-airports">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="icon-wrapper">
+                                <h3>Total Flights</h3>
+                                <i data-lucide="plane" style="color: var(--primary); opacity: 0.8;"></i>
+                            </div>
+                            <p id="stat-flights">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="icon-wrapper">
+                                <h3>Database Sync</h3>
+                                <i data-lucide="database" style="color: var(--success-text); opacity: 0.8;"></i>
+                            </div>
+                            <p style="color: var(--success-text); font-size: 1.125rem; display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;" id="db-status">
+                                <span style="display:inline-block; width:8px; height:8px; background: currentColor; border-radius: 50%;"></span> Fetching...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Locations View -->
+                <div id="locations-view" class="view-section">
+                    <div class="header-actions">
+                        <p>Manage your main locations and link them to HTML pages.</p>
+                        <div class="action-bar">
+                            <div class="search-container">
+                                <i data-lucide="search"></i>
+                                <input type="text" id="search-locations" placeholder="Filter locations (e.g. 'D' for Delhi)...">
+                            </div>
+                            <button class="btn btn-primary" onclick="openAddNewModal('location-modal', 'location-form', 'location-modal-title', 'Add New Location')">
+                                <i data-lucide="plus" class="lucide-sm"></i> Add Location
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Image</th>
+                                    <th>Title</th>
+                                    <th>Page Link</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="locations-table-body">
+                                <tr><td colspan="5" style="text-align: center; padding: 2rem;">Loading locations...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Homes View -->
+                <div id="homes-view" class="view-section">
+                    <div class="header-actions">
+                        <p>Manage your homes, hotels and map them to physical room files.</p>
+                        <div class="action-bar">
+                            <div class="search-container">
+                                <i data-lucide="search"></i>
+                                <input type="text" id="search-homes" placeholder="Filter by property name or location...">
+                            </div>
+                            <button class="btn btn-primary" onclick="openAddNewModal('home-modal', 'home-form', 'home-modal-title', 'Add New Property')">
+                                <i data-lucide="plus" class="lucide-sm"></i> Add Property
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Image</th>
+                                    <th>Property Details</th>
+                                    <th>Location</th>
+                                    <th>Price</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="homes-table-body">
+                                <tr><td colspan="6" style="text-align: center; padding: 2rem;">Loading properties...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- City Content View -->
+                <div id="city-content-view" class="view-section">
+                    <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem; background: white; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid var(--border); box-shadow: var(--card-shadow); flex-wrap: wrap;">
+                        <label style="margin: 0; min-width: max-content;">Select City to Manage:</label>
+                        <!-- Custom Searchable Dropdown for Cities -->
+                        <div class="custom-searchable-dropdown" id="city-dropdown-wrapper">
+                            <div class="csd-input-box" onclick="toggleDropdown('city-dropdown-list', event)">
+                                <input type="text" id="content-city-input" placeholder="Search & Select City..." oninput="filterDropdown('city-dropdown-list', this.value)" autocomplete="off">
+                                <i data-lucide="chevron-down"></i>
+                            </div>
+                            <div class="csd-list" id="city-dropdown-list"></div>
+                            <input type="hidden" id="content-city-select">
+                        </div>
+                    </div>
+
+                    <div id="content-workspace" style="display: none;">
+                        <div class="content-tabs">
+                            <button class="content-tab active" onclick="switchContentTab('attractions')">Attractions</button>
+                            <button class="content-tab" onclick="switchContentTab('restaurants')">Restaurants</button>
+                            <button class="content-tab" onclick="switchContentTab('food')">Food</button>
+                            <button class="content-tab" onclick="switchContentTab('shopping')">Shopping</button>
+                            <button class="content-tab" onclick="switchContentTab('culture')">Culture</button>
+                            <button class="content-tab" onclick="switchContentTab('gallery')">Gallery</button>
+                        </div>
+                        
+                        <div class="header-actions">
+                            <h3 id="current-content-title" style="text-transform: capitalize; font-size: 1.25rem; font-weight: 600;">Attractions</h3>
+                            <div class="action-bar">
+                                <div class="search-container">
+                                    <i data-lucide="search"></i>
+                                    <input type="text" id="search-content" placeholder="Filter by name, category, cuisine...">
+                                </div>
+                                <button class="btn btn-primary" onclick="openContentModal()">
+                                    <i data-lucide="plus" class="lucide-sm"></i> Add Item
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <table>
+                                <thead id="content-table-head"></thead>
+                                <tbody id="content-table-body">
+                                    <tr><td colspan="10" style="text-align: center; padding: 2rem;">Select a city above...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hotel Rooms View -->
+                <div id="hotel-rooms-view" class="view-section">
+                    <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem; background: white; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid var(--border); box-shadow: var(--card-shadow); flex-wrap: wrap;">
+                        <label style="margin: 0; min-width: max-content;">Select Hotel to Manage:</label>
+                        <!-- Custom Searchable Dropdown for Hotels -->
+                        <div class="custom-searchable-dropdown" id="hotel-dropdown-wrapper">
+                            <div class="csd-input-box" onclick="toggleDropdown('hotel-dropdown-list', event)">
+                                <input type="text" id="room-hotel-input" placeholder="Search & Select Hotel..." oninput="filterDropdown('hotel-dropdown-list', this.value)" autocomplete="off">
+                                <i data-lucide="chevron-down"></i>
+                            </div>
+                            <div class="csd-list" id="hotel-dropdown-list"></div>
+                            <input type="hidden" id="room-hotel-select">
+                        </div>
+                    </div>
+
+                    <div id="room-workspace" style="display: none;">
+                        <div class="header-actions">
+                            <h3 style="font-size: 1.25rem; font-weight: 600;">Available Rooms</h3>
+                            <div class="action-bar">
+                                <div class="search-container">
+                                    <i data-lucide="search"></i>
+                                    <input type="text" id="search-rooms" placeholder="Filter rooms by name or features...">
+                                </div>
+                                <button class="btn btn-primary" onclick="openRoomModal()">
+                                    <i data-lucide="plus" class="lucide-sm"></i> Add Room
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Room Name</th>
+                                        <th>Price</th>
+                                        <th>Features (Snippet)</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rooms-table-body">
+                                    <tr><td colspan="5" style="text-align: center; padding: 2rem;">Select a hotel above...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Airports View -->
+                <div id="airports-view" class="view-section">
+                    <div class="header-actions">
+                        <p>Manage airports to connect your flights.</p>
+                        <div class="action-bar">
+                            <div class="search-container">
+                                <i data-lucide="search"></i>
+                                <input type="text" id="search-airports" placeholder="Filter by code, name, or city...">
+                            </div>
+                            <button class="btn btn-primary" onclick="openAddNewModal('airport-modal', 'airport-form', 'airport-modal-title', 'Add New Airport')">
+                                <i data-lucide="plus" class="lucide-sm"></i> Add Airport
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Code</th>
+                                    <th>Name</th>
+                                    <th>City/Location</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="airports-table-body">
+                                <tr><td colspan="5" style="text-align: center; padding: 2rem;">Loading airports...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Flights View -->
+                <div id="flights-view" class="view-section">
+                    
+                    <!-- New Flight Insights Section -->
+                    <div class="stats-grid" style="margin-bottom: 1.5rem;">
+                        <div class="stat-card">
+                            <div class="icon-wrapper">
+                                <h3>Avg Flight Price</h3>
+                                <i data-lucide="dollar-sign" style="color: var(--primary); opacity: 0.8;"></i>
+                            </div>
+                            <p id="insight-avg-price">$0</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="icon-wrapper">
+                                <h3>Active Airlines</h3>
+                                <i data-lucide="building-2" style="color: var(--primary); opacity: 0.8;"></i>
+                            </div>
+                            <p id="insight-airlines">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="icon-wrapper">
+                                <h3>Most Popular Route</h3>
+                                <i data-lucide="map" style="color: var(--primary); opacity: 0.8;"></i>
+                            </div>
+                            <p id="insight-popular-route" style="font-size: 1.1rem; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="N/A">N/A</p>
+                        </div>
+                    </div>
+
+                    <div class="header-actions">
+                        <p>Manage flight schedules, pricing, and routes.</p>
+                        <div class="action-bar">
+                            <div class="search-container">
+                                <i data-lucide="search"></i>
+                                <input type="text" id="search-flights" placeholder="Filter flight no, airline, or route...">
+                            </div>
+                            <button class="btn btn-primary" onclick="openAddNewModal('flight-modal', 'flight-form', 'flight-modal-title', 'Add New Flight')">
+                                <i data-lucide="plus" class="lucide-sm"></i> Add Flight
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Airline</th>
+                                    <th>Flight No</th>
+                                    <th>Route</th>
+                                    <th>Price</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="flights-table-body">
+                                <tr><td colspan="6" style="text-align: center; padding: 2rem;">Loading flights...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="location-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="location-modal-title">Add New Location</h3>
+                <button class="close-modal" onclick="closeModal('location-modal')"><i data-lucide="x"></i></button>
+            </div>
+            <form id="location-form">
+                <input type="hidden" id="loc-id">
+                <label>Location Name (Title)</label><input type="text" id="loc-title" required>
+                <label>Image URL</label><input type="url" id="loc-image" required>
+                <label>Page Link</label><input type="text" id="loc-link" placeholder="Leave blank to auto-generate city.html?id=[ID]">
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Save Location</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="home-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="home-modal-title">Add New Property</h3>
+                <button class="close-modal" onclick="closeModal('home-modal')"><i data-lucide="x"></i></button>
+            </div>
+            <form id="home-form">
+                <input type="hidden" id="home-id">
+                <div class="form-grid">
+                    <div class="full-width"><label>Title</label><input type="text" id="home-title" required></div>
+                    <div class="full-width"><label>Subtitle</label><input type="text" id="home-subtitle"></div>
+                    <div><label>Location</label><select id="home-location-id" required></select></div>
+                    <div><label>Price</label><input type="text" id="home-price"></div>
+                    <div><label>Rating</label><input type="number" id="home-rating" step="0.1"></div>
+                    <div class="full-width"><label>Image URL</label><input type="url" id="home-image" required></div>
+                    <div class="full-width"><label>Page Link (HTML)</label><input type="text" id="home-link" placeholder="Leave blank to auto-generate hotel.html?id=[ID]"></div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Save Property</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="dynamic-content-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="dynamic-modal-title">Add Content</h3>
+                <button class="close-modal" onclick="closeModal('dynamic-content-modal')"><i data-lucide="x"></i></button>
+            </div>
+            <form id="dynamic-content-form">
+                <input type="hidden" id="dyn-id">
+                <div id="dynamic-form-fields" class="form-grid"></div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Save Content</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="room-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="room-modal-title">Add Room</h3>
+                <button class="close-modal" onclick="closeModal('room-modal')"><i data-lucide="x"></i></button>
+            </div>
+            <form id="room-form">
+                <input type="hidden" id="room-id">
+                <label>Room Name</label>
+                <input type="text" id="room-name" required placeholder="e.g. Standard King Room">
+                <div class="form-grid">
+                    <div>
+                        <label>Price</label>
+                        <input type="text" id="room-price" required placeholder="e.g. $150">
+                    </div>
+                    <div>
+                        <label>Price Subtext</label>
+                        <input type="text" id="room-price-subtext" placeholder="e.g. + taxes & fees">
+                    </div>
+                </div>
+                <label>Features (Comma Separated)</label>
+                <textarea id="room-features" rows="3" placeholder="e.g. City View, Free WiFi, Breakfast Included"></textarea>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Save Room</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="airport-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="airport-modal-title">Add New Airport</h3>
+                <button class="close-modal" onclick="closeModal('airport-modal')"><i data-lucide="x"></i></button>
+            </div>
+            <form id="airport-form">
+                <input type="hidden" id="airport-id">
+                <div class="form-grid">
+                    <div class="full-width">
+                        <label>Airport Name</label>
+                        <input type="text" id="airport-name" required placeholder="e.g. Indira Gandhi International">
+                    </div>
+                    <div>
+                        <label>Airport Code</label>
+                        <input type="text" id="airport-code" required placeholder="e.g. DEL">
+                    </div>
+                    <div>
+                        <label>City / Location Mapping</label>
+                        <select id="airport-loc-id" required></select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Save Airport</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="flight-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="flight-modal-title">Add New Flight</h3>
+                <button class="close-modal" onclick="closeModal('flight-modal')"><i data-lucide="x"></i></button>
+            </div>
+            <form id="flight-form">
+                <input type="hidden" id="flight-id">
+                <div class="form-grid">
+                    <div><label>Flight Number</label><input type="text" id="flight-num" required></div>
+                    <div><label>Airline Name</label><input type="text" id="flight-airline" required></div>
+                    <div class="full-width"><label>Airline Logo URL</label><input type="url" id="flight-logo" placeholder="e.g. URL to Indigo Logo"></div>
+                    
+                    <div><label>From Location (City ID)</label><select id="flight-from-loc" required></select></div>
+                    <div><label>Departure Airport</label><select id="flight-from-airport" required></select></div>
+                    
+                    <div><label>To Location (City ID)</label><select id="flight-to-loc" required></select></div>
+                    <div><label>Arrival Airport</label><select id="flight-to-airport" required></select></div>
+                    
+                    <div><label>Departure Time</label><input type="datetime-local" id="flight-dep-time" required></div>
+                    <div><label>Arrival Time</label><input type="datetime-local" id="flight-arr-time" required></div>
+                    
+                    <div><label>Duration (e.g. 2h 30m)</label><input type="text" id="flight-duration" required></div>
+                    <div><label>Price</label><input type="number" id="flight-price" step="0.01" required></div>
+                    
+                    <div><label>Stops</label><input type="number" id="flight-stops" value="0"></div>
+                    <div>
+                        <label>Refundable</label>
+                        <select id="flight-refundable">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Save Flight</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"><i data-lucide="check-circle" style="color: #4ade80;"></i> <span>Action completed successfully.</span></div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000/api';
+        
+        // Base Data arrays fetched from Database
+        let currentLocations = [];
+        let currentHomes = [];
+        let currentAirports = [];
+        let currentFlights = [];
+        
+        // Dynamic City Content State
+        let activeCityId = null;
+        let activeContentCategory = 'attractions'; // default tab
+        let currentCategoryData = [];
+
+        // Hotel Rooms State
+        let activeHotelId = null;
+        let currentRoomData = [];
+
+        // Initialize Icons
+        lucide.createIcons();
+
+        function updateIcons() {
+            lucide.createIcons();
+        }
+
+        // Sidebar Toggle for Mobile
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebar-backdrop').classList.toggle('active');
+        }
+
+        // --- Custom Searchable Dropdown Logic ---
+        function toggleDropdown(listId, event) {
+            if (event) event.stopPropagation();
+            const list = document.getElementById(listId);
+            document.querySelectorAll('.csd-list').forEach(l => { if (l !== list) l.classList.remove('active'); });
+            list.classList.toggle('active');
+        }
+
+        function filterDropdown(listId, query) {
+            const list = document.getElementById(listId);
+            list.classList.add('active'); 
+            const items = list.querySelectorAll('.csd-item');
+            items.forEach(item => {
+                if (item.getAttribute('data-text').toLowerCase().includes(query.toLowerCase())) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function populateCustomDropdown(listId, inputId, hiddenId, data, valKey, textKey, callback) {
+            const list = document.getElementById(listId);
+            list.innerHTML = data.map(item => `
+                <div class="csd-item" data-value="${item[valKey]}" data-text="${(item[textKey] || '').replace(/"/g, '&quot;')}">
+                    ${item[textKey]}
+                </div>
+            `).join('');
+
+            const currentHidden = document.getElementById(hiddenId).value;
+            let found = false;
+
+            list.querySelectorAll('.csd-item').forEach(el => {
+                if (el.getAttribute('data-value') === currentHidden) found = true;
+                
+                el.addEventListener('click', () => {
+                    document.getElementById(hiddenId).value = el.getAttribute('data-value');
+                    document.getElementById(inputId).value = el.getAttribute('data-text');
+                    list.classList.remove('active');
+                    if (callback) callback();
+                });
+            });
+            
+            if (!found) {
+                document.getElementById(hiddenId).value = '';
+                document.getElementById(inputId).value = '';
+            }
+        }
+
+        // Close dropdowns on outside click
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.custom-searchable-dropdown')) {
+                document.querySelectorAll('.csd-list').forEach(l => l.classList.remove('active'));
+            }
+        });
+
+
+        // --- SQL-like Backend Search Filters Engine ---
+        // Debounce helper to prevent spamming API requests while typing
+        function debounce(func, timeout = 300){
+            let timer;
+            return (...args) => {
+                clearTimeout(timer);
+                timer = setTimeout(() => { func.apply(this, args); }, timeout);
+            };
+        }
+
+        function setupBackendSearch() {
+            document.getElementById('search-locations').addEventListener('input', debounce((e) => {
+                fetchLocationsData(e.target.value);
+            }));
+
+            document.getElementById('search-homes').addEventListener('input', debounce((e) => {
+                fetchHomesData(e.target.value);
+            }));
+
+            document.getElementById('search-content').addEventListener('input', debounce((e) => {
+                if(activeCityId) loadCategoryData(e.target.value);
+            }));
+
+            document.getElementById('search-rooms').addEventListener('input', debounce((e) => {
+                if(activeHotelId) fetchHotelRooms(e.target.value);
+            }));
+
+            document.getElementById('search-airports').addEventListener('input', debounce((e) => {
+                fetchAirportsData(e.target.value);
+            }));
+
+            document.getElementById('search-flights').addEventListener('input', debounce((e) => {
+                fetchFlightsData(e.target.value);
+            }));
+        }
+        setupBackendSearch();
+
+        // ✅ Data Fetching Layers
+        async function fetchLocationsData(search = '') {
+            try {
+                const res = await fetch(`${API_BASE}/locations${search ? `?search=${encodeURIComponent(search)}` : ''}`);
+                currentLocations = await res.json();
+                renderLocations();
+            } catch (e) { console.error(e); }
+        }
+
+        async function fetchHomesData(search = '') {
+            try {
+                const res = await fetch(`${API_BASE}/homes${search ? `?search=${encodeURIComponent(search)}` : ''}`);
+                currentHomes = await res.json();
+                renderHomes();
+            } catch (e) { console.error(e); }
+        }
+
+        async function fetchAirportsData(search = '') {
+            try {
+                const res = await fetch(`${API_BASE}/airports${search ? `?search=${encodeURIComponent(search)}` : ''}`);
+                currentAirports = await res.json();
+                renderAirports();
+            } catch (e) { console.error(e); }
+        }
+
+        async function fetchFlightsData(search = '') {
+            try {
+                const res = await fetch(`${API_BASE}/flights${search ? `?search=${encodeURIComponent(search)}` : ''}`);
+                currentFlights = await res.json();
+                renderFlights();
+            } catch (e) { console.error(e); }
+        }
+
+        // ✅ Live Admin Authentication Implementation
+        document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('admin-email').value;
+            const password = document.getElementById('admin-password').value;
+
+            try {
+                const res = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+
+                if (data.success && data.user.role === 'admin') {
+                    // Success logic
+                    document.getElementById('login-screen').style.display = 'none';
+                    document.getElementById('dashboard-layout').style.display = 'block';
+                    document.getElementById('admin-user-name-display').textContent = data.user.name;
+                    showToast('Welcome to Globify Admin');
+                    loadBaseData();
+                } else if (data.success) {
+                    // User exists, but is not an admin
+                    alert('Access Denied. Your account does not have administrator privileges.');
+                } else {
+                    // Invalid login
+                    alert(data.message || 'Invalid email or password.');
+                }
+            } catch (err) {
+                alert('Server error. Please make sure the backend is running.');
+            }
+        });
+
+        // Logout Implementation
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            document.getElementById('dashboard-layout').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('admin-login-form').reset();
+            showToast('Logged out successfully.');
+            // Close sidebar on mobile cleanly during logout
+            if(window.innerWidth <= 768 && document.getElementById('sidebar').classList.contains('open')) {
+                toggleSidebar();
+            }
+        });
+
+        document.querySelectorAll('.nav-item[data-target]').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                item.classList.add('active');
+                const target = item.getAttribute('data-target');
+                document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+                document.getElementById(target).classList.add('active');
+                
+                // Get text without the icon HTML
+                const clone = item.cloneNode(true);
+                const icons = clone.querySelectorAll('.lucide');
+                icons.forEach(i => i.remove());
+                document.getElementById('topbar-title').textContent = clone.textContent.trim(); 
+
+                // Close sidebar on mobile after selection
+                if(window.innerWidth <= 768) {
+                    toggleSidebar();
+                }
+            });
+        });
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.querySelector('span').textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+
+        // Safely clear ID and form data so 'Add New' doesn't overwrite an edited entry
+        function openAddNewModal(modalId, formId, titleId, titleText) {
+            document.getElementById(formId).reset();
+            const hiddenIdField = document.querySelector(`#${formId} input[type="hidden"]`);
+            if (hiddenIdField) hiddenIdField.value = '';
+            document.getElementById(titleId).textContent = titleText;
+            openModal(modalId);
+        }
+
+        function formatDateTimeLocal(dateString) {
+            if(!dateString) return '';
+            let safeString = dateString.toString();
+            if (safeString.includes(' ') && !safeString.includes('T')) {
+                safeString = safeString.replace(' ', 'T'); 
+            }
+            const date = new Date(safeString);
+            if (isNaN(date.getTime())) return '';
+            return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0,16);
+        }
+
+        // Load Base Data
+        async function loadBaseData() {
+            document.getElementById('db-status').innerHTML = '<span style="display:inline-block; width:8px; height:8px; background: currentColor; border-radius: 50%;"></span> Fetching...';
+            try {
+                // Fetch all data utilizing the centralized methods
+                await Promise.all([
+                    fetchLocationsData(),
+                    fetchHomesData(),
+                    fetchAirportsData(),
+                    fetchFlightsData()
+                ]);
+                
+                document.getElementById('stat-locations').textContent = currentLocations.length;
+                document.getElementById('stat-homes').textContent = currentHomes.length;
+                document.getElementById('stat-airports').textContent = currentAirports.length;
+                document.getElementById('stat-flights').textContent = currentFlights.length;
+                
+                const dbStatus = document.getElementById('db-status');
+                dbStatus.innerHTML = '<span style="display:inline-block; width:8px; height:8px; background: currentColor; border-radius: 50%;"></span> Synced';
+                dbStatus.style.color = 'var(--success-text)';
+                
+                // Populate Standard Modal Dropdowns
+                const locationOptsHTML = '<option value="">Select a location...</option>' + 
+                    currentLocations.map(l => `<option value="${l.location_id}">${l.title || l.location_name}</option>`).join('');
+                document.getElementById('home-location-id').innerHTML = locationOptsHTML;
+                document.getElementById('flight-from-loc').innerHTML = locationOptsHTML;
+                document.getElementById('flight-to-loc').innerHTML = locationOptsHTML;
+                document.getElementById('airport-loc-id').innerHTML = locationOptsHTML; // Updated to Dropdown
+
+                const airportOptsHTML = '<option value="">Select an airport...</option>' + 
+                    currentAirports.map(a => `<option value="${a.airport_id}">${a.code} - ${a.name}</option>`).join('');
+                document.getElementById('flight-from-airport').innerHTML = airportOptsHTML;
+                document.getElementById('flight-to-airport').innerHTML = airportOptsHTML;
+
+                // Populate the highly efficient Custom Searchable Dropdowns!
+                const locationData = currentLocations.map(l => ({ id: l.location_id, name: l.title || l.location_name }));
+                populateCustomDropdown('city-dropdown-list', 'content-city-input', 'content-city-select', locationData, 'id', 'name', () => fetchCityContent(true));
+
+                const hotelData = currentHomes.map(h => ({ id: h.home_id, name: h.title }));
+                populateCustomDropdown('hotel-dropdown-list', 'room-hotel-input', 'room-hotel-select', hotelData, 'id', 'name', () => fetchHotelRooms('', true));
+
+            } catch (error) {
+                console.error(error);
+                showToast("Failed to fetch database data.");
+                document.getElementById('db-status').innerHTML = '<span style="display:inline-block; width:8px; height:8px; background: var(--danger); border-radius: 50%;"></span> Offline';
+                document.getElementById('db-status').style.color = 'var(--danger)';
+            }
+        }
+
+        // --- Render functions modified to take filterable parameters ---
+        
+        function renderLocations(dataToRender = currentLocations) {
+            const tbody = document.getElementById('locations-table-body');
+            if (dataToRender.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem;">No locations found matching your search.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = dataToRender.map(loc => {
+                const link = loc.link || `city.html?id=${loc.location_id}`;
+                return `
+                <tr>
+                    <td><span style="color:var(--text-muted)">#${loc.location_id}</span></td>
+                    <td><img src="${loc.image}" class="img-preview" onerror="this.src='https://placehold.co/48'"></td>
+                    <td style="font-weight: 500;">${loc.title || loc.location_name}</td>
+                    <td><code style="background:var(--bg-light); padding:0.25rem 0.5rem; border-radius:0.25rem; font-size:0.8rem">${link}</code></td>
+                    <td class="action-btns">
+                        <a href="${link}" target="_blank" class="btn btn-sm btn-outline btn-success-outline"><i data-lucide="external-link" class="lucide-sm"></i> View</a>
+                        <button class="btn btn-sm btn-outline" onclick="editLocation(${loc.location_id})"><i data-lucide="edit-2" class="lucide-sm"></i> Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteLocation(${loc.location_id})"><i data-lucide="trash-2" class="lucide-sm"></i> Delete</button>
+                    </td>
+                </tr>`
+            }).join('');
+            updateIcons();
+        }
+
+        async function deleteLocation(id) {
+            if(confirm('Are you sure you want to delete this location? \\n\\nWARNING: This will automatically delete all Homes, Hotels, City Content (Attractions, Restaurants), Airports, and Flights linked to this location!')) {
+                try {
+                    const res = await fetch(`${API_BASE}/locations/${id}`, { method: 'DELETE' });
+                    if(res.ok) { 
+                        showToast('Location deleted successfully.'); 
+                        loadBaseData(); // Refresh everything since children are deleted
+                        document.getElementById('content-city-input').value = '';
+                        document.getElementById('content-workspace').style.display = 'none';
+                    } else {
+                        showToast('Failed to delete location.');
+                    }
+                } catch (error) { showToast('Network error.'); }
+            }
+        }
+
+        function renderHomes(dataToRender = currentHomes) {
+            const tbody = document.getElementById('homes-table-body');
+            if (dataToRender.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem;">No properties found matching your search.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = dataToRender.map(h => {
+                const link = h.link || `hotel.html?id=${h.home_id}`;
+                return `
+                <tr>
+                    <td><span style="color:var(--text-muted)">#${h.home_id}</span></td>
+                    <td><img src="${h.image}" class="img-preview" onerror="this.src='https://placehold.co/48'"></td>
+                    <td>
+                        <div style="font-weight: 500;">${h.title}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top:0.25rem;">${link}</div>
+                    </td>
+                    <td>${h.location_name || 'N/A'}</td>
+                    <td style="font-weight: 500;">${h.price}</td>
+                    <td class="action-btns">
+                        <a href="${link}" target="_blank" class="btn btn-sm btn-outline btn-success-outline"><i data-lucide="external-link" class="lucide-sm"></i> View</a>
+                        <button class="btn btn-sm btn-outline" onclick="editHome(${h.home_id})"><i data-lucide="edit-2" class="lucide-sm"></i> Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteHome(${h.home_id})"><i data-lucide="trash-2" class="lucide-sm"></i> Delete</button>
+                    </td>
+                </tr>`
+            }).join('');
+            updateIcons();
+        }
+
+        async function deleteHome(id) {
+            if(confirm('Are you sure you want to delete this property? \\n\\nWARNING: All hotel rooms linked to this property will also be deleted.')) {
+                try {
+                    const res = await fetch(`${API_BASE}/homes/${id}`, { method: 'DELETE' });
+                    if(res.ok) { 
+                        showToast('Property deleted successfully.'); 
+                        loadBaseData();
+                        document.getElementById('room-hotel-input').value = '';
+                        document.getElementById('room-workspace').style.display = 'none';
+                    } else {
+                        showToast('Failed to delete property.');
+                    }
+                } catch (error) { showToast('Network error.'); }
+            }
+        }
+
+        function renderAirports(dataToRender = currentAirports) {
+            const tbody = document.getElementById('airports-table-body');
+            if (dataToRender.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem;">No airports found matching your search.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = dataToRender.map(a => `
+                <tr>
+                    <td><span style="color:var(--text-muted)">#${a.airport_id}</span></td>
+                    <td><span style="background:var(--bg-light); padding:0.25rem 0.5rem; border-radius:0.25rem; font-weight:600; font-size:0.8rem">${a.code || a.airport_code}</span></td>
+                    <td style="font-weight: 500;">${a.name || a.airport_name}</td>
+                    <td>${a.city || a.location_name || ''}</td>
+                    <td class="action-btns">
+                        <button class="btn btn-sm btn-outline" onclick="editAirport(${a.airport_id})"><i data-lucide="edit-2" class="lucide-sm"></i> Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteAirport(${a.airport_id})"><i data-lucide="trash-2" class="lucide-sm"></i> Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+            updateIcons();
+        }
+
+        async function deleteAirport(id) {
+            if(confirm('Are you sure you want to delete this airport? \\n\\nWARNING: All flights departing from or arriving at this airport will be affected.')) {
+                try {
+                    const res = await fetch(`${API_BASE}/airports/${id}`, { method: 'DELETE' });
+                    if(res.ok) { 
+                        showToast('Airport deleted successfully.'); 
+                        loadBaseData();
+                    } else {
+                        showToast('Failed to delete airport.');
+                    }
+                } catch (error) { showToast('Network error.'); }
+            }
+        }
+
+        // ==========================================
+        // FLIGHTS ADD/EDIT/DELETE & INSIGHTS LOGIC
+        // ==========================================
+
+        function calculateFlightInsights(flights = currentFlights) {
+            const avgElem = document.getElementById('insight-avg-price');
+            const airlineElem = document.getElementById('insight-airlines');
+            const popRouteElem = document.getElementById('insight-popular-route');
+
+            if (!flights || flights.length === 0) {
+                avgElem.textContent = '$0';
+                airlineElem.textContent = '0';
+                popRouteElem.textContent = 'N/A';
+                popRouteElem.title = 'N/A';
+                return;
+            }
+
+            // Calculate Avg Price
+            const total = flights.reduce((sum, f) => sum + parseFloat(f.price || 0), 0);
+            const avg = total / flights.length;
+            avgElem.textContent = `$${avg.toFixed(2)}`;
+
+            // Distinct Airlines
+            const airlines = new Set(flights.map(f => f.airlineName).filter(name => name));
+            airlineElem.textContent = airlines.size;
+
+            // Popular Route Map Calculation
+            const routeCounts = {};
+            let maxCount = 0;
+            let popRoute = 'N/A';
+            
+            flights.forEach(f => {
+                const dep = f.departureCity || f.departureAirportCode || '?';
+                const arr = f.arrivalCity || f.arrivalAirportCode || '?';
+                const routeName = `${dep} ➝ ${arr}`;
+                
+                routeCounts[routeName] = (routeCounts[routeName] || 0) + 1;
+                if(routeCounts[routeName] > maxCount) {
+                    maxCount = routeCounts[routeName];
+                    popRoute = routeName;
+                }
+            });
+            
+            popRouteElem.textContent = popRoute;
+            popRouteElem.title = popRoute; 
+        }
+
+        function renderFlights(dataToRender = currentFlights) {
+            const tbody = document.getElementById('flights-table-body');
+            
+            // Calculate and display insights based on filtered view
+            calculateFlightInsights(dataToRender);
+
+            if (dataToRender.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem;">No flights found matching your search.</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = dataToRender.map(f => `
+                <tr>
+                    <td><span style="color:var(--text-muted)">#${f.flight_id}</span></td>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:0.75rem;">
+                            <img src="${f.airlineLogo}" class="img-preview" style="width:32px; height:32px; border-radius:50%;" onerror="this.style.display='none'"> 
+                            <span style="font-weight:500;">${f.airlineName}</span>
+                        </div>
+                    </td>
+                    <td><span style="background:var(--bg-light); padding:0.25rem 0.5rem; border-radius:0.25rem; font-size:0.8rem; font-weight:600;">${f.flightNumber}</span></td>
+                    <td>${f.departureCity || f.departureAirportCode} <i data-lucide="arrow-right" style="width:14px; margin:0 0.25rem; color:var(--text-muted);"></i> ${f.arrivalCity || f.arrivalAirportCode}</td>
+                    <td style="font-weight:600;">$${parseFloat(f.price).toFixed(2)}</td>
+                    <td class="action-btns">
+                        <button class="btn btn-sm btn-outline" onclick="editFlight(${f.flight_id})"><i data-lucide="edit-2" class="lucide-sm"></i> Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteFlight(${f.flight_id})"><i data-lucide="trash-2" class="lucide-sm"></i> Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+            updateIcons();
+        }
+
+        async function deleteFlight(flightId) {
+            if(confirm(`Are you sure you want to delete this flight (ID: ${flightId})?`)) {
+                try {
+                    const res = await fetch(`${API_BASE}/flights/${flightId}`, { method: 'DELETE' });
+                    if(res.ok) { 
+                        showToast('Flight deleted successfully.'); 
+                        loadBaseData(); 
+                    } else {
+                        showToast('Failed to delete flight.');
+                    }
+                } catch (error) { 
+                    showToast('Network error while deleting flight.'); 
+                    // Fallback for mock demo: remove from array locally
+                    currentFlights = currentFlights.filter(f => f.flight_id !== flightId);
+                    document.getElementById('stat-flights').textContent = currentFlights.length;
+                    renderFlights();
+                }
+            }
+        }
+
+        // ==========================================
+        // DYNAMIC CITY CONTENT MANAGER LOGIC
+        // ==========================================
+        
+        async function fetchCityContent(isDropdownChange = false) {
+            if (isDropdownChange) {
+                activeCityId = document.getElementById('content-city-select').value;
+                document.getElementById('search-content').value = ''; // clear table search
+            }
+            
+            const workspace = document.getElementById('content-workspace');
+            
+            if(!activeCityId) {
+                workspace.style.display = 'none';
+                return;
+            }
+            
+            workspace.style.display = 'block';
+            await loadCategoryData();
+        }
+
+        function switchContentTab(category) {
+            activeContentCategory = category;
+            document.querySelectorAll('.content-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('current-content-title').textContent = category;
+            
+            // Clear search field on tab switch
+            document.getElementById('search-content').value = '';
+            
+            loadCategoryData();
+        }
+
+        async function loadCategoryData(search = '') {
+            if(!activeCityId) return;
+            const tbody = document.getElementById('content-table-body');
+            tbody.innerHTML = '<tr><td colspan="10" style="padding: 2rem; text-align: center;">Loading...</td></tr>';
+            
+            try {
+                const url = `${API_BASE}/cities/${activeCityId}/${activeContentCategory}${search ? `?search=${encodeURIComponent(search)}` : ''}`;
+                const res = await fetch(url);
+                currentCategoryData = await res.json();
+                renderCategoryTable();
+            } catch (err) {
+                tbody.innerHTML = '<tr><td colspan="10" style="color:var(--danger); padding: 2rem; text-align: center;">Error fetching data. Check server connection.</td></tr>';
+                currentCategoryData = []; // clear on error
+                renderCategoryTable(); // render empty state
+            }
+        }
+
+        function renderCategoryTable(dataToRender = currentCategoryData) {
+            const thead = document.getElementById('content-table-head');
+            const tbody = document.getElementById('content-table-body');
+            
+            if(dataToRender.length === 0) {
+                thead.innerHTML = '';
+                tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 2rem;">No items found. Adjust search or Click "Add Item" to create one.</td></tr>';
+                return;
+            }
+
+            // Generate Table Headers dynamically based on category
+            let headers = '<tr><th>ID</th><th>Image</th><th>Name</th>';
+            if(activeContentCategory === 'attractions') headers += '<th>Category</th><th>Price</th>';
+            if(activeContentCategory === 'restaurants') headers += '<th>Cuisine</th><th>Price</th>';
+            if(activeContentCategory === 'food') headers += '<th>Type</th><th>Area</th>';
+            if(activeContentCategory === 'gallery') headers = '<tr><th>ID</th><th>Image</th><th>Alt Text</th>';
+            headers += '<th>Actions</th></tr>';
+            thead.innerHTML = headers;
+
+            // Generate Rows
+            tbody.innerHTML = dataToRender.map(item => {
+                let row = `<tr>`;
+                const idField = Object.keys(item).find(key => key.endsWith('_id'));
+                const id = item[idField] || Math.floor(Math.random()*1000); // fallback id
+                
+                row += `<td><span style="color:var(--text-muted)">#${id}</span></td>`;
+                
+                const imgSrc = item.src || item.image || '';
+                row += `<td><img src="${imgSrc}" class="img-preview" onerror="this.src='https://placehold.co/48'"></td>`;
+                
+                if(activeContentCategory === 'gallery') {
+                    row += `<td>${item.alt || ''}</td>`;
+                } else {
+                    row += `<td style="font-weight:500;">${item.name || ''}</td>`;
+                    if(activeContentCategory === 'attractions') row += `<td><span style="background:var(--bg-light); padding:0.25rem 0.5rem; border-radius:0.25rem; font-size:0.8rem;">${item.category || ''}</span></td><td>${item.ticket_price || ''}</td>`;
+                    if(activeContentCategory === 'restaurants') row += `<td><span style="background:var(--bg-light); padding:0.25rem 0.5rem; border-radius:0.25rem; font-size:0.8rem;">${item.cuisine || ''}</span></td><td>${item.price_range || ''}</td>`;
+                    if(activeContentCategory === 'food') row += `<td><span style="background:var(--bg-light); padding:0.25rem 0.5rem; border-radius:0.25rem; font-size:0.8rem;">${item.type || ''}</span></td><td>${item.area || ''}</td>`;
+                }
+
+                row += `<td class="action-btns">
+                    <button class="btn btn-sm btn-outline" onclick="openContentModal(${id})"><i data-lucide="edit-2" class="lucide-sm"></i> Edit</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteContentItem(${id})"><i data-lucide="trash-2" class="lucide-sm"></i> Delete</button>
+                </td></tr>`;
+                return row;
+            }).join('');
+            updateIcons();
+        }
+
+        const categorySchemas = {
+            'attractions': [
+                { id: 'name', label: 'Name', type: 'text', fullWidth: true },
+                { id: 'description', label: 'Description', type: 'text', fullWidth: true },
+                { id: 'image', label: 'Image URL', type: 'url', fullWidth: true },
+                { id: 'googleMapsUrl', label: 'Google Maps Link', type: 'url', fullWidth: true },
+                { id: 'category', label: 'Category', type: 'text' },
+                { id: 'opening_hours', label: 'Opening Hours', type: 'text' },
+                { id: 'ticket_price', label: 'Ticket Price', type: 'text' },
+                { id: 'best_time_to_visit', label: 'Best Time to Visit', type: 'text' }
+            ],
+            'restaurants': [
+                { id: 'name', label: 'Name', type: 'text', fullWidth: true },
+                { id: 'description', label: 'Description', type: 'text', fullWidth: true },
+                { id: 'image', label: 'Image URL', type: 'url', fullWidth: true },
+                { id: 'googleMapsUrl', label: 'Google Maps Link', type: 'url', fullWidth: true },
+                { id: 'cuisine', label: 'Cuisine', type: 'text' },
+                { id: 'price_range', label: 'Price Range', type: 'text' }
+            ],
+            'food': [
+                { id: 'name', label: 'Name', type: 'text', fullWidth: true },
+                { id: 'description', label: 'Description', type: 'text', fullWidth: true },
+                { id: 'image', label: 'Image URL', type: 'url', fullWidth: true },
+                { id: 'googleMapsUrl', label: 'Google Maps Link', type: 'url', fullWidth: true },
+                { id: 'type', label: 'Type (e.g. Street Food)', type: 'text' },
+                { id: 'area', label: 'Area', type: 'text' }
+            ],
+            'shopping': [
+                { id: 'name', label: 'Name', type: 'text', fullWidth: true },
+                { id: 'description', label: 'Description', type: 'text', fullWidth: true },
+                { id: 'image', label: 'Image URL', type: 'url', fullWidth: true },
+                { id: 'googleMapsUrl', label: 'Google Maps Link', type: 'url', fullWidth: true }
+            ],
+            'culture': [
+                { id: 'name', label: 'Name', type: 'text', fullWidth: true },
+                { id: 'description', label: 'Description', type: 'text', fullWidth: true },
+                { id: 'image', label: 'Image URL', type: 'url', fullWidth: true }
+            ],
+            'gallery': [
+                { id: 'src', label: 'Image Source URL', type: 'url', fullWidth: true },
+                { id: 'alt', label: 'Alt Text / Description', type: 'text', fullWidth: true }
+            ]
+        };
+
+        function openContentModal(itemId = null) {
+            document.getElementById('dynamic-content-form').reset();
+            document.getElementById('dyn-id').value = '';
+            const fieldsContainer = document.getElementById('dynamic-form-fields');
+            
+            const schema = categorySchemas[activeContentCategory];
+            fieldsContainer.innerHTML = schema.map(field => `
+                <div class="${field.fullWidth ? 'full-width' : ''}">
+                    <label>${field.label}</label>
+                    <input type="${field.type}" id="dyn-${field.id}">
+                </div>
+            `).join('');
+
+            if (itemId) {
+                const idKey = currentCategoryData[0] ? Object.keys(currentCategoryData[0]).find(k => k.endsWith('_id')) : null;
+                const item = currentCategoryData.find(i => i[idKey] == itemId);
+                if (item) {
+                    document.getElementById('dyn-id').value = itemId;
+                    schema.forEach(field => {
+                        const el = document.getElementById(`dyn-${field.id}`);
+                        if(el && item[field.id]) el.value = item[field.id];
+                    });
+                }
+                document.getElementById('dynamic-modal-title').textContent = "Edit " + activeContentCategory;
+            } else {
+                document.getElementById('dynamic-modal-title').textContent = "Add " + activeContentCategory;
+            }
+
+            openModal('dynamic-content-modal');
+        }
+
+        document.getElementById('dynamic-content-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const itemId = document.getElementById('dyn-id').value;
+            const schema = categorySchemas[activeContentCategory];
+            
+            let payload = { location_id: activeCityId };
+            schema.forEach(field => {
+                payload[field.id] = document.getElementById(`dyn-${field.id}`).value;
+            });
+
+            const method = itemId ? 'PUT' : 'POST';
+            const url = itemId ? `${API_BASE}/${activeContentCategory}/${itemId}` : `${API_BASE}/${activeContentCategory}`;
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (response.ok) {
+                    showToast(`Saved successfully.`);
+                    closeModal('dynamic-content-modal');
+                    loadCategoryData();
+                } else showToast(`Failed to save. Check server.js endpoints.`);
+            } catch (error) { showToast("Network error. Could not save content."); }
+        });
+
+        async function deleteContentItem(itemId) {
+            if(confirm(`Delete this item?`)) {
+                try {
+                    const res = await fetch(`${API_BASE}/${activeContentCategory}/${itemId}`, { method: 'DELETE' });
+                    if(res.ok) { showToast('Deleted.'); loadCategoryData(document.getElementById('search-content').value); }
+                    else showToast('Failed to delete.');
+                } catch (error) { showToast('Network error.'); }
+            }
+        }
+
+        // ==========================================
+        // HOTEL ROOMS MANAGER LOGIC
+        // ==========================================
+
+        async function fetchHotelRooms(search = '', isDropdownChange = false) {
+            if (typeof search !== 'string') search = ''; 
+            
+            if (isDropdownChange) {
+                activeHotelId = document.getElementById('room-hotel-select').value;
+                document.getElementById('search-rooms').value = '';
+                search = '';
+            }
+
+            const workspace = document.getElementById('room-workspace');
+
+            if(!activeHotelId) {
+                workspace.style.display = 'none';
+                return;
+            }
+            
+            workspace.style.display = 'block';
+            const tbody = document.getElementById('rooms-table-body');
+            tbody.innerHTML = '<tr><td colspan="5" style="padding: 2rem; text-align: center;">Loading rooms...</td></tr>';
+            
+            try {
+                const url = `${API_BASE}/homes/${activeHotelId}/rooms${search ? `?search=${encodeURIComponent(search)}` : ''}`;
+                const res = await fetch(url);
+                currentRoomData = await res.json();
+                renderRoomsTable();
+            } catch (err) {
+                tbody.innerHTML = '<tr><td colspan="5" style="color:var(--danger); padding: 2rem; text-align: center;">Error fetching rooms.</td></tr>';
+                currentRoomData = [];
+                renderRoomsTable();
+            }
+        }
+
+        function renderRoomsTable(dataToRender = currentRoomData) {
+            const tbody = document.getElementById('rooms-table-body');
+            if(dataToRender.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 2rem;">No rooms found matching your search.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = dataToRender.map(room => {
+                const featStr = (room.features || []).join(', ');
+                const shortFeat = featStr.length > 40 ? featStr.substring(0, 40) + '...' : featStr;
+
+                return `<tr>
+                    <td><span style="color:var(--text-muted)">#${room.room_id || 'N/A'}</span></td>
+                    <td style="font-weight: 500;">${room.name}</td>
+                    <td>
+                        <div style="font-weight: 600;">${room.price}</div>
+                        <div style="font-size: 0.75rem; color:var(--text-muted)">${room.priceSubtext || ''}</div>
+                    </td>
+                    <td>${shortFeat}</td>
+                    <td class="action-btns">
+                        <button class="btn btn-sm btn-outline" onclick="openRoomModal(${room.room_id})"><i data-lucide="edit-2" class="lucide-sm"></i> Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteRoom(${room.room_id})"><i data-lucide="trash-2" class="lucide-sm"></i> Delete</button>
+                    </td>
+                </tr>`;
+            }).join('');
+            updateIcons();
+        }
+
+        function openRoomModal(roomId = null) {
+            document.getElementById('room-form').reset();
+            document.getElementById('room-id').value = '';
+            
+            if(roomId) {
+                const room = currentRoomData.find(r => r.room_id == roomId);
+                if(room) {
+                    document.getElementById('room-id').value = room.room_id;
+                    document.getElementById('room-name').value = room.name || '';
+                    document.getElementById('room-price').value = room.price || '';
+                    document.getElementById('room-price-subtext').value = room.priceSubtext || '';
+                    document.getElementById('room-features').value = (room.features || []).join(', ');
+                }
+                document.getElementById('room-modal-title').textContent = "Edit Room";
+            } else {
+                document.getElementById('room-modal-title').textContent = "Add New Room";
+            }
+            openModal('room-modal');
+        }
+
+        document.getElementById('room-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const roomId = document.getElementById('room-id').value;
+            const featuresStr = document.getElementById('room-features').value;
+            
+            const payload = {
+                home_id: activeHotelId,
+                name: document.getElementById('room-name').value,
+                price: document.getElementById('room-price').value,
+                priceSubtext: document.getElementById('room-price-subtext').value,
+                features: featuresStr.split(',').map(f => f.trim()).filter(f => f) 
+            };
+
+            const method = roomId ? 'PUT' : 'POST';
+            const url = roomId ? `${API_BASE}/rooms/${roomId}` : `${API_BASE}/rooms`;
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (response.ok) {
+                    showToast(`Room saved successfully.`);
+                    closeModal('room-modal');
+                    fetchHotelRooms('', true);
+                } else showToast(`Failed to save room.`);
+            } catch (error) { showToast("Network error."); }
+        });
+
+        async function deleteRoom(roomId) {
+            if(confirm(`Are you sure you want to delete this room?`)) {
+                try {
+                    const res = await fetch(`${API_BASE}/rooms/${roomId}`, { method: 'DELETE' });
+                    if(res.ok) { showToast('Room deleted.'); fetchHotelRooms('', true); }
+                    else showToast('Failed to delete room.');
+                } catch (error) { showToast('Network error.'); }
+            }
+        }
+
+        // ==========================================
+        // BASE LOCATIONS, HOMES, AIRPORTS, FLIGHTS SAVING
+        // ==========================================
+        
+        // Save/Update Location
+        document.getElementById('location-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('loc-id').value;
+            const payload = {
+                location_name: document.getElementById('loc-title').value,
+                image: document.getElementById('loc-image').value,
+                link: document.getElementById('loc-link').value
+            };
+
+            const method = id ? 'PUT' : 'POST';
+            const url = id ? `${API_BASE}/locations/${id}` : `${API_BASE}/locations`;
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (response.ok) {
+                    showToast(`Location saved successfully.`);
+                    closeModal('location-modal');
+                    loadBaseData(); 
+                } else showToast(`Failed to save Location.`);
+            } catch (error) { showToast("Network error."); }
+        });
+
+        function editLocation(id) {
+            const loc = currentLocations.find(c => c.location_id === id);
+            if(!loc) return;
+            document.getElementById('loc-id').value = loc.location_id;
+            document.getElementById('loc-title').value = loc.title || loc.location_name || '';
+            document.getElementById('loc-image').value = loc.image || '';
+            document.getElementById('loc-link').value = loc.link || '';
+            document.getElementById('location-modal-title').textContent = "Edit Location";
+            openModal('location-modal');
+        }
+
+        // Save/Update Home
+        document.getElementById('home-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('home-id').value;
+            const payload = {
+                title: document.getElementById('home-title').value,
+                subtitle: document.getElementById('home-subtitle').value,
+                location_id: document.getElementById('home-location-id').value,
+                price: document.getElementById('home-price').value,
+                rating: document.getElementById('home-rating').value,
+                image: document.getElementById('home-image').value,
+                link: document.getElementById('home-link').value
+            };
+
+            const method = id ? 'PUT' : 'POST';
+            const url = id ? `${API_BASE}/homes/${id}` : `${API_BASE}/homes`;
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (response.ok) {
+                    showToast(`Property saved successfully.`);
+                    closeModal('home-modal');
+                    loadBaseData();
+                } else showToast(`Failed to save Property.`);
+            } catch (error) { showToast("Network error."); }
+        });
+
+        function editHome(id) {
+            const home = currentHomes.find(h => h.home_id === id);
+            if(!home) return;
+            document.getElementById('home-id').value = home.home_id;
+            document.getElementById('home-title').value = home.title || '';
+            document.getElementById('home-subtitle').value = home.subtitle || '';
+            if(home.location_id) document.getElementById('home-location-id').value = home.location_id;
+            document.getElementById('home-price').value = home.price || '';
+            document.getElementById('home-rating').value = home.rating || 4.5;
+            document.getElementById('home-image').value = home.image || '';
+            document.getElementById('home-link').value = home.link || '';
+            document.getElementById('home-modal-title').textContent = "Edit Property";
+            openModal('home-modal');
+        }
+
+        // Save/Update Airport
+        document.getElementById('airport-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('airport-id').value;
+            const payload = {
+                name: document.getElementById('airport-name').value,
+                code: document.getElementById('airport-code').value,
+                location_id: document.getElementById('airport-loc-id').value // Using ID now
+            };
+
+            const method = id ? 'PUT' : 'POST';
+            const url = id ? `${API_BASE}/airports/${id}` : `${API_BASE}/airports`;
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (response.ok) {
+                    showToast(`Airport saved successfully.`);
+                    closeModal('airport-modal');
+                    loadBaseData();
+                } else showToast(`Failed to save Airport.`);
+            } catch (error) { showToast("Network error."); }
+        });
+
+        function editAirport(id) {
+            const airport = currentAirports.find(a => a.airport_id === id);
+            if(!airport) return;
+            document.getElementById('airport-id').value = airport.airport_id;
+            document.getElementById('airport-name').value = airport.name || airport.airport_name || '';
+            document.getElementById('airport-code').value = airport.code || airport.airport_code || '';
+            document.getElementById('airport-loc-id').value = airport.location_id || ''; // Maps to Dropdown
+            document.getElementById('airport-modal-title').textContent = "Edit Airport";
+            openModal('airport-modal');
+        }
+
+        // Save/Update Flight
+        document.getElementById('flight-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('flight-id').value;
+            const payload = {
+                flightNumber: document.getElementById('flight-num').value,
+                airlineName: document.getElementById('flight-airline').value,
+                airlineLogo: document.getElementById('flight-logo').value,
+                from_location_id: document.getElementById('flight-from-loc').value,
+                departure_airport_id: document.getElementById('flight-from-airport').value,
+                to_location_id: document.getElementById('flight-to-loc').value,
+                arrival_airport_id: document.getElementById('flight-to-airport').value,
+                departureTime: document.getElementById('flight-dep-time').value,
+                arrivalTime: document.getElementById('flight-arr-time').value,
+                duration: document.getElementById('flight-duration').value,
+                price: parseFloat(document.getElementById('flight-price').value),
+                stops: parseInt(document.getElementById('flight-stops').value),
+                refundable: parseInt(document.getElementById('flight-refundable').value)
+            };
+
+            const method = id ? 'PUT' : 'POST';
+            const url = id ? `${API_BASE}/flights/${id}` : `${API_BASE}/flights`;
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (response.ok) {
+                    showToast(`Flight saved successfully.`);
+                    closeModal('flight-modal');
+                    loadBaseData();
+                } else showToast(`Failed to save Flight.`);
+            } catch (error) { showToast("Network error."); }
+        });
+
+        function editFlight(id) {
+            const flight = currentFlights.find(f => f.flight_id == id);
+            if(!flight) return;
+            
+            document.getElementById('flight-id').value = flight.flight_id;
+            document.getElementById('flight-num').value = flight.flightNumber || '';
+            document.getElementById('flight-airline').value = flight.airlineName || '';
+            document.getElementById('flight-logo').value = flight.airlineLogo || '';
+            
+            const setSelectByText = (selectId, matchText) => {
+                if(!matchText) return;
+                const select = document.getElementById(selectId);
+                const options = Array.from(select.options);
+                const found = options.find(opt => opt.text.toLowerCase().includes(matchText.toLowerCase()));
+                if(found) select.value = found.value;
+            };
+
+            // Locations
+            if(flight.from_location_id) document.getElementById('flight-from-loc').value = flight.from_location_id;
+            else setSelectByText('flight-from-loc', flight.departureCity);
+
+            if(flight.to_location_id) document.getElementById('flight-to-loc').value = flight.to_location_id;
+            else setSelectByText('flight-to-loc', flight.arrivalCity);
+
+            // Airports
+            if(flight.departure_airport_id) document.getElementById('flight-from-airport').value = flight.departure_airport_id;
+            else setSelectByText('flight-from-airport', flight.departureAirportCode);
+
+            if(flight.arrival_airport_id) document.getElementById('flight-to-airport').value = flight.arrival_airport_id;
+            else setSelectByText('flight-to-airport', flight.arrivalAirportCode);
+
+            // Stricter parsing algorithm for tricky MySQL Datetime strings
+            document.getElementById('flight-dep-time').value = formatDateTimeLocal(flight.departureTime);
+            document.getElementById('flight-arr-time').value = formatDateTimeLocal(flight.arrivalTime);
+            
+            document.getElementById('flight-duration').value = flight.duration || '';
+            document.getElementById('flight-price').value = flight.price || '';
+            document.getElementById('flight-stops').value = flight.stops || 0;
+            document.getElementById('flight-refundable').value = flight.refundable ? 1 : 0;
+            
+            document.getElementById('flight-modal-title').textContent = "Edit Flight";
+            openModal('flight-modal');
+        }
+
+    </script>
+</body>
+</html>

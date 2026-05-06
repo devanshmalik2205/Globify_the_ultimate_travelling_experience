@@ -47,13 +47,6 @@
             text-decoration: none;
         }
 
-        .logo img {
-            width: 2rem;
-            height: 2rem;
-            border-radius: 0.375rem;
-            object-fit: cover;
-        }
-
         .top-nav-links {
             display: flex;
             align-items: center;
@@ -71,6 +64,30 @@
 
         .top-nav-links a:hover {
             color: #3b82f6;
+        }
+
+        /* User Profile Styles for Syncing Auth State */
+        .user-profile {
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-profile-icon {
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 50%;
+            background-color: #e0e7ff;
+            color: #3730a3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .user-profile-name {
+            font-weight: 500;
+            color: #1f2937;
         }
 
         .btn {
@@ -104,7 +121,7 @@
 
         .about-hero {
             padding: 4rem 0;
-            background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('Hero background.svg') no-repeat center center/cover;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://img.freepik.com/premium-photo/still-life-scene-wooden-background-oriental-adventure-trip-wit-vintage-travel-item-traveling_362752-1827.jpg?semt=ais_hybrid&w=740&q=80') no-repeat center center/cover;
             min-height: 40vh;
             display: flex;
             align-items: center;
@@ -293,14 +310,25 @@
         <div class="container">
             <div class="top-nav">
                 <a href="index.html" class="logo">
-                    <img src="Icon.svg" alt="Globify Logo">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12 2.1 12"></path><path d="m12 12 6.9-6.9"></path></svg>
                     <span>Globify</span>
                 </a>
+                
                 <nav class="top-nav-links">
+                    <a href="admin.html" style="color: #3b82f6; font-weight: 600; display: none;" id="admin-link-nav">Admin Panel</a>
                     <a href="#">List Your Property</a>
-                    <a href="index.html#signInModal">Sign In</a>
-                    <a href="index.html#registerModal" class="btn btn-primary">Register</a>
                     <a href="About_Us.html" class="btn btn-secondary">About Us</a>
+                    
+                    <div id="auth-links" style="display: flex; gap: 1rem; align-items: center;">
+                        <a href="index.html#signInModal">Sign In</a>
+                        <a href="index.html#registerModal" class="btn btn-primary">Register</a>
+                    </div>
+                    
+                    <div id="user-profile" class="user-profile">
+                        <div id="user-icon" class="user-profile-icon"></div>
+                        <span id="user-name" class="user-profile-name"></span>
+                        <button id="logout-btn" style="background:none; border:none; color:#ef4444; font-weight:600; cursor:pointer; font-size:0.875rem; margin-left:0.5rem;">Logout</button>
+                    </div>
                 </nav>
             </div>
         </div>
@@ -371,7 +399,7 @@
             <div class="footer-grid">
                 <div>
                     <a href="index.html" class="logo" style="color:white; font-size:1.5rem;">
-                        <img src="Icon.svg" alt="Globify Logo">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12 2.1 12"></path><path d="m12 12 6.9-6.9"></path></svg>
                         <span>Globify</span>
                     </a>
                 </div>
@@ -403,6 +431,49 @@
         </div>
     </footer>
 
+    <!-- Account Sync Script Added -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Function to restore login state from localStorage
+            function restoreLoginState() {
+                const storedUserStr = localStorage.getItem('globify_user');
+                if (storedUserStr) {
+                    try {
+                        const userObj = JSON.parse(storedUserStr);
+                        
+                        const userNameEl = document.getElementById('user-name');
+                        const userIconEl = document.getElementById('user-icon');
+                        const authLinks = document.getElementById('auth-links');
+                        const userProfile = document.getElementById('user-profile');
+                        const adminLink = document.getElementById('admin-link-nav');
+
+                        if (userNameEl) userNameEl.textContent = userObj.name;
+                        if (userIconEl) userIconEl.textContent = userObj.name.charAt(0).toUpperCase();
+                        if (authLinks) authLinks.style.display = 'none';
+                        if (userProfile) userProfile.style.display = 'flex';
+                        if (adminLink && userObj.role === 'admin') adminLink.style.display = 'inline-block';
+
+                        return userObj;
+                    } catch (e) {
+                        console.error('Error parsing user data:', e);
+                    }
+                }
+                return null;
+            }
+
+            // Execute on page load
+            restoreLoginState();
+
+            // Handling Logout
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', () => {
+                    localStorage.removeItem('globify_user');
+                    window.location.reload();
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -8,8 +8,335 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
     <style>
+        /* Combined style.css */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .header {
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1f2937;
+            text-decoration: none;
+        }
+
+        .top-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem; /* Matched the spacing from the image */
+        }
+
+        .top-nav-links a {
+            text-decoration: none;
+            color: #4b5563;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .top-nav-links a:hover {
+            color: #3b82f6;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: rgb(255, 255, 255) !important;
+        }
+
+        .btn-primary:hover {
+            background-color: #ffffff;
+            color: #002fb0 !important;
+            border-color: #002fb0;
+        }
+
+        .btn-secondary {
+            border: 1px solid #d1d5db !important; /* Fixed border for About Us */
+            color: #374151;
+            background-color: transparent;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f3f4f6;
+        }
+
+        /* --- Updated Navbar User Profile Styles based on Image --- */
+        .user-profile {
+            display: none;
+            align-items: center;
+            gap: 1.25rem;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-profile-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #e0e7ff;
+            color: #3730a3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .user-profile-name {
+            font-weight: 500;
+            color: #1f2937;
+        }
+
+        .admin-link {
+            color: #3b82f6 !important;
+            font-weight: 600 !important;
+            display: none; /* Only visible for admins via JS */
+        }
+
+        .logout-btn {
+            font-size: 0.875rem;
+            color: #ef4444 !important;
+            text-decoration: none;
+            font-weight: 600 !important;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            text-decoration: underline;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .footer {
+            background-color: #1f2937;
+            color: #d1d5db;
+            padding: 4rem 0 2rem 0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .footer-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .footer h4 {
+            font-weight: 600;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #d1d5db;
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .subscribe-form {
+            margin-top: 1rem;
+            display: flex;
+        }
+
+        .subscribe-form input {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 0.5rem 0 0 0.5rem;
+            border: none;
+            color: #1f2937;
+        }
+
+        .subscribe-form button {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0 1rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+            cursor: pointer;
+        }
+
+        .footer-bottom {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #374151;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.875rem;
+        }
+
+        @media (min-width: 768px) {
+            .footer-bottom {
+                flex-direction: row;
+            }
+        }
+
+        .socials {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay:target {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #f8f9fa;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            text-align: center;
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: #6b7285;
+            cursor: pointer;
+            line-height: 1;
+            text-decoration: none;
+        }
+
+        .modal-close-btn:hover {
+            color: #1f2937;
+        }
+
+        .auth-card h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-card form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .auth-card input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        .auth-card input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .auth-switch {
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+
+        .auth-switch a {
+            color: #3b82f6;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .auth-switch a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Advanced Search & Price Slider Styles --- */
         .search-bar-sticky {
             position: sticky;
             top: 61px;
@@ -20,9 +347,9 @@
             border-bottom: none;
         }
 
-        .search-bar-container {
+        .filter-container {
             display: flex;
-            max-width: 800px;
+            max-width: 950px;
             margin: 0 auto;
             background-color: white;
             border-radius: 9999px;
@@ -30,6 +357,14 @@
             border: 1px solid #e5e7eb;
             padding: 0.375rem 0.5rem;
             align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap; 
+        }
+
+        .search-bar-wrapper {
+            flex-grow: 1;
+            display: flex;
+            min-width: 200px;
         }
 
         .search-input {
@@ -39,17 +374,86 @@
             border: none;
             border-radius: 9999px;
             outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
             background-color: transparent;
         }
 
-        .search-input:focus {
-            border-color: transparent;
-            box-shadow: none;
+        /* Dual Range Slider Container */
+        .price-slider-container {
+            display: flex;
+            flex-direction: column;
+            width: 250px;
+            padding: 0 0.5rem;
+        }
+
+        .price-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #4b5563;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+        }
+
+        .range-slider {
+            position: relative;
+            height: 6px;
+            background-color: #e5e7eb;
+            border-radius: 9999px;
+            margin-bottom: 0.25rem;
+        }
+
+        .range-fill {
+            position: absolute;
+            height: 100%;
+            background-color: #3b82f6;
+            border-radius: 9999px;
+            z-index: 1;
+        }
+
+        .slider-input {
+            position: absolute;
+            width: 100%;
+            height: 6px;
+            top: 0;
+            margin: 0;
+            background: none;
+            pointer-events: none;
+            -webkit-appearance: none;
+            outline: none;
+            z-index: 2;
+        }
+
+        /* WebKit Browsers */
+        .slider-input::-webkit-slider-thumb {
+            pointer-events: auto;
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #3b82f6;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            transition: transform 0.1s;
+        }
+        .slider-input::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        /* Firefox */
+        .slider-input::-moz-range-thumb {
+            pointer-events: auto;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #3b82f6;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
 
         .search-button {
-            padding: 0.625rem 1.5rem;
+            padding: 0.75rem 1.5rem;
             font-size: 1rem;
             font-weight: 500;
             background-color: #3b82f6;
@@ -58,7 +462,6 @@
             border-radius: 9999px;
             cursor: pointer;
             transition: background-color 0.2s;
-            margin-left: 0.25rem;
             flex-shrink: 0;
         }
 
@@ -66,6 +469,7 @@
             background-color: #2563eb;
         }
 
+        /* General UI Styles */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -74,24 +478,142 @@
             padding-bottom: 4rem;
         }
 
-        .hotel-card {
-            width: 100%;
-        }
-        
-        .link_rooms {
-            text-decoration: none;
+        .section {
+            padding: 4rem 0;
         }
 
-        .hidden {
-            display: none;
+        .section-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .section-subtitle {
+            color: #4b5563;
+            margin-top: 0.5rem;
+            max-width: 42rem;
+        }
+
+        .hotel-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .hotel-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .hotel-card .card-img-container {
+            height: 192px;
+            position: relative;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background-color: #e5e7eb;
+        }
+
+        .rating-badge {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            background-color: #22c55e;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .dynamic-badge {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .card-content {
+            padding: 1rem;
+        }
+
+        .card-title-main {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0 0 0.25rem 0;
+        }
+
+        .card-subtitle {
+            font-size: 0.875rem;
+            color: #6b7285;
+            margin: 0;
+        }
+
+        .price {
+            margin-top: 0.5rem;
+            font-size: 1.125rem;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .price-subtext {
+            font-size: 0.875rem;
+            font-weight: normal;
+            color: #6b7285;
+        }
+
+        .details-btn {
+            margin-top: 1rem;
+            width: 100%;
+            background-color: #eff6ff;
+            color: #2563eb;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            box-sizing: border-box;
+        }
+
+        .details-btn:hover {
+            background-color: #dbeafe;
         }
 
         @media (max-width: 768px) {
             .search-bar-sticky {
                 top: 61px;
             }
+            .filter-container {
+                border-radius: 1rem;
+                padding: 1rem;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .price-slider-container {
+                width: 100%;
+                margin: 0.5rem 0;
+            }
             .grid-container {
                 grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+            .top-nav-links {
+                gap: 0.5rem;
             }
         }
     </style>
@@ -103,19 +625,29 @@
         <div class="container">
             <div class="top-nav">
                 <a href="index.html" class="logo">
-                    <img src="Icon.svg" alt="G">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12 2.1 12"></path><path d="m12 12 6.9-6.9"></path></svg>
                     <span>Globify</span>
                 </a>
                 <nav class="top-nav-links">
                     <a href="#">List Your Property</a>
+                    
+                    <!-- Guest View -->
                     <div id="auth-links" style="display: flex; gap: 1rem; align-items: center;">
                         <a href="#signInModal">Sign In</a>
                         <a href="#registerModal" class="btn btn-primary">Register</a>
                     </div>
+                    
+                    <!-- Logged-in Match View based on provided mock -->
                     <div id="user-profile" class="user-profile">
-                        <div id="user-icon" class="user-profile-icon"></div>
-                        <span id="user-name" class="user-profile-name"></span>
+                        <a href="admin.html" id="adminPanelLink" class="admin-link">Admin Panel</a>
+                        <div class="user-info">
+                            <div id="user-icon" class="user-profile-icon"></div>
+                            <span id="user-name" class="user-profile-name"></span>
+                        </div>
+                        <a href="#" id="logoutBtn" class="logout-btn">Logout</a>
                     </div>
+
+                    <!-- Shared Button -->
                     <a href="About_Us.html" class="btn btn-secondary">About Us</a>
                 </nav>
             </div>
@@ -123,8 +655,23 @@
     </header>
 
     <div class="search-bar-sticky">
-        <div class="container search-bar-container">
-            <input type="text" id="searchInput" class="search-input" placeholder="Search for homes or hotels (e.g., Holiday Inn)...">
+        <div class="container filter-container">
+            <div class="search-bar-wrapper">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search homes or locations...">
+            </div>
+            
+            <div class="price-slider-container">
+                <div class="price-labels">
+                    <span id="minPriceDisplay">₹0</span>
+                    <span id="maxPriceDisplay">₹100,000</span>
+                </div>
+                <div class="range-slider">
+                    <div class="range-fill" id="sliderFill"></div>
+                    <input type="range" id="minPriceSlider" class="slider-input" value="0" min="0" max="100000" step="100">
+                    <input type="range" id="maxPriceSlider" class="slider-input" value="100000" min="0" max="100000" step="100">
+                </div>
+            </div>
+
             <button id="searchButton" class="search-button">Search</button>
         </div>
     </div>
@@ -134,7 +681,7 @@
             <div class="container">
                 <h2 class="section-title">All Featured Homes</h2>
                 <p class="section-subtitle">Browse our full selection of recommended homes and hotels.</p>
-                <p id="noResults" class="section-subtitle" style="color: #ef4444; display: none;">No homes found matching your search.</p>
+                <p id="noResults" class="section-subtitle" style="color: #ef4444; display: none;">No homes found matching your search and price criteria.</p>
                 
                 <div id="homesGridContainer" class="grid-container">
                 </div>
@@ -145,7 +692,12 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
-                <div><a href="#" class="logo" style="color:white; font-size:1.5rem;"><img src="Icon.svg" alt="G"><span>Globify</span></a></div>
+                <div>
+                    <a href="#" class="logo" style="color:white; font-size:1.5rem;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12 2.1 12"></path><path d="m12 12 6.9-6.9"></path></svg>
+                        <span>Globify</span>
+                    </a>
+                </div>
                 <div><h4>Explore</h4><ul class="footer-links"><li><a href="#">Flights</a></li><li><a href="#">Hotels</a></li><li><a href="#">Cabs</a></li><li><a href="#">Car Rental</a></li></ul></div>
                 <div><h4>Company</h4><ul class="footer-links"><li><a href="About_Us.html">About Us</a></li><li><a href="#">How it works</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li></ul></div>
                 <div><h4>Subscribe</h4><p style="font-size:0.875rem;">Join our newsletter to stay updated.</p><div class="subscribe-form"><input type="email" placeholder="Your email"><button>→</button></div></div>
@@ -160,100 +712,248 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
-            const renderAllHomes = (homes) => {
-                const container = document.getElementById('homesGridContainer');
-                if (!container) return;
-
-                if (homes.length === 0) {
-                    container.innerHTML = "<p>No homes available at this time.</p>";
-                    return;
-                }
-
-                container.innerHTML = homes.map(home => `
-                    <div class="hotel-card" data-title="${home.title.toLowerCase()}" data-subtitle="${home.subtitle.toLowerCase()}">
-                        <div class="card-img-container">
-                            <img src="${home.image}" alt="${home.title}" class="card-img">
-                            <span class="rating-badge">${home.rating}</span>
-                        </div>
-                        <div class="card-content">
-                            <h3 class="card-title-main">${home.title}</h3>
-                            <p class="card-subtitle">${home.subtitle}</p>
-                            <p class="price">${home.price} <span class="price-subtext">/ night</span></p>
-                            <!-- MODIFIED BUTTON to be an <a> tag -->
-                            <a href="checkout.html?type=hotel&title=${encodeURIComponent(home.title)}" class="details-btn" style="display: block; text-align: center; text-decoration: none; padding-left:0rem; padding-right:0rem">Book Now</a>
-                        </div>
-                    </div>
-                `).join('');
-            };
-
-            fetch('/api/homes')
-                .then(response => response.json())
-                .then(renderAllHomes)
-                .catch(error => {
-                    console.error('Error fetching homes:', error);
-                    document.getElementById('homesGridContainer').innerHTML = "<p>Could not load homes.</p>";
-                });
-
+            /* --- Slider & Filter Logic --- */
+            const minSlider = document.getElementById('minPriceSlider');
+            const maxSlider = document.getElementById('maxPriceSlider');
+            const sliderFill = document.getElementById('sliderFill');
+            const minDisplay = document.getElementById('minPriceDisplay');
+            const maxDisplay = document.getElementById('maxPriceDisplay');
             const searchInput = document.getElementById('searchInput');
             const searchButton = document.getElementById('searchButton');
+            const homesGridContainer = document.getElementById('homesGridContainer');
             const noResultsMsg = document.getElementById('noResults');
 
-            const filterHomes = () => {
-                const searchTerm = searchInput.value.toLowerCase().trim();
-                const cards = document.querySelectorAll('#homesGridContainer .hotel-card');
-                let resultsFound = false;
+            const formatPrice = (price) => new Intl.NumberFormat('en-IN').format(price);
 
-                cards.forEach(card => {
-                    const title = card.dataset.title;
-                    const subtitle = card.dataset.subtitle;
+            const initPriceSlider = async () => {
+                try {
+                    const res = await fetch('http://localhost:8000/api/homes/price-range');
+                    const data = await res.json();
                     
-                    if (title.includes(searchTerm) || subtitle.includes(searchTerm)) {
-                        card.classList.remove('hidden');
-                        resultsFound = true;
-                    } else {
-                        card.classList.add('hidden');
-                    }
-                });
-
-                noResultsMsg.style.display = resultsFound ? 'none' : 'block';
+                    const dbMin = data.minPrice !== null ? Math.floor(data.minPrice) : 0;
+                    const dbMax = data.maxPrice !== null ? Math.ceil(data.maxPrice) : 50000;
+                    
+                    minSlider.min = maxSlider.min = dbMin;
+                    minSlider.max = maxSlider.max = dbMax;
+                    
+                    minSlider.value = dbMin;
+                    maxSlider.value = dbMax;
+                    
+                    updateSliderUI();
+                } catch(err) {
+                    updateSliderUI(); 
+                }
             };
 
-            searchButton.addEventListener('click', filterHomes);
-
-            searchInput.addEventListener('keyup', (event) => {
-                if (event.key === 'Enter') {
-                    filterHomes();
+            const updateSliderUI = () => {
+                let minVal = parseInt(minSlider.value);
+                let maxVal = parseInt(maxSlider.value);
+                const sliderMinBound = parseInt(minSlider.min);
+                const sliderMaxBound = parseInt(minSlider.max);
+                
+                const minGap = (sliderMaxBound - sliderMinBound) * 0.01; 
+                
+                if (maxVal - minVal < minGap) {
+                    if (event && event.target === minSlider) {
+                        minSlider.value = maxVal - minGap;
+                        minVal = parseInt(minSlider.value);
+                    } else {
+                        maxSlider.value = minVal + minGap;
+                        maxVal = parseInt(maxSlider.value);
+                    }
                 }
-            });
+                
+                const minPercent = ((minVal - sliderMinBound) / (sliderMaxBound - sliderMinBound)) * 100;
+                const maxPercent = ((maxVal - sliderMinBound) / (sliderMaxBound - sliderMinBound)) * 100;
+                
+                sliderFill.style.left = minPercent + '%';
+                sliderFill.style.width = (maxPercent - minPercent) + '%';
+                
+                minDisplay.textContent = `₹${formatPrice(minVal)}`;
+                maxDisplay.textContent = `₹${formatPrice(maxVal)}`;
+            };
 
+            minSlider.addEventListener('input', updateSliderUI);
+            maxSlider.addEventListener('input', updateSliderUI);
+            minSlider.addEventListener('change', () => fetchHomes());
+            maxSlider.addEventListener('change', () => fetchHomes());
+
+            /* --- UI Rendering Logic --- */
+            const getBadgeStyle = (badgeText) => {
+                if (!badgeText) return '';
+                if (badgeText.includes('Top Rated')) return 'background: linear-gradient(135deg, #f59e0b, #d97706);'; 
+                if (badgeText.includes('Great Value')) return 'background: linear-gradient(135deg, #10b981, #059669);';
+                if (badgeText.includes('Luxury')) return 'background: linear-gradient(135deg, #8b5cf6, #6d28d9);'; 
+                return 'background: linear-gradient(135deg, #ef4444, #b91c1c);'; 
+            };
+
+            const renderAllHomes = (homes) => {
+                if (homes.length === 0) {
+                    homesGridContainer.innerHTML = "";
+                    noResultsMsg.style.display = 'block';
+                    return;
+                }
+                
+                noResultsMsg.style.display = 'none';
+                homesGridContainer.innerHTML = homes.map(home => {
+                    const title = home.title || 'Accommodation';
+                    const subtitle = home.subtitle || home.location_name || 'Best Deal';
+                    const price = home.price || '$99';
+                    const rating = home.rating || '4.5';
+                    const image = home.image || 'https://placehold.co/320x192/E0E0E0/757575?text=Home';
+                    const link = home.link || `hotel.html?id=${home.home_id || ''}`;
+
+                    const dynamicBadgeHTML = home.dynamic_badge ? 
+                        `<span class="dynamic-badge" style="${getBadgeStyle(home.dynamic_badge)}">${home.dynamic_badge}</span>` : '';
+
+                    return `
+                    <div class="hotel-card">
+                        <div class="card-img-container">
+                            <img src="${image}" alt="${title}" class="card-img" onerror="this.src='https://placehold.co/320x192/E0E0E0/757575?text=Home';">
+                            <span class="rating-badge">${rating}</span>
+                            ${dynamicBadgeHTML}
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title-main">${title}</h3>
+                            <p class="card-subtitle">${subtitle}</p>
+                            <p class="price">₹${formatPrice(price)} <span class="price-subtext">/ night</span></p>
+                            <a href="${link}" class="details-btn" style="display: block; text-align: center; text-decoration: none; padding-left:0rem; padding-right:0rem">View Details</a>
+                        </div>
+                    </div>
+                `}).join('');
+            };
+
+            const fetchHomes = () => {
+                const searchTerm = searchInput.value.trim();
+                const minPrice = minSlider.value;
+                const maxPrice = maxSlider.value;
+
+                const url = new URL('http://localhost:8000/api/homes');
+                if (searchTerm) url.searchParams.append('search', searchTerm);
+                if (minPrice) url.searchParams.append('minPrice', minPrice);
+                if (maxPrice) url.searchParams.append('maxPrice', maxPrice);
+
+                fetch(url.toString())
+                    .then(response => response.json())
+                    .then(renderAllHomes)
+                    .catch(error => {
+                        console.error('Error fetching homes:', error);
+                        homesGridContainer.innerHTML = "<p style='grid-column: 1 / -1; color: red;'>Could not load homes from server. Make sure port 8000 is running.</p>";
+                    });
+            };
+
+            searchButton.addEventListener('click', fetchHomes);
+            searchInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') fetchHomes(); });
+
+            initPriceSlider().then(() => fetchHomes());
+
+
+            /* --- Real API User Authentication --- */
             const signInForm = document.getElementById('signInForm');
             const registerForm = document.getElementById('registerForm');
             const authLinks = document.getElementById('auth-links');
             const userProfile = document.getElementById('user-profile');
             const userNameEl = document.getElementById('user-name');
-            const userIconEl =document.getElementById('user-icon');
-            const registerNameInput = document.getElementById('register-name');
+            const userIconEl = document.getElementById('user-icon');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const adminPanelLink = document.getElementById('adminPanelLink');
 
-            const handleLogin = (name) => {
-                userNameEl.textContent = name;
-                userIconEl.textContent = name.charAt(0).toUpperCase();
+            const handleLogin = (user) => {
+                userNameEl.textContent = user.name;
+                userIconEl.textContent = user.name.charAt(0).toUpperCase();
+                
+                // Show/hide based on exact layout request
                 authLinks.style.display = 'none';
                 userProfile.style.display = 'flex';
-                window.location.hash = '#';
+                
+                if (user.role === 'admin') {
+                    adminPanelLink.style.display = 'block';
+                } else {
+                    adminPanelLink.style.display = 'none';
+                }
+
+                window.location.hash = '#'; // Close modal
             };
 
+            const storedUser = localStorage.getItem('globify_user');
+            if (storedUser) {
+                try {
+                    const user = JSON.parse(storedUser);
+                    handleLogin(user);
+                } catch (e) {
+                    console.error("Session parse error", e);
+                }
+            }
+
             if (signInForm) {
-                signInForm.addEventListener('submit', function (event) {
-                    event.preventDefault();
-                    handleLogin('User');
+                signInForm.addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    const email = this.querySelector('input[type="email"]').value;
+                    const password = this.querySelector('input[type="password"]').value;
+
+                    try {
+                        const res = await fetch('http://localhost:8000/api/auth/login', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email, password })
+                        });
+                        const data = await res.json();
+
+                        if (data.success) {
+                            localStorage.setItem('globify_user', JSON.stringify(data.user));
+                            handleLogin(data.user);
+                            signInForm.reset();
+                        } else {
+                            alert(data.message || 'Invalid email or password.');
+                        }
+                    } catch (err) {
+                        console.error('Login error:', err);
+                        alert('Could not connect to the server.');
+                    }
                 });
             }
 
             if (registerForm) {
-                registerForm.addEventListener('submit', function (event) {
-                    event.preventDefault();
-                    const userName = registerNameInput.value.trim() || 'User';
-                    handleLogin(userName);
+                registerForm.addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    const name = document.getElementById('register-name').value.trim();
+                    const email = this.querySelector('input[type="email"]').value;
+                    const pwdInputs = this.querySelectorAll('input[type="password"]');
+                    const password = pwdInputs[0].value;
+                    const confirmPassword = pwdInputs[1].value;
+
+                    if (password !== confirmPassword) {
+                        alert("Passwords do not match!");
+                        return;
+                    }
+
+                    try {
+                        const res = await fetch('http://localhost:8000/api/auth/register', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ name, email, password })
+                        });
+                        const data = await res.json();
+
+                        if (data.success) {
+                            alert('Registration successful! Please sign in.');
+                            registerForm.reset();
+                            window.location.hash = '#signInModal';
+                        } else {
+                            alert(data.message || 'Registration failed.');
+                        }
+                    } catch (err) {
+                        console.error('Register error:', err);
+                        alert('Could not connect to the server.');
+                    }
+                });
+            }
+
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    localStorage.removeItem('globify_user');
+                    window.location.reload(); 
                 });
             }
         });

@@ -1,11 +1,21 @@
-import mongoose from 'mongoose';
+import db from "../db.js";
 
-const delhiCultureSchema = new mongoose.Schema({
-  name: String,
-  description: String,
-  image: String
-});
+/* ✅ Get all Delhi culture data */
+export const getDelhiCulture = () => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      SELECT 
+        culture_id,
+        name,
+        description,
+        image
+      FROM Culture
+      WHERE location_id = 8
+    `;
 
-const DelhiCulture = mongoose.model('DelhiCulture', delhiCultureSchema, 'delhi_culture');
-
-export default DelhiCulture;
+    db.query(sql, (err, results) => {
+      if (err) reject(err);
+      else resolve(results);
+    });
+  });
+};

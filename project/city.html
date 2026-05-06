@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading City... - Globify</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #3b82f6;
+            --light-blue-bg: #eef2ff;
+            --dark-blue-text: #4338ca;
+            --light-green-bg: #f0fdf4;
+            --dark-green-text: #15803d;
+            --light-orange-bg: #fff7ed;
+            --dark-orange-text: #c2410c;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .header {
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1f2937;
+            text-decoration: none;
+        }
+
+        .top-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .top-nav-links a {
+            text-decoration: none;
+            color: #4b5563;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .top-nav-links a:hover {
+            color: var(--primary-blue);
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: rgb(255, 255, 255) !important;
+        }
+
+        .btn-primary:hover {
+            background-color: #ffffff;
+            color: #002fb0 !important;
+            border-color: #002fb0;
+        }
+
+        .btn-secondary {
+            border-color: #d1d5db;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f3f4f6;
+        }
+
+        .location-hero {
+            height: 50vh;
+            position: relative;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .location-hero img, .location-hero video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: 1;
+            object-fit: cover;
+        }
+
+        .location-hero .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+            z-index: 2;
+        }
+
+
+        .main-content-wrapper {
+            background-color: #f8f9fa;
+            position: relative;
+            z-index: 2;
+        }
+
+        .city-title-card {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-top: -3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 4;
+        }
+
+        .page-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            padding-bottom: 3rem;
+        }
+
+        .main-column {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            min-width: 0; 
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .info-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        .horizontal-scroll-container {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .horizontal-scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .small-card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            flex: 0 0 280px;
+            display: flex;
+            flex-direction: column;
+        }
+        .small-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .small-card-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 1rem 1rem 0 0;
+        }
+        .small-card-content {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .small-card-content h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin: 0 0 0.25rem;
+            color: #111827;
+        }
+        .small-card-content p {
+            font-size: 0.875rem;
+            color: #6b7285;
+            margin: 0;
+            line-height: 1.4;
+            flex-grow: 1;
+        }
+
+
+        .info-card {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .info-card:not(.view-more-card):hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .info-header .text-content {
+            flex-grow: 1;
+        }
+
+        .info-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .info-header p {
+            margin: 0.25rem 0 0;
+            font-size: 0.875rem;
+            color: #6b7285;
+        }
+
+        .info-header img {
+            width: 100px;
+            height: 75px;
+            border-radius: 0.5rem;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .info-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .info-tag {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            line-height: 1.25;
+        }
+
+        .info-tag.attraction {
+            background-color: var(--light-blue-bg);
+            color: var(--dark-blue-text);
+        }
+        
+        .info-tag.restaurant {
+            background-color: var(--light-green-bg);
+            color: var(--dark-green-text);
+        }
+
+        .info-tag.food {
+            background-color: var(--light-orange-bg);
+            color: var(--dark-orange-text);
+        }
+
+        .info-tag svg {
+            width: 0.875rem;
+            height: 0.875rem;
+            flex-shrink: 0;
+        }
+        
+        .google-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: #4b5563;
+            font-size: 0.875rem;
+            margin-top: auto;
+            padding-top: 0.5rem;
+        }
+
+        .google-link img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .info-list-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+        
+        .info-list-item .icon {
+            width: 2.25rem;
+            height: 2.25rem;
+            flex-shrink: 0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--light-blue-bg);
+            color: var(--dark-blue-text);
+        }
+        
+        .info-list-item .icon svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        .info-list-item .text strong {
+            display: block;
+            font-weight: 500;
+            color: #111827;
+        }
+        
+        .map-container {
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+        }
+        .map-container iframe {
+            width: 100%;
+            height: 300px;
+            border: 0;
+        }
+
+        .photo-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .photo-gallery-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        .gallery-item {
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .footer {
+            background-color: #1f2937;
+            color: #9ca3af;
+            padding: 4rem 0 2rem;
+            margin-top: 3rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #374151;
+        }
+
+        @media (min-width: 1024px) {
+            .footer-grid {
+                grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+            }
+        }
+
+        .footer-col h4 {
+            font-weight: 600;
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container">
+            <div class="top-nav">
+                <a href="index.html" class="logo">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12 2.1 12"></path><path d="m12 12 6.9-6.9"></path></svg>
+                    <span>Globify</span>
+                </a>
+                <nav class="top-nav-links">
+                    <a href="#">List Your Property</a>
+                    <a href="admin.html" style="color: #3b82f6; font-weight: 600;">Admin Panel</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="location-hero" id="hero-section">
+        <img id="city-hero-img" src="" alt="City Hero Image" onerror="this.src='https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80'">
+        <div class="video-overlay"></div>
+    </div>
+
+    <div class="main-content-wrapper">
+        <div class="container">
+
+            <div class="city-title-card" id="city-main-title">Loading City...</div>
+
+            <div class="page-layout">
+                <div class="main-column">
+
+                    <section>
+                        <h2 class="section-title">Explore the City</h2>
+                        <div class="map-container">
+                            <iframe id="city-map" src="" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </section>
+                
+                    <section>
+                        <h2 class="section-title">Top Attractions</h2>
+                        <div id="attractionsGrid" class="info-grid">Loading...</div>
+                    </section>
+
+                    <section>
+                        <h2 class="section-title">Food & Cuisine</h2>
+                        <div id="foodGrid" class="horizontal-scroll-container">Loading...</div>
+                    </section>
+
+                    <section>
+                        <h2 class="section-title">Recommended Restaurants</h2>
+                        <div id="restaurantsGrid" class="info-grid">Loading...</div>
+                    </section>
+                    
+                    <section>
+                        <h2 class="section-title">Shopping Destinations</h2>
+                        <div id="shoppingGrid" class="horizontal-scroll-container">Loading...</div>
+                    </section>
+                    
+                    <section>
+                        <h2 class="section-title">City in Pictures</h2>
+                        <div id="galleryGrid" class="photo-gallery-grid">Loading...</div>
+                    </section>
+                    
+                    <section>
+                        <h2 class="section-title">Cultural Highlights</h2>
+                        <div id="cultureGrid" class="horizontal-scroll-container">Loading...</div>
+                    </section>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Extract the City ID from URL (e.g. city.html?id=8)
+            const urlParams = new URLSearchParams(window.location.search);
+            const cityId = urlParams.get('id');
+
+            if (!cityId) {
+                document.getElementById('city-main-title').textContent = "City Not Found";
+                alert("Please provide a valid city ID in the URL, for example: city.html?id=8");
+                return;
+            }
+
+            // Centralized API Configuration based on the dynamic ID
+            const API_BASE = `http://localhost:8000/api/cities/${cityId}`;
+
+            // Icons
+            const clockIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" style="width:1em; height:1em;"><path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14Zm.75-10.25a.75.75 0 0 0-1.5 0v4.5c0 .414.336.75.75.75h4a.75.75 0 0 0 0-1.5h-3.25V4.75Z" clip-rule="evenodd" /></svg>`;
+            const categoryIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" style="width:1em; height:1em;"><path d="M1.5 2.75A1.25 1.25 0 0 1 2.75 1.5h2.5A1.25 1.25 0 0 1 6.5 2.75v2.5A1.25 1.25 0 0 1 5.25 6.5h-2.5A1.25 1.25 0 0 1 1.5 5.25v-2.5ZM2.75 2.75v2.5h2.5v-2.5h-2.5ZM9.5 2.75A1.25 1.25 0 0 1 10.75 1.5h2.5A1.25 1.25 0 0 1 14.5 2.75v2.5A1.25 1.25 0 0 1 13.25 6.5h-2.5A1.25 1.25 0 0 1 9.5 5.25v-2.5ZM10.75 2.75v2.5h2.5v-2.5h-2.5ZM1.5 9.75A1.25 1.25 0 0 1 2.75 8.5h2.5A1.25 1.25 0 0 1 6.5 9.75v2.5A1.25 1.25 0 0 1 5.25 13.5h-2.5A1.25 1.25 0 0 1 1.5 12.25v-2.5ZM2.75 9.75v2.5h2.5v-2.5h-2.5ZM9.5 9.75A1.25 1.25 0 0 1 10.75 8.5h2.5A1.25 1.25 0 0 1 14.5 9.75v2.5A1.25 1.25 0 0 1 13.25 13.5h-2.5A1.25 1.25 0 0 1 9.5 12.25v-2.5ZM10.75 9.75v2.5h2.5v-2.5h-2.5Z" /></svg>`;
+
+            const createTag = (icon, text, type = 'attraction') => {
+                if (!text) return '';
+                return `<div class="info-tag ${type}">${icon}<span>${text}</span></div>`;
+            };
+
+            // 1. Fetch Main City Data (Hero, Title, Map)
+            fetch(`http://localhost:8000/api/cities/${cityId}`)
+                .then(res => res.json())
+                .then(city => {
+                    const cityName = city.location_name || 'Destination';
+                    document.title = `${cityName} - Globify`;
+                    document.getElementById('city-main-title').textContent = `Explore ${cityName}`;
+                    
+                    if(city.image) {
+                        document.getElementById('city-hero-img').src = city.image;
+                    }
+
+                    // Dynamically set map search using city name
+                    const mapIframe = document.getElementById('city-map');
+                    mapIframe.src = `https://maps.google.com/maps?q=${encodeURIComponent(cityName)}+tourist+places&t=&z=11&ie=UTF8&iwloc=&output=embed`;
+                })
+                .catch(e => console.error("Could not load city details", e));
+
+            // 2. Fetch Attractions
+            const attractionsGrid = document.getElementById('attractionsGrid');
+            fetch(`${API_BASE}/attractions`)
+                .then(response => response.json())
+                .then(data => {
+                    if(data.length === 0) return attractionsGrid.innerHTML = '<p>No attractions found for this city yet.</p>';
+                    attractionsGrid.innerHTML = data.map(item => `
+                        <div class="info-card">
+                            <div class="info-header">
+                                <div class="text-content">
+                                    <h3>${item.name || 'Attraction Name'}</h3>
+                                    <p>${item.description || ''}</p>
+                                </div>
+                                <img src="${item.image}" alt="Img" onerror="this.src='https://placehold.co/100x75/e0e0e0/757575?text=Img';">
+                            </div>
+                            <div class="info-tags">
+                                ${createTag(categoryIcon, item.category, 'attraction')}
+                                ${createTag(clockIcon, item.opening_hours, 'attraction')}
+                            </div>
+                        </div>`).join('');
+                })
+                .catch(() => attractionsGrid.innerHTML = '<p>Error loading data.</p>');
+
+            // 3. Fetch Restaurants
+            const restaurantsGrid = document.getElementById('restaurantsGrid');
+            fetch(`${API_BASE}/restaurants`)
+                .then(response => response.json())
+                .then(data => {
+                    if(data.length === 0) return restaurantsGrid.innerHTML = '<p>No restaurants found for this city yet.</p>';
+                    restaurantsGrid.innerHTML = data.map(item => `
+                        <div class="info-card">
+                            <div class="info-header">
+                                <div class="text-content">
+                                    <h3>${item.name || 'Restaurant'}</h3>
+                                    <p>${item.description || ''}</p>
+                                </div>
+                                <img src="${item.image}" alt="Img" onerror="this.src='https://placehold.co/100x75/e0e0e0/757575?text=Img';">
+                            </div>
+                        </div>`).join('');
+                });
+
+            // 4. Fetch Food
+            const foodGrid = document.getElementById('foodGrid');
+            fetch(`${API_BASE}/food`)
+                .then(response => response.json())
+                .then(data => {
+                    if(data.length === 0) return foodGrid.innerHTML = '<p>No food details found.</p>';
+                    foodGrid.innerHTML = data.map(item => `
+                        <div class="small-card">
+                            <img src="${item.image}" class="small-card-image" onerror="this.src='https://placehold.co/280x150/e0e0e0/757575?text=Img';">
+                            <div class="small-card-content">
+                                <h3>${item.name || 'Food Item'}</h3>
+                                <p>${item.description || ''}</p>
+                            </div>
+                        </div>`).join('');
+                });
+
+            // 5. Fetch Shopping, Culture, and Gallery (Simplified for brevity)
+            const fetchGrid = (endpoint, gridId) => {
+                fetch(`${API_BASE}/${endpoint}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        const grid = document.getElementById(gridId);
+                        if(data.length === 0) return grid.innerHTML = '<p>No data added yet.</p>';
+                        
+                        if(endpoint === 'gallery') {
+                            grid.innerHTML = data.map(img => `
+                                <div class="gallery-item">
+                                    <img src="${img.src || img.image}" onerror="this.src='https://placehold.co/300x200/e0e0e0/757575?text=Img';">
+                                </div>`).join('');
+                        } else {
+                            grid.innerHTML = data.map(item => `
+                                <div class="small-card">
+                                    <img src="${item.image}" class="small-card-image" onerror="this.src='https://placehold.co/280x150/e0e0e0/757575?text=Img';">
+                                    <div class="small-card-content">
+                                        <h3>${item.name || 'Detail'}</h3>
+                                        <p>${item.description || ''}</p>
+                                    </div>
+                                </div>`).join('');
+                        }
+                    });
+            };
+
+            fetchGrid('shopping', 'shoppingGrid');
+            fetchGrid('culture', 'cultureGrid');
+            fetchGrid('gallery', 'galleryGrid');
+        });
+    </script>
+</body>
+</html>

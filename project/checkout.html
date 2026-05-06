@@ -102,7 +102,8 @@
                 <section class="checkout-main">
                     <div class="form-card">
                         <h2 class="form-card-title">Traveller Details</h2>
-                        <form id="traveller-form" class="form-grid">
+                        <!-- Added 'two-col' to neatly fit 4 items -->
+                        <form id="traveller-form" class="form-grid two-col">
                             <div class="form-field-checkout">
                                 <label for="full-name">Full Name</label>
                                 <input type="text" id="full-name" placeholder="As per government ID" required>
@@ -112,9 +113,14 @@
                                 <input type="email" id="email" placeholder="e.g., name@example.com" required>
                             </div>
                             
-                            <div class="form-field-checkout span-2">
+                            <div class="form-field-checkout">
                                 <label for="mobile-number">Mobile Number</label>
                                 <input type="tel" id="mobile-number" placeholder="e.g., +91 9876543210" required>
+                            </div>
+                            <!-- NEW DYNAMIC QUANTITY FIELD -->
+                            <div class="form-field-checkout">
+                                <label id="quantity-label" for="booking-quantity">Quantity</label>
+                                <input type="number" id="booking-quantity" min="1" value="1" required>
                             </div>
                         </form>
                     </div>
@@ -238,7 +244,27 @@
             const urlParams = new URLSearchParams(window.location.search);
             let bookingType = urlParams.get('type');
             let targetId = urlParams.get('id'); 
-            const requestedQuantity = parseInt(urlParams.get('travellers') || urlParams.get('guests') || 1);
+
+            // Setup the dynamic quantity input field validations
+            const qtyInput = document.getElementById('booking-quantity');
+            const qtyLabel = document.getElementById('quantity-label');
+            
+            let maxAllowedQty = 1;
+            if (bookingType === 'flight') {
+                maxAllowedQty = 10;
+                qtyLabel.textContent = 'Number of Seats (Max 10)';
+                qtyInput.max = 10;
+            } else {
+                maxAllowedQty = 5;
+                qtyLabel.textContent = 'Number of Nights (Max 5)';
+                qtyInput.max = 5;
+            }
+
+            // Initialize input value based on URL parameters, constrained by our limits
+            let requestedQuantity = parseInt(urlParams.get('travellers') || urlParams.get('guests') || 1);
+            if (requestedQuantity > maxAllowedQty) requestedQuantity = maxAllowedQty;
+            if (requestedQuantity < 1) requestedQuantity = 1;
+            qtyInput.value = requestedQuantity;
 
             const API_BASE = 'http://localhost:8000/api';
 
@@ -247,14 +273,53 @@
             const priceTotalEl = document.getElementById('price-total');
             const detailsEl = document.getElementById('booking-details');
             
+            let currentBasePrice = 0; // Maintain base price in JS memory to recalculate dynamically
+            
             const formatCurrency = (amount, qty) => {
-                let base = parseFloat(amount) * qty;
+                currentBasePrice = parseFloat(amount);
+                let base = currentBasePrice * qty;
                 let taxes = base * 0.18;
                 let total = base + taxes;
                 priceBaseEl.textContent = `₹${base.toLocaleString('en-IN')}`;
                 priceTaxesEl.textContent = `₹${taxes.toLocaleString('en-IN')}`;
                 priceTotalEl.textContent = `₹${total.toLocaleString('en-IN')}`;
             };
+
+            // Updates the visual badge in the summary UI
+            const updateSummaryText = () => {
+                const val = qtyInput.value;
+                const textSpan = document.getElementById('summary-qty-text');
+                if (textSpan) {
+                    textSpan.textContent = bookingType === 'flight' ? `Seats: ${val}` : `Nights: ${val}`;
+                }
+            };
+
+            // Listen to quantity changes directly on the checkout form
+            qtyInput.addEventListener('input', (e) => {
+                let val = parseInt(e.target.value);
+                if (!val || val < 1) return; // wait for completion
+                if (val > maxAllowedQty) {
+                    alert(`Maximum allowed is ${maxAllowedQty}.`);
+                    val = maxAllowedQty;
+                    e.target.value = val;
+                }
+                if (currentBasePrice > 0) {
+                    formatCurrency(currentBasePrice, val);
+                    updateSummaryText();
+                }
+            });
+
+            // Handle users deleting the number and blurring out
+            qtyInput.addEventListener('blur', (e) => {
+                let val = parseInt(e.target.value);
+                if (!val || val < 1) {
+                    e.target.value = 1;
+                    if (currentBasePrice > 0) {
+                        formatCurrency(currentBasePrice, 1);
+                        updateSummaryText();
+                    }
+                }
+            });
 
             // ROBUST PREVIEW LOGIC
             if (bookingType === 'flight' && targetId) {
@@ -270,11 +335,11 @@
                                     <div>
                                         <strong style="display: block; font-size: 1.1rem; color: #1f2937; margin-bottom: 0.25rem; line-height: 1.2;">${flight.airlineName} (${flight.flightNumber})</strong>
                                         <span style="font-size: 0.85rem; color: #6b7285; display: block; margin-bottom: 0.5rem; line-height: 1.4;">Route: ${flight.departureAirportCode} → ${flight.arrivalAirportCode}</span>
-                                        <span style="display: inline-block; background: #eff6ff; color: #2563eb; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600;">Seats: ${requestedQuantity}</span>
+                                        <span id="summary-qty-text" style="display: inline-block; background: #eff6ff; color: #2563eb; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600;">Seats: ${qtyInput.value}</span>
                                     </div>
                                 </div>
                             `;
-                            formatCurrency(flight.price, requestedQuantity);
+                            formatCurrency(flight.price, parseInt(qtyInput.value));
                         } else {
                             document.getElementById('loading-summary').textContent = "Flight not found.";
                         }
@@ -294,11 +359,11 @@
                                         <strong style="display: block; font-size: 1.1rem; color: #1f2937; margin-bottom: 0.25rem; line-height: 1.2;">${room.hotel_name || 'N/A'}</strong>
                                         <span style="font-size: 0.85rem; color: #6b7285; display: block; margin-bottom: 0.25rem; line-height: 1.4;">${room.location_name || 'N/A'}</span>
                                         <span style="font-size: 0.85rem; color: #4b5563; display: block; margin-bottom: 0.5rem;"><strong>Room:</strong> ${room.name}</span>
-                                        <span style="display: inline-block; background: #eff6ff; color: #2563eb; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600;">Nights/Guests: ${requestedQuantity}</span>
+                                        <span id="summary-qty-text" style="display: inline-block; background: #eff6ff; color: #2563eb; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600;">Nights: ${qtyInput.value}</span>
                                     </div>
                                 </div>
                             `;
-                            formatCurrency(room.price, requestedQuantity);
+                            formatCurrency(room.price, parseInt(qtyInput.value));
                         } else {
                             document.getElementById('loading-summary').textContent = "Room details not found.";
                         }
@@ -317,11 +382,11 @@
                             <div>
                                 <strong style="display: block; font-size: 1.1rem; color: #1f2937; margin-bottom: 0.25rem; line-height: 1.2;">${titleParam}</strong>
                                 <span style="font-size: 0.85rem; color: #6b7285; display: block; margin-bottom: 0.5rem; line-height: 1.4;">${subtitleParam}</span>
-                                <span style="display: inline-block; background: #eff6ff; color: #2563eb; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600;">Guests/Nights: ${requestedQuantity}</span>
+                                <span id="summary-qty-text" style="display: inline-block; background: #eff6ff; color: #2563eb; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600;">Nights: ${qtyInput.value}</span>
                             </div>
                         </div>
                     `;
-                    formatCurrency(priceToUse || 15000, requestedQuantity);
+                    formatCurrency(priceToUse || 15000, parseInt(qtyInput.value));
                 };
 
                 fetch(`${API_BASE}/homes`)
@@ -351,6 +416,7 @@
                 const guestEmail = document.getElementById('email').value.trim();
                 const mobileNum = document.getElementById('mobile-number').value.trim();
                 const cardNumber = document.getElementById('card-number').value.trim();
+                const finalQuantity = parseInt(qtyInput.value);
 
                 if (!guestName || !guestEmail || !mobileNum || !cardNumber) {
                     alert('Please fill out all required fields, including your Mobile Number.');
@@ -362,11 +428,11 @@
                 const payload = bookingType === 'flight' ? {
                     flight_id: finalTargetId,
                     guest_name: guestName,
-                    seats: requestedQuantity
+                    seats: finalQuantity
                 } : {
                     room_id: finalTargetId,
                     guest_name: guestName,
-                    nights: requestedQuantity
+                    nights: finalQuantity
                 };
 
                 const endpoint = bookingType === 'flight' ? '/book-flight' : '/book-room';
@@ -381,7 +447,7 @@
                 })
                 .then(async res => {
                     const data = await res.json();
-                    if (!res.ok) throw data; // Throw the 500 error object directly to the catch block
+                    if (!res.ok) throw data; // Throw the 400/500 error object directly to the catch block
                     return data;
                 })
                 .then(data => {
@@ -407,7 +473,6 @@
                     modal.classList.add('show');
                 })
                 .catch(err => {
-                    // ✅ FIXED ERROR HANDLING: Safely capture 500 DB Exception outputs and map it correctly!
                     const modal = document.getElementById('confirmationModal');
                     const icon = document.getElementById('modal-icon');
                     const title = document.getElementById('modal-title');

@@ -63,6 +63,12 @@ app.get("/api/homes/price-range", (req, res) => {
 
 app.post("/api/book-flight", (req, res) => {
   const { flight_id, guest_name, seats } = req.body;
+  
+  // Backend Validation for maximum allowed limit
+  if (!seats || seats < 1 || seats > 10) {
+      return res.status(400).json({ Message: "Invalid booking request. A maximum of 10 seats is allowed per booking." });
+  }
+
   db.query("CALL sp_book_flight(?, ?, ?)", [flight_id, guest_name, seats], (err, results) => {
     if (err) return res.status(500).json({ error: "System Error", details: err });
     res.json(results[0][0]); 
@@ -71,6 +77,12 @@ app.post("/api/book-flight", (req, res) => {
 
 app.post("/api/book-room", (req, res) => {
   const { room_id, guest_name, nights } = req.body;
+  
+  // Backend Validation for maximum allowed limit
+  if (!nights || nights < 1 || nights > 5) {
+      return res.status(400).json({ Message: "Invalid booking request. A maximum of 5 nights is allowed per booking." });
+  }
+
   db.query("CALL sp_book_room(?, ?, ?)", [room_id, guest_name, nights], (err, results) => {
     if (err) return res.status(500).json({ error: "System Error", details: err });
     res.json(results[0][0]); 
